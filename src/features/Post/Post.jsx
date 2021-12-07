@@ -12,7 +12,9 @@ export const Post = ({ postItem }) => {
   const [commentData, setCommentData] = useState([]);
 
   console.log(postItem);
-
+  const user = useSelector((state) => state.auth.login);
+  const { userId } = user;
+  console.log(user);
   useEffect(() => {
     (async () => {
       const response = await axios.get(
@@ -41,14 +43,20 @@ export const Post = ({ postItem }) => {
         ) : (
           ''
         )}
-        <button onClick={() => dispatch(RemoveBtn({ postId: postItem?._id }))}>
+        <button
+          onClick={() => dispatch(RemoveBtn({ postId: postItem?._id, userId }))}
+        >
           X
         </button>
         <p>{postItem?.description}</p>
         <p>
           <span>
             <button
-              onClick={() => dispatch(LikeBtn({ postId: postItem?._id }))}
+              onClick={() =>
+                dispatch(
+                  LikeBtn({ postId: postItem?._id, userId: user?.userId })
+                )
+              }
             >
               {postItem?.likes?.length < 1 ? '' : postItem?.likes?.length} Like
             </button>{' '}

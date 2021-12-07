@@ -7,11 +7,13 @@ export const CreatePost = () => {
   const [postData, setpostData] = useState('');
 
   const [imgUrl, setUrl] = useState('');
+  const { userId } = useSelector((state) => state.auth.login);
 
   const dispatch = useDispatch();
   const post = useSelector((state) => state.post);
   const postHandler = async () => {
-    await dispatch(PostBtn({ postData, imgUrl }));
+    console.log(userId);
+    await dispatch(PostBtn({ postData, imgUrl, userId }));
     setpostData('');
   };
   // upload image
@@ -77,7 +79,8 @@ export const CreatePost = () => {
         />
       </label>
       <button className='btn__post' disabled={!postData} onClick={postHandler}>
-        {post.status === 'fulfilled' ? 'Post' : 'Posting...'}
+        {/* {post.status === 'fulfilled' ? 'Post' : 'Posting...'} */}
+        Post
       </button>
     </div>
   );

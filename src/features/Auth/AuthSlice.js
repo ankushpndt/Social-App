@@ -1,41 +1,103 @@
-// import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-// import axios from 'axios';
-// import { API_URL } from '../../utils/API_URL';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { API_URL } from '../../utils/API_URL';
 
-// export const SignUp = createAsyncThunk('/Auth/SignUp', async () => {
-//   const response = await axios.post(`${API_URL}/user/signup`, {});
-//   console.log(response);
-// });
-// export const Login = createAsyncThunk('/Auth/Login', async () => {
-//   const response = await axios.post(`${API_URL}/user/login`, {});
-//   console.log(response);
-// });
-// export const AuthSlice = createSlice({
-//   name: 'Auth',
-//   initialState: { users: [], status: '' },
-//   reducers: {},
-//   extraReducers: {
-//     [SignUp.pending]: (state) => {
-//       state.status = 'pending';
-//     },
-//     [SignUp.fulfilled]: (state, action) => {
-//       console.log(action);
-//       state.users = action.payload;
-//       state.status = 'fulfilled';
-//     },
-//     [SignUp.rejected]: (state) => {
-//       state.status = 'rejected';
-//     },
-//     [Login.pending]: (state) => {
-//       state.status = 'pending';
-//     },
-//     [Login.fulfilled]: (state, action) => {
-//       console.log(action);
-//       state.users = action.payload;
-//       state.status = 'fulfilled';
-//     },
-//     [Login.rejected]: (state) => {
-//       state.status = 'rejected';
-//     },
-//   },
-// });
+import { toast } from 'react-toastify';
+
+export const SignUpWithCredentials = createAsyncThunk(
+  '/Auth/SignUp',
+  async ({ name, email, password }) => {
+    console.log({ name, email, password });
+    const response = await axios.post(`${API_URL}/user/signup`, {
+      name: name,
+      email: email,
+      password: password,
+    });
+    console.log(response);
+    return response.data.saveUser;
+  }
+);
+export const LoginWithCredentials = createAsyncThunk(
+  '/Auth/Login',
+  async (email, password) => {
+    const response = await axios.post(`${API_URL}/user/login`, {
+      email: email,
+      password: password,
+    });
+    console.log(response);
+
+    return response.data;
+  }
+);
+export const AuthSlice = createSlice({
+  name: 'Auth',
+  initialState: {
+    login: JSON.parse(localStorage?.getItem('login')) || {
+      isUserLoggedIn: false,
+      token: '',
+      user: '',
+      userId: '',
+    },
+    status: '',
+  },
+  reducers: {
+    logoutBtnPressed: (state, action) => {
+      // toast('Logging out !', {
+      //   position: 'top-right',
+      //   autoClose: 2000,
+      // });
+      console.log(action);
+      console.log(state);
+      console.log('called');
+      localStorage.removeItem('login');
+      state.login = { isUserLoggedIn: false, token: '', user: '' };
+      // return { isUserLoggedIn: false, token: '', user: '' };
+    },
+    // removeSignup: (state) => {
+    //   state.signup = false;
+    // },
+  },
+  extraReducers: {
+    [SignUpWithCredentials.pending]: (state) => {
+      state.status = 'pending';
+    },
+    [SignUpWithCredentials.fulfilled]: (state, action) => {
+      console.log(action);
+      // state.users = action.payload;
+      state.status = 'fulfilled';
+    },
+    [SignUpWithCredentials.rejected]: (state) => {
+      state.status = 'rejected';
+    },
+    [LoginWithCredentials.pending]: (state) => {
+      state.status = 'pending';
+    },
+    [LoginWithCredentials.fulfilled]: (state, action) => {
+      console.log(action);
+      const { token, userName, userid } = action.payload;
+      console.log(userid);
+      localStorage.setItem(
+        'login',
+        JSON.stringify({
+          isUserLoggedIn: true,
+          token,
+          user: userName,
+          userId: userid,
+        })
+      );
+      state.login = {
+        isUserLoggedIn: true,
+        token,
+        user: userName,
+        userId: userid,
+      };
+      // navigate("/")
+      state.status = 'fulfilled';
+    },
+    [LoginWithCredentials.rejected]: (state) => {
+      state.status = 'rejected';
+    },
+  },
+});
+export const { logoutBtnPressed } = AuthSlice.actions;
+export default AuthSlice.reducer;
