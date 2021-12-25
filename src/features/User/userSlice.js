@@ -32,7 +32,50 @@ export const UserDetails = createAsyncThunk(
     }
   }
 );
+export const followUser = createAsyncThunk(
+  'user/followUser',
+  async ({ _id, token, follower }) => {
+    try {
+      console.log(_id);
+      const response = await axios.put(
+        `${API_URL}/user/${follower}/follow`,
+        {
+          userId: _id,
+        },
+        {
+          headers: { 'auth-token': token },
+        }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const unfollowUser = createAsyncThunk(
+  'user/unfollowUser',
 
+  async ({ _id, token, following }) => {
+    try {
+      console.log(_id);
+      console.log(following);
+      const response = await axios.put(
+        `${API_URL}/user/${following}/unfollow`,
+        {
+          userId: _id,
+        },
+        {
+          headers: { 'auth-token': token },
+        }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+);
 const UserSlice = createSlice({
   name: 'users',
   initialState: {
@@ -66,6 +109,32 @@ const UserSlice = createSlice({
         el._id === action.payload._id ? action.payload : el
       );
       state.status = 'fulfilled';
+    },
+    [followUser.fulfilled]: (state, action) => {
+      const indexOfCurrentUser = state.users.user.findIndex(
+        (user) => user._id === action.payload.currentUser._id
+      );
+      const indexOfFollowedUser = state.users.user.findIndex(
+        (user) => user._id === action.payload.userToBeFollowed._id
+      );
+      console.log({ indexOfCurrentUser, indexOfFollowedUser });
+
+      state.users.user[indexOfCurrentUser] = action.payload.currentUser;
+      state.users.user[indexOfFollowedUser] = action.payload.userToBeFollowed;
+      // state.users.user = state.users.user
+    },
+    [unfollowUser.fulfilled]: (state, action) => {
+      const indexOfCurrentUser = state.users.user.findIndex(
+        (user) => user._id === action.payload.currentUser._id
+      );
+      const indexOfUnFollowedUser = state.users.user.findIndex(
+        (user) => user._id === action.payload.userToBeUnFollowed._id
+      );
+      console.log({ indexOfCurrentUser, indexOfUnFollowedUser });
+
+      state.users.user[indexOfCurrentUser] = action.payload.currentUser;
+      state.users.user[indexOfUnFollowedUser] =
+        action.payload.userToBeUnFollowed;
     },
   },
 });

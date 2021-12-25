@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { UserCard } from './index';
-import { unfollowUser } from '../Auth/AuthSlice';
+import { unfollowUser } from './userSlice';
 import { useParams } from 'react-router';
 export const Following = () => {
   const dispatch = useDispatch();
