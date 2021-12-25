@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+
 import { useNavigate } from 'react-router';
 export const UserCard = ({ userId }) => {
   const user = useSelector((state) => state.user.users.user).find(
@@ -11,7 +11,7 @@ export const UserCard = ({ userId }) => {
     <div>
       <div
         className='user__profile'
-        onClick={() => navigate(`/user/${user.name}`)}
+        onClick={() => navigate(`/user/${user._id}`)}
         style={{ cursor: 'pointer', border: '1px solid red' }}
       >
         <p>{user.name}</p>

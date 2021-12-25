@@ -18,6 +18,7 @@ export const LoadPosts = createAsyncThunk(
     }
   }
 );
+
 export const PostBtn = createAsyncThunk(
   'posts/PostBtn',
   async ({ postData, imgUrl, userId }) => {
@@ -101,6 +102,7 @@ export const PostSlice = createSlice({
   name: 'Post',
   initialState: {
     posts: [],
+    userPosts: [],
     status: '',
   },
   reducers: {

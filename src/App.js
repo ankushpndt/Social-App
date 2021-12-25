@@ -15,13 +15,13 @@ import SignUp from './features/Auth/SignUp';
 import { PrivateRoute } from './PrivateRoute';
 import { logoutBtnPressed } from './features/Auth/AuthSlice';
 import { Notification } from './features/Notification/Notification';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Account } from './features/User/Account';
+
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.login);
   const { userId, user, token } = currentUser;
-  const a = useSelector((state) => console.log(state));
 
   useEffect(() => {
     dispatch(LoadPosts({ userId }));
@@ -34,7 +34,7 @@ function App() {
   };
   return (
     <div className='App'>
-      <NavLink to={`/user/${userId}`}>User</NavLink>
+      <NavLink to='user'>User</NavLink>
       <NavLink to='/home'>Home</NavLink>
       <NavLink to='/notifications'>Notification</NavLink>
       <button onClick={logoutHandler}>Logout</button>
@@ -43,9 +43,10 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <PrivateRoute path='/home' element={<Home />} />
         <PrivateRoute path='/notifications' element={<Notification />} />
-        <Route path='/:userId/editprofile' element={<EditProfile />} />
-        <Route path='/:userId/followers' element={<Followers />} />
-        <Route path='/:userId/following' element={<Following />} />
+        <Route path='/user/:userId/editprofile' element={<EditProfile />} />
+        <Route path='/user/:userId/followers' element={<Followers />} />
+        <Route path='/user/:userId/following' element={<Following />} />
+        <PrivateRoute path='/user' element={<Account />} />
         <PrivateRoute path='/user/:userId' element={<User />} />
       </Routes>
     </div>

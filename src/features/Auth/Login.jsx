@@ -7,17 +7,13 @@ import { LoginWithCredentials } from './AuthSlice';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-export default function Login({ pathname }) {
+export default function Login() {
   const auth = useSelector((state) => state.auth.login);
   const { token } = auth;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(pathname);
   const { state } = useLocation();
-  console.log(state);
-  // const { from } = state;
-  // const from = state && state.from;
-  // console.log(from);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   useEffect(() => {

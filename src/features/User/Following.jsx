@@ -4,14 +4,14 @@ import { unfollowUser } from './userSlice';
 import { useParams } from 'react-router';
 export const Following = () => {
   const dispatch = useDispatch();
-  const name = useParams();
+  const userId = useParams();
   const user = useSelector((state) => state.user.users.user);
   const auth = useSelector((state) => state.auth.login);
   const { token } = auth;
   // console.log(auth);
   // console.log(user);
-  console.log(name);
-  const findCurrentUser = user?.find((user) => user?.name === name?.userId);
+  console.log(userId);
+  const findCurrentUser = user?.find((user) => user?._id === userId?.userId);
   console.log(findCurrentUser);
   const following = findCurrentUser?.following?.find(
     (id) => id !== findCurrentUser._id
@@ -19,7 +19,7 @@ export const Following = () => {
   console.log(following);
   return (
     <div>
-      <p>{findCurrentUser?.name} Following</p>
+      <p>{findCurrentUser?.userId} Following</p>
 
       {/* <button onClick={() => dispatch(unfollowUser(findCurrentUser?._id))}>
         Following
