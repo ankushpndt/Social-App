@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 export const User = () => {
   const [post, setPost] = useState(0);
   const [followers, setFollowers] = useState(0);
@@ -13,7 +13,7 @@ export const User = () => {
   console.log(user);
   const CurrentUser = user?.find((user) => user._id === userId);
   console.log(CurrentUser);
-  const navigate = useNavigate();
+
   return (
     <div>
       <img src={CurrentUser?.image} width='300px' />

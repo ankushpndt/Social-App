@@ -15,7 +15,7 @@ import SignUp from './features/Auth/SignUp';
 import { PrivateRoute } from './PrivateRoute';
 import { logoutBtnPressed } from './features/Auth/AuthSlice';
 import { Notification } from './features/Notification/Notification';
-
+import { BrowserRouter as Router } from 'react-router-dom';
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ function App() {
   const logoutHandler = () => {
     // localStorage.clear();
     dispatch(logoutBtnPressed());
-    // navigate('/');
+    navigate('/');
   };
   return (
     <div className='App'>
@@ -42,11 +42,11 @@ function App() {
         <Route path='/' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <PrivateRoute path='/home' element={<Home />} />
-        <Route path='/notifications' element={<Notification />} />
+        <PrivateRoute path='/notifications' element={<Notification />} />
         <Route path='/:userId/editprofile' element={<EditProfile />} />
         <Route path='/:userId/followers' element={<Followers />} />
         <Route path='/:userId/following' element={<Following />} />
-        <PrivateRoute path={`/user/:userId`} element={<User />} />
+        <PrivateRoute path='/user/:userId' element={<User />} />
       </Routes>
     </div>
   );

@@ -34,11 +34,11 @@ export const UserDetails = createAsyncThunk(
 );
 export const followUser = createAsyncThunk(
   'user/followUser',
-  async ({ _id, token, follower }) => {
+  async ({ _id, token, userToBeFollowed }) => {
     try {
       console.log(_id);
       const response = await axios.put(
-        `${API_URL}/user/${follower}/follow`,
+        `${API_URL}/user/${userToBeFollowed}/follow`,
         {
           userId: _id,
         },

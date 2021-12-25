@@ -1,16 +1,28 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // import { useAuth } from './authContext';
 import React, { useState } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LoginWithCredentials } from './AuthSlice';
-export default function Login() {
-  // const { loginWithCredentials, error } = useAuth();
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
+export default function Login({ pathname }) {
+  const auth = useSelector((state) => state.auth.login);
+  const { token } = auth;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log(pathname);
+  const { state } = useLocation();
+  console.log(state);
+  // const { from } = state;
+  // const from = state && state.from;
+  // console.log(from);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  useEffect(() => {
+    if (token) navigate(state?.from);
+  }, [token]);
   function userNameHandler(e) {
     let email = e.target.value;
     setEmail(email);

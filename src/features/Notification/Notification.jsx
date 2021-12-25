@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { API_URL } from '../../utils/API_URL';
 import { useEffect, useState } from 'react';
-import { UpdateNotifications } from './notificationSlice';
+import { useLocation } from 'react-router-dom';
 export const Notification = () => {
   const auth = useSelector((state) => state.auth.login);
   const { token } = auth;
