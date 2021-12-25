@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_URL } from '../../utils/API_URL';
-export const getNotifications = createAsyncThunk(
+export const GetNotifications = createAsyncThunk(
   'notifications/getNotifications',
   async () => {
     try {
@@ -12,40 +12,70 @@ export const getNotifications = createAsyncThunk(
     }
   }
 );
-export const addNotifications = createAsyncThunk(
+export const AddNotifications = createAsyncThunk(
   'notifications/addNotification',
-  async ({ postId, target, notificationType }) => {
+  async ({ postId, target, notificationType, token }) => {
+    console.log({ notificationType });
     try {
-      const response = await axios.post(`${API_URL}/notification`, {
-        postId,
-        target,
-        notificationType,
-      });
+      const response = await axios.post(
+        `${API_URL}/notification`,
+        {
+          postId,
+          target,
+          notificationType,
+        },
+        {
+          headers: { 'auth-token': token },
+        }
+      );
       console.log(response);
+      return response.data.data;
     } catch (error) {
       console.log(error);
     }
   }
 );
-export const updateNotifications = createAsyncThunk(
+export const UpdateNotifications = createAsyncThunk(
   'notificaitons/updateNotification',
-  async ({ notificationId }) => {
+  async ({ notificationId, token }) => {
     try {
-      const response = await axios.put(`${API_URL}/notification`, {
-        notificationId,
-      });
+      const response = await axios.put(
+        `${API_URL}/notification`,
+        {
+          notificationId,
+        },
+        {
+          headers: { 'auth-token': token },
+        }
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   }
 );
-export const notificationSlice = createSlice({
+export const NotificationSlice = createSlice({
+  name: 'Notification',
   initialState: {
     notifications: [],
     status: '',
   },
   reducers: {},
-  extraReducers: {},
+  extraReducers: {
+    [GetNotifications.fulfilled]: (state, action) => {
+      console.log(action);
+      state.notifications = action.payload;
+      state.status = 'fulfilled';
+    },
+    [AddNotifications.fulfilled]: (state, action) => {
+      console.log(action);
+      state.notifications = action.payload;
+      state.status = 'fulfilled';
+    },
+    [UpdateNotifications.fulfilled]: (state, action) => {
+      state.notifications = action.payload;
+      state.status = 'fulfilled';
+    },
+  },
 });
-export default notificationSlice.reducer;
+export default NotificationSlice.reducer;

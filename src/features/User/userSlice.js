@@ -33,35 +33,6 @@ export const UserDetails = createAsyncThunk(
   }
 );
 
-export const followUser = createAsyncThunk(
-  'user/followUser',
-  async ({ _id }) => {
-    try {
-      console.log(_id);
-      const response = await axios.put(`${API_URL}/user/${_id}/follow`, {
-        userId: _id,
-      });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-export const unfollowUser = createAsyncThunk(
-  'user/unfollowUser',
-
-  async ({ _id }) => {
-    try {
-      console.log(_id);
-      const response = await axios.put(`${API_URL}/user/${_id}/unfollow`, {
-        userId: _id,
-      });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
 const UserSlice = createSlice({
   name: 'users',
   initialState: {

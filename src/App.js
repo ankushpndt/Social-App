@@ -14,7 +14,7 @@ import Login from './features/Auth/Login';
 import SignUp from './features/Auth/SignUp';
 import { PrivateRoute } from './PrivateRoute';
 import { logoutBtnPressed } from './features/Auth/AuthSlice';
-import axios from 'axios';
+import { Notification } from './features/Notification/Notification';
 
 function App() {
   const navigate = useNavigate();
@@ -22,10 +22,7 @@ function App() {
   const currentUser = useSelector((state) => state.auth.login);
   const { userId, user, token } = currentUser;
   const a = useSelector((state) => console.log(state));
-  // useEffect(() => {
-  //   if (token) axios.defaults.headers.common['auth-token'] = token;
-  //   else delete axios.defaults.headers.common['auth-token'];
-  // }, [currentUser]);
+
   useEffect(() => {
     dispatch(LoadPosts({ userId }));
     dispatch(LoadUsers());
@@ -39,11 +36,13 @@ function App() {
     <div className='App'>
       <NavLink to={`/user/${userId}`}>User</NavLink>
       <NavLink to='/home'>Home</NavLink>
+      <NavLink to='/notifications'>Notification</NavLink>
       <button onClick={logoutHandler}>Logout</button>
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <PrivateRoute path='/home' element={<Home />} />
+        <Route path='/notifications' element={<Notification />} />
         <Route path='/:userId/editprofile' element={<EditProfile />} />
         <Route path='/:userId/followers' element={<Followers />} />
         <Route path='/:userId/following' element={<Following />} />

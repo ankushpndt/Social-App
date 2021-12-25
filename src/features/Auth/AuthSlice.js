@@ -29,6 +29,50 @@ export const LoginWithCredentials = createAsyncThunk(
     return response.data;
   }
 );
+export const followUser = createAsyncThunk(
+  'user/followUser',
+  async ({ _id, token, follower }) => {
+    try {
+      console.log(_id);
+      const response = await axios.put(
+        `${API_URL}/user/${follower}/follow`,
+        {
+          userId: _id,
+        },
+        {
+          headers: { 'auth-token': token },
+        }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const unfollowUser = createAsyncThunk(
+  'user/unfollowUser',
+
+  async ({ _id, token, following }) => {
+    try {
+      console.log(_id);
+      console.log(following);
+      const response = await axios.put(
+        `${API_URL}/user/${following}/unfollow`,
+        {
+          userId: _id,
+        },
+        {
+          headers: { 'auth-token': token },
+        }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+);
 export const AuthSlice = createSlice({
   name: 'Auth',
   initialState: {
@@ -96,6 +140,21 @@ export const AuthSlice = createSlice({
     },
     [LoginWithCredentials.rejected]: (state) => {
       state.status = 'rejected';
+    },
+    [followUser.fulfilled]: (state, action) => {
+      console.log(action);
+
+      state.users.user = state.users?.user
+        .find((user) => user?._id === state.auth.login.userId)
+        .following.push(action.payload?.followedUser);
+      state.status = 'fulfilled';
+    },
+    [unfollowUser.fulfilled]: (state, action) => {
+      console.log(action);
+      state.users.user = state.users.user
+        .find((user) => user._id === state.auth.login.userId)
+        .following.splice(action.payload.unfollowedUser, 1);
+      state.status = 'fulfilled';
     },
   },
 });

@@ -5,26 +5,29 @@ import { v4 as uuidv4 } from 'uuid';
 import { LikeBtn, RemoveBtn, RemoveComment } from './postSlice';
 import { useState, useEffect } from 'react';
 import Input from './Input';
+import { AddNotifications } from '../Notification/notificationSlice';
 export const Post = ({ postItem }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const [commentData, setCommentData] = useState([]);
-
-  console.log(postItem);
   const user = useSelector((state) => state.auth.login);
-  const { userId } = user;
-  console.log(user);
+  const { userId, token } = user;
+  const isPostLiked = postItem.likes.length;
+  console.log(isPostLiked);
+  console.log(postItem);
+  const findUser = postItem.likes.find((likesId) => likesId === userId);
+  console.log(findUser);
   useEffect(() => {
     (async () => {
       const response = await axios.get(
         `${API_URL}/post/${postItem?._id}/comment`
       );
-      console.log(response);
+
       setCommentData(response.data.comments);
     })();
   }, [postItem]);
-
+  // console.log(postItem.likes);
   return (
     <div>
       <div
@@ -52,11 +55,31 @@ export const Post = ({ postItem }) => {
         <p>
           <span>
             <button
-              onClick={() =>
-                dispatch(
-                  LikeBtn({ postId: postItem?._id, userId: user?.userId })
-                )
-              }
+              // onClick={() => {
+              //   dispatch(
+              //     LikeBtn({ postId: postItem?._id, userId: user?.userId })
+              //   );
+              // }}
+              onClick={() => {
+                if (findUser) {
+                  dispatch(
+                    LikeBtn({ postId: postItem?._id, userId: user?.userId })
+                  );
+                } else {
+                  dispatch(
+                    LikeBtn({ postId: postItem?._id, userId: user?.userId })
+                  );
+
+                  dispatch(
+                    AddNotifications({
+                      postId: postItem?._id,
+                      target: postItem?.userId,
+                      notificationType: 'LIKE',
+                      token,
+                    })
+                  );
+                }
+              }}
             >
               {postItem?.likes?.length < 1 ? '' : postItem?.likes?.length} Like
             </button>{' '}
