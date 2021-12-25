@@ -13,11 +13,16 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { state } = useLocation();
-
+  console.log(state);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   useEffect(() => {
-    if (token) navigate(state?.from);
+    if (token) {
+      if (state?.from) navigate(state?.from);
+      else {
+        navigate('/home');
+      }
+    }
   }, [token]);
   function userNameHandler(e) {
     let email = e.target.value;

@@ -51,8 +51,8 @@ export const Post = ({ postItem }) => {
         >
           X
         </button>
-        <p>{postItem?.description}</p>
-        <p>
+        <div>{postItem?.description}</div>
+        <div>
           <span>
             <button
               // onClick={() => {
@@ -122,7 +122,7 @@ export const Post = ({ postItem }) => {
               ''
             )}
           </span>
-        </p>
+        </div>
       </div>
     </div>
   );

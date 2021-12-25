@@ -31,7 +31,12 @@ export const Account = () => {
   console.log(singlePost);
   return (
     <div>
-      <img src={CurrentUser?.image} width='300px' />
+      <img
+        src={CurrentUser?.image}
+        width='100px'
+        height='100px'
+        style={{ borderRadius: '80%' }}
+      />
       <p>{CurrentUser?.name}</p>
       <p>{CurrentUser?.email} </p>
       <p>Bio:{CurrentUser?.bio}</p>
