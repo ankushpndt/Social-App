@@ -3,17 +3,18 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostBtn } from './postSlice';
 import axios from 'axios';
+import { Button } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 export const CreatePost = () => {
   const [postData, setpostData] = useState('');
-
+  const [status, setStatus] = useState(false);
   const [imgUrl, setUrl] = useState('');
   const { userId } = useSelector((state) => state.auth.login);
-
   const dispatch = useDispatch();
-  const post = useSelector((state) => state.post);
   const postHandler = async () => {
-    console.log(userId);
-    await dispatch(PostBtn({ postData, imgUrl, userId }));
+    setStatus(true);
+    dispatch(PostBtn({ postData, imgUrl, userId, setStatus }));
     setpostData('');
   };
   // upload image
@@ -30,8 +31,6 @@ export const CreatePost = () => {
       );
 
       setUrl(response.data.url);
-
-      // console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -69,19 +68,28 @@ export const CreatePost = () => {
       )}
 
       <label htmlFor='upload__btn'>
-        Upload
-        <input
-          type='file'
-          id='upload__btn'
-          hidden
-          // onChange={(e) => setImage(e.target.files[0])}
-          onChange={uploadImage}
-        />
+        <input type='file' id='upload__btn' hidden onChange={uploadImage} />
+        <IconButton
+          color='primary'
+          aria-label='upload picture'
+          component='span'
+          id='btn__outlined'
+        >
+          <PhotoCamera />
+        </IconButton>
       </label>
-      <button className='btn__post' disabled={!postData} onClick={postHandler}>
-        {/* {post.status === 'fulfilled' ? 'Post' : 'Posting...'} */}
-        Post
-      </button>
+      <span style={{ cursor: 'not-allowed' }}>
+        <Button
+          variant='outlined'
+          id='btn__outlined'
+          disabled={!postData}
+          onClick={postHandler}
+          style={{ marginLeft: '0.2rem' }}
+        >
+          {status ? 'Posting...' : 'Post'}
+          {/* Post */}
+        </Button>
+      </span>
     </div>
   );
 };

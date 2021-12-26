@@ -47,16 +47,10 @@ export const AuthSlice = createSlice({
       //   position: 'top-right',
       //   autoClose: 2000,
       // });
-      console.log(action);
-      console.log(state);
-      console.log('called');
+
       localStorage.removeItem('login');
       state.login = { isUserLoggedIn: false, token: '', user: '' };
-      // return { isUserLoggedIn: false, token: '', user: '' };
     },
-    // removeSignup: (state) => {
-    //   state.signup = false;
-    // },
   },
   extraReducers: {
     [SignUpWithCredentials.pending]: (state) => {

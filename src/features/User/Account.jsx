@@ -13,7 +13,7 @@ export const Account = () => {
   const [post, setPost] = useState(0);
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
-  const dispatch = useDispatch();
+
   const { userId } = useParams();
   console.log(userId);
   useEffect(() => {
@@ -24,11 +24,9 @@ export const Account = () => {
   }, []);
   const user = useSelector((state) => state.user.users.user);
   const auth = useSelector((state) => state.auth.login);
-  console.log(user);
+
   const CurrentUser = user?.find((user) => user._id === auth.userId);
-  console.log(CurrentUser);
-  const navigate = useNavigate();
-  console.log(singlePost);
+
   return (
     <div>
       <img
@@ -40,12 +38,7 @@ export const Account = () => {
       <p>{CurrentUser?.name}</p>
       <p>{CurrentUser?.email} </p>
       <p>Bio:{CurrentUser?.bio}</p>
-      {/* <NavLink
-        to={`/user/${CurrentUser?._id}/post`}
-        onClick={() => dispatch(userPosts({ userId: CurrentUser?._id }))}
-      >
-        Posts
-      </NavLink> */}
+
       <NavLink to={`/user/${CurrentUser?._id}/editprofile`}>
         Edit Profile
       </NavLink>

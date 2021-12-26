@@ -1,4 +1,5 @@
 import axios from 'axios';
+import './Post.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { API_URL } from '../../utils/API_URL';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,6 +7,10 @@ import { LikeBtn, RemoveBtn, RemoveComment } from './postSlice';
 import { useState, useEffect } from 'react';
 import Input from './Input';
 import { AddNotifications } from '../Notification/notificationSlice';
+
+import { Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 export const Post = ({ postItem }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -14,10 +19,9 @@ export const Post = ({ postItem }) => {
   const user = useSelector((state) => state.auth.login);
   const { userId, token } = user;
   const isPostLiked = postItem.likes.length;
-  console.log(isPostLiked);
-  console.log(postItem);
+
   const findUser = postItem.likes.find((likesId) => likesId === userId);
-  console.log(findUser);
+
   useEffect(() => {
     (async () => {
       const response = await axios.get(
@@ -27,7 +31,7 @@ export const Post = ({ postItem }) => {
       setCommentData(response.data.comments);
     })();
   }, [postItem]);
-  // console.log(postItem.likes);
+
   return (
     <div>
       <div
@@ -46,20 +50,22 @@ export const Post = ({ postItem }) => {
         ) : (
           ''
         )}
-        <button
+        <Button
+          size='small'
+          variant='contained'
+          startIcon={<DeleteIcon />}
+          id='btn__contained'
           onClick={() => dispatch(RemoveBtn({ postId: postItem?._id, userId }))}
         >
-          X
-        </button>
+          Delete
+        </Button>
         <div>{postItem?.description}</div>
         <div>
           <span>
-            <button
-              // onClick={() => {
-              //   dispatch(
-              //     LikeBtn({ postId: postItem?._id, userId: user?.userId })
-              //   );
-              // }}
+            <Button
+              size='small'
+              variant='contained'
+              id='btn__contained'
               onClick={() => {
                 if (findUser) {
                   dispatch(
@@ -82,23 +88,30 @@ export const Post = ({ postItem }) => {
               }}
             >
               {postItem?.likes?.length < 1 ? '' : postItem?.likes?.length} Like
-            </button>{' '}
-            <button
+            </Button>{' '}
+            <Button
+              size='small'
+              variant='outlined'
+              id='btn__outlined'
               onClick={() =>
                 postItem?._id === postItem?._id ? setShow((show) => !show) : ''
               }
             >
               Comment
-            </button>
+            </Button>
             {show ? (
               <div>
-                <div className='comment__data'>
+                <div id='comment__data'>
                   {commentData.map((item, i) => {
                     return (
                       <div key={i}>
                         <p>{item?.comment}</p>
                         <span>
-                          <button
+                          <Button
+                            size='small'
+                            variant='contained'
+                            id='btn__contained'
+                            startIcon={<DeleteIcon />}
                             onClick={() =>
                               dispatch(
                                 RemoveComment({
@@ -108,8 +121,8 @@ export const Post = ({ postItem }) => {
                               )
                             }
                           >
-                            X
-                          </button>
+                            Delete
+                          </Button>
                         </span>
                       </div>
                     );

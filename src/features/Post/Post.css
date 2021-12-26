@@ -1,20 +1,19 @@
-label {
-  background-color: indigo;
-  color: white;
-  padding: 0.5rem;
-  font-family: sans-serif;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  margin-top: 1rem;
+* {
+  box-sizing: content-box;
 }
-.btn__post {
-  background-color: indigo;
+#btn__outlined {
+  border-color: black;
+  color: black;
+}
+#btn__contained {
   color: white;
-  padding: 0.5rem;
-  font-family: sans-serif;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  /* margin-top: 1rem; */
-  margin: 0 1rem;
-  border: none;
+  background-color: black;
+}
+#btn__outlined:hover {
+  color: white;
+  background-color: black;
+}
+#btn__contained:hover {
+  color: black;
+  background-color: white;
 }

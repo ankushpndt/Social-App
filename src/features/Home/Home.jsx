@@ -3,19 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { CreatePost } from '../Post/CreatePost';
 import { followUser } from '../User/userSlice';
-import { useLocation } from 'react-router-dom';
+import { Button } from '@mui/material';
+import '../Post/Post.css';
 export const Home = () => {
   const dispatch = useDispatch();
   const postData = useSelector((state) => state.post.posts);
   const user = useSelector((state) => state.user.users.user);
   const auth = useSelector((state) => state.auth.login);
-  console.log(auth);
+
   const { token } = auth;
   const findCurrentUser = user?.find((user) => user?.name !== auth.user);
-  console.log(findCurrentUser);
+
   const userToBeFollowed = findCurrentUser?._id;
-  console.log(userToBeFollowed);
-  console.log(user);
+
   return (
     <div>
       <h2>Home</h2>
@@ -34,7 +34,9 @@ export const Home = () => {
           {user?.map((user) => (
             <div key={uuidv4()}>
               <p>{user?.name}</p>
-              <button
+              <Button
+                variant='contained'
+                id='btn__contained'
                 onClick={() =>
                   user._id !== auth.userId
                     ? dispatch(
@@ -48,7 +50,7 @@ export const Home = () => {
                 }
               >
                 Follow
-              </button>
+              </Button>
             </div>
           ))}
         </div>

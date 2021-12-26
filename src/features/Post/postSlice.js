@@ -1,17 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+
 import { API_URL } from '../../utils/API_URL';
-// const user = useSelector((state) => state.login);
-// console.log(user);
+
 export const LoadPosts = createAsyncThunk(
   'post/LoadPosts',
   async ({ userId }) => {
-    // const { userId } = user;
-    // console.log(userId);
     try {
       const response = await axios.get(`${API_URL}/post/getall/${userId}`);
-      console.log(response);
+
       return response.data.bothPosts;
     } catch (error) {
       console.log(error.message);
@@ -21,15 +18,14 @@ export const LoadPosts = createAsyncThunk(
 
 export const PostBtn = createAsyncThunk(
   'posts/PostBtn',
-  async ({ postData, imgUrl, userId }) => {
-    console.log(userId);
+  async ({ postData, imgUrl, userId, setStatus }) => {
     try {
       const response = await axios.post(`${API_URL}/post`, {
         description: postData,
         media: imgUrl ? imgUrl : '',
         _id: userId,
       });
-      console.log(response);
+      setStatus(false);
       return response.data.newPost;
     } catch (error) {
       console.log(error);
@@ -38,17 +34,13 @@ export const PostBtn = createAsyncThunk(
 );
 export const RemoveBtn = createAsyncThunk(
   'posts/RemoveBtn',
-  async ({ userId, postId }, { getState }) => {
-    console.log({ userId, postId });
-
+  async ({ userId, postId }) => {
     try {
       const response = await axios.put(`${API_URL}/post`, {
         userId,
         postId,
       });
-      console.log(response);
-      const res = getState();
-      console.log(res);
+
       return response.data.deletedPost;
     } catch (err) {
       console.log(err.response);
@@ -91,7 +83,7 @@ export const RemoveComment = createAsyncThunk(
         postId,
         commentId,
       });
-      console.log(response);
+
       return response.data.post;
     } catch (err) {
       console.log(err);
@@ -102,7 +94,7 @@ export const PostSlice = createSlice({
   name: 'Post',
   initialState: {
     posts: [],
-    userPosts: [],
+
     status: '',
   },
   reducers: {
@@ -115,7 +107,6 @@ export const PostSlice = createSlice({
       state.status = 'pending';
     },
     [LoadPosts.fulfilled]: (state, action) => {
-      console.log(action);
       state.posts = action.payload;
       state.status = 'fulfilled';
     },
@@ -135,7 +126,6 @@ export const PostSlice = createSlice({
       state.status = 'pending';
     },
     [RemoveBtn.fulfilled]: (state, action) => {
-      console.log(action);
       state.posts = state.posts.filter((post) => {
         return post?._id !== action.payload?._id;
       });
@@ -176,10 +166,7 @@ export const PostSlice = createSlice({
       state.status = 'pending';
     },
     [RemoveComment.fulfilled]: (state, action) => {
-      console.log(action.payload);
-
       let post = state.posts.find((post) => {
-        console.log(post._id === action.payload._id);
         return post._id === action.payload._id;
       });
       if (post) post.comments = action.payload.comments;
