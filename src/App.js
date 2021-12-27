@@ -16,7 +16,7 @@ import { PrivateRoute } from './PrivateRoute';
 import { logoutBtnPressed } from './features/Auth/AuthSlice';
 import { Notification } from './features/Notification/Notification';
 import { Account } from './features/User/Account';
-import { NavBar } from './Components/NavBar';
+
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,7 +33,6 @@ function App() {
   };
   return (
     <div className='App'>
-      <NavBar />
       <NavLink to='user'>User</NavLink>
       <NavLink to='/home'>Home</NavLink>
       <NavLink to='/notifications'>Notification</NavLink>
