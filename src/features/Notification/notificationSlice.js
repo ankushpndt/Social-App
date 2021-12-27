@@ -3,10 +3,13 @@ import axios from 'axios';
 import { API_URL } from '../../utils/API_URL';
 export const GetNotifications = createAsyncThunk(
   'notifications/getNotifications',
-  async () => {
+  async ({ token }) => {
     try {
-      const response = await axios.get(`${API_URL}/notification`);
+      const response = await axios.get(`${API_URL}/notification`, {
+        headers: { 'auth-token': token },
+      });
       console.log(response);
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -28,7 +31,7 @@ export const AddNotifications = createAsyncThunk(
           headers: { 'auth-token': token },
         }
       );
-      console.log(response);
+
       return response.data.data;
     } catch (error) {
       console.log(error);
@@ -49,6 +52,7 @@ export const UpdateNotifications = createAsyncThunk(
         }
       );
       console.log(response);
+      return response.data.data;
     } catch (error) {
       console.log(error);
     }
@@ -63,17 +67,22 @@ export const NotificationSlice = createSlice({
   reducers: {},
   extraReducers: {
     [GetNotifications.fulfilled]: (state, action) => {
-      console.log(action);
-      state.notifications = action.payload;
+      state.notifications = action.payload.data;
       state.status = 'fulfilled';
     },
     [AddNotifications.fulfilled]: (state, action) => {
       console.log(action);
-      state.notifications = action.payload;
+      const newNotification = action.payload;
+
+      state.notifications = state.notifications.push(newNotification);
       state.status = 'fulfilled';
     },
     [UpdateNotifications.fulfilled]: (state, action) => {
-      state.notifications = action.payload;
+      const currentNotification = state.notifications.findIndex(
+        (noti) => noti._id === action.payload._id
+      );
+
+      state.notifications[currentNotification] = action.payload;
       state.status = 'fulfilled';
     },
   },

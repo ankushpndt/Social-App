@@ -16,16 +16,16 @@ export const Account = () => {
 
   const { userId } = useParams();
   console.log(userId);
+  const user = useSelector((state) => state.user.users.user);
+  const auth = useSelector((state) => state.auth.login);
+
+  const CurrentUser = user?.find((user) => user._id === auth.userId);
   useEffect(() => {
     (async () => {
       const response = await axios.get(`${API_URL}/post/${CurrentUser?._id}`);
       setSinglePost(response.data.userPosts);
     })();
   }, []);
-  const user = useSelector((state) => state.user.users.user);
-  const auth = useSelector((state) => state.auth.login);
-
-  const CurrentUser = user?.find((user) => user._id === auth.userId);
 
   return (
     <div>

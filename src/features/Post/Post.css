@@ -4,10 +4,12 @@
 #btn__outlined {
   border-color: black;
   color: black;
+  cursor: pointer;
 }
 #btn__contained {
   color: white;
   background-color: black;
+  cursor: pointer;
 }
 #btn__outlined:hover {
   color: white;
@@ -16,4 +18,7 @@
 #btn__contained:hover {
   color: black;
   background-color: white;
+}
+#filled__comment:focus-within::after {
+  color: black;
 }
