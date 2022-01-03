@@ -4,13 +4,13 @@ import { CommentBtn } from './postSlice';
 import { AddNotifications } from '../Notification/notificationSlice';
 import { Button, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
-export default function Input({ postItem }) {
+export default function Input({ postItem, socket }) {
   const dispatch = useDispatch();
   const post = useSelector((state) => state.post);
   const [commentValue, setCommentValue] = useState('');
-  const user = useSelector((state) => state.auth.login);
+  const auth = useSelector((state) => state.auth.login);
 
-  const { token } = user;
+  const { token, userId } = auth;
 
   return (
     <div className='input__comment'>
@@ -46,14 +46,20 @@ export default function Input({ postItem }) {
             })
           );
           setCommentValue('');
-          dispatch(
-            AddNotifications({
-              postId: postItem?._id,
-              target: postItem?.userId,
-              notificationType: 'COMMENT',
-              token,
-            })
-          );
+          socket?.emit('sendNotification', {
+            postId: postItem?._id,
+            senderId: userId,
+            receiverId: postItem?.userId,
+            type: 'COMMENT',
+          });
+          // dispatch(
+          //   AddNotifications({
+          //     postId: postItem?._id,
+          //     target: postItem?.userId,
+          //     notificationType: 'COMMENT',
+          //     token,
+          //   })
+          // );
         }}
       >
         {post.status === 'pending' ? 'Commenting...' : 'Comment'}

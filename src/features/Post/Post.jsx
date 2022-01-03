@@ -6,19 +6,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { LikeBtn, RemoveBtn, RemoveComment } from './postSlice';
 import { useState, useEffect } from 'react';
 import Input from './Input';
-import { AddNotifications } from '../Notification/notificationSlice';
-
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export const Post = ({ postItem }) => {
+export const Post = ({ postItem, socket }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const [commentData, setCommentData] = useState([]);
   const user = useSelector((state) => state.auth.login);
+
   const { userId, token } = user;
-  const isPostLiked = postItem.likes.length;
 
   const findUser = postItem.likes.find((likesId) => likesId === userId);
 
@@ -76,14 +74,12 @@ export const Post = ({ postItem }) => {
                     LikeBtn({ postId: postItem?._id, userId: user?.userId })
                   );
 
-                  dispatch(
-                    AddNotifications({
-                      postId: postItem?._id,
-                      target: postItem?.userId,
-                      notificationType: 'LIKE',
-                      token,
-                    })
-                  );
+                  socket?.emit('sendNotification', {
+                    postId: postItem?._id,
+                    senderId: userId,
+                    receiverId: postItem?.userId,
+                    type: 'LIKE',
+                  });
                 }
               }}
             >
@@ -129,7 +125,7 @@ export const Post = ({ postItem }) => {
                   })}
                 </div>
 
-                <Input postItem={postItem} />
+                <Input postItem={postItem} socket={socket} />
               </div>
             ) : (
               ''

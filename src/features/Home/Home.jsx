@@ -5,7 +5,11 @@ import { CreatePost } from '../Post/CreatePost';
 import { followUser } from '../User/userSlice';
 import { Button } from '@mui/material';
 import '../Post/Post.css';
-export const Home = () => {
+import { io } from 'socket.io-client';
+import { API_URL } from '../../utils/API_URL';
+import { useEffect, useState } from 'react';
+export const Home = ({ socket }) => {
+  // const [socket, setSocket] = useState(null);
   const dispatch = useDispatch();
   const postData = useSelector((state) => state.post.posts);
   const user = useSelector((state) => state.user.users.user);
@@ -15,6 +19,9 @@ export const Home = () => {
   const findCurrentUser = user?.find((user) => user?.name !== auth.user);
 
   const userToBeFollowed = findCurrentUser?._id;
+  // useEffect(() => {
+  //   setSocket(io.connect(`${API_URL}`));
+  // }, []);
 
   return (
     <div>
@@ -26,7 +33,12 @@ export const Home = () => {
             ?.slice(0)
             .reverse()
             .map((item) => (
-              <Post postItem={item} key={item?._id} />
+              <Post
+                postItem={item}
+                key={item?._id}
+                userName={auth?.user}
+                socket={socket}
+              />
             ))}
         </div>
         <div className='people__to__follow' style={{ width: '30%' }}>

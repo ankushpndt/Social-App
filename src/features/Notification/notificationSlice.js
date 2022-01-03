@@ -74,7 +74,7 @@ export const NotificationSlice = createSlice({
       console.log(action);
       const newNotification = action.payload;
 
-      state.notifications = state.notifications.push(newNotification);
+      state.notifications = state.notifications.concat(newNotification);
       state.status = 'fulfilled';
     },
     [UpdateNotifications.fulfilled]: (state, action) => {
