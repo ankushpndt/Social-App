@@ -12,7 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 export const Post = ({ postItem, socket }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-
+  useSelector((state) => console.log(state));
   const [commentData, setCommentData] = useState([]);
   const user = useSelector((state) => state.auth.login);
 

@@ -1,6 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_URL } from '../../utils/API_URL';
+// import { GET_NOTI } from './actions';
+export const socketsData = createAction('notifications/socketData');
+export const clearSocketData = createAction('notifications/clearSocketData');
 export const GetNotifications = createAsyncThunk(
   'notifications/getNotifications',
   async ({ token }) => {
@@ -8,6 +11,7 @@ export const GetNotifications = createAsyncThunk(
       const response = await axios.get(`${API_URL}/notification`, {
         headers: { 'auth-token': token },
       });
+
       console.log(response);
       return response.data;
     } catch (error) {
@@ -66,6 +70,17 @@ export const NotificationSlice = createSlice({
   },
   reducers: {},
   extraReducers: {
+    [socketsData]: (state, action) => {
+      state.notifications = action.payload;
+      state.status = 'fulfilled';
+    },
+    [clearSocketData]: (state, action) => {
+      console.log(action);
+      state.notifications = state.notifications.filter(
+        (noti) => noti._id !== action.payload._id
+      );
+      state.status = 'fulfilled';
+    },
     [GetNotifications.fulfilled]: (state, action) => {
       state.notifications = action.payload.data;
       state.status = 'fulfilled';

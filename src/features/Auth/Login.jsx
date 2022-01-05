@@ -16,8 +16,8 @@ export default function Login() {
   const dispatch = useDispatch();
   const { state } = useLocation();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('an@gmail.com');
+  const [password, setPassword] = useState('12345678');
 
   useEffect(() => {
     if (token) {
@@ -65,6 +65,7 @@ export default function Login() {
           helperText='Enter your email here'
           onChange={userNameHandler}
           required
+          value={email}
         />
 
         {/* <div className='email__error'>{error && error.email}</div> */}
@@ -80,6 +81,7 @@ export default function Login() {
           helperText='Enter your password here'
           onChange={passwordHandler}
           required
+          value={password}
         />
 
         {/* <div className='password__error'>{error && error.password}</div> */}
