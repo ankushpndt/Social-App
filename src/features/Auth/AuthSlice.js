@@ -7,26 +7,34 @@ import { toast } from 'react-toastify';
 export const SignUpWithCredentials = createAsyncThunk(
   '/Auth/SignUp',
   async ({ name, email, password }) => {
-    console.log({ name, email, password });
-    const response = await axios.post(`${API_URL}/user/signup`, {
-      name: name,
-      email: email,
-      password: password,
-    });
-    console.log(response);
-    return response.data.saveUser;
+    try {
+      const response = await axios.post(`${API_URL}/user/signup`, {
+        name: name,
+        email: email,
+        password: password,
+      });
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 export const LoginWithCredentials = createAsyncThunk(
   '/Auth/Login',
-  async (email, password) => {
-    const response = await axios.post(`${API_URL}/user/login`, {
-      email: email,
-      password: password,
-    });
-    console.log(response);
+  async ({ email, password }) => {
+    try {
+      const response = await axios.post(`${API_URL}/user/login`, {
+        email: email,
+        password: password,
+      });
+      console.log(response);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      console.log(error.response.data);
+      return error.response.data;
+    }
   }
 );
 
@@ -57,20 +65,7 @@ export const AuthSlice = createSlice({
       state.status = 'pending';
     },
     [SignUpWithCredentials.fulfilled]: (state, action) => {
-      console.log(action);
-      // state.users = action.payload;
-      state.status = 'fulfilled';
-    },
-    [SignUpWithCredentials.rejected]: (state) => {
-      state.status = 'rejected';
-    },
-    [LoginWithCredentials.pending]: (state) => {
-      state.status = 'pending';
-    },
-    [LoginWithCredentials.fulfilled]: (state, action) => {
-      console.log(action);
-      const { token, userName, userid } = action.payload;
-      console.log(userid);
+      const { token, userName, userid } = action?.payload;
       localStorage.setItem(
         'login',
         JSON.stringify({
@@ -86,7 +81,31 @@ export const AuthSlice = createSlice({
         user: userName,
         userId: userid,
       };
-      // navigate("/")
+      state.status = 'fulfilled';
+    },
+    [SignUpWithCredentials.rejected]: (state) => {
+      state.status = 'rejected';
+    },
+    [LoginWithCredentials.pending]: (state) => {
+      state.status = 'pending';
+    },
+    [LoginWithCredentials.fulfilled]: (state, action) => {
+      const { token, userName, userid } = action?.payload;
+      localStorage.setItem(
+        'login',
+        JSON.stringify({
+          isUserLoggedIn: true,
+          token,
+          user: userName,
+          userId: userid,
+        })
+      );
+      state.login = {
+        isUserLoggedIn: true,
+        token,
+        user: userName,
+        userId: userid,
+      };
       state.status = 'fulfilled';
     },
     [LoginWithCredentials.rejected]: (state) => {

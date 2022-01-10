@@ -2,8 +2,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import { clearSocketData, socketsData } from './notificationSlice';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import '../../App.css';
-export const Notification = ({ socket, open }) => {
+export const Notification = ({ socket, open, anchorEl, handleClose }) => {
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
@@ -12,7 +16,6 @@ export const Notification = ({ socket, open }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     socket.on('getNotification', (data) => {
-      console.log(data);
       dispatch(socketsData(data));
     });
   }, [socket]);
@@ -26,58 +29,79 @@ export const Notification = ({ socket, open }) => {
       dispatch(clearSocketData(data));
     });
   };
-  console.log('notifications => ', notifications);
 
   return (
     <div>
-      <div>Notifications</div>
       <div className='notifications'>
-        {open &&
-          notifications?.map((notification) => {
-            return (
-              <div key={uuidv4()}>
-                <div className='displayNoti'>
-                  <p>
+        {notifications?.map((notification) => {
+          return (
+            <div key={uuidv4()}>
+              <div className='display__noti'>
+                <p
+                // style={{
+                //   display: 'flex',
+                //   flexDirection: 'row',
+                // }}
+                >
+                  <Menu
+                    id='basic-menu'
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                    sx={{
+                      '& .MuiList-root.MuiList-padding.MuiMenu-list': {
+                        display: 'flex',
+                      },
+                    }}
+                  >
                     {notification?.notificationType === 'COMMENT' ? (
-                      <>
-                        <span>
+                      <MenuItem>
+                        <span className='notification'>
                           {' '}
                           <img
                             src={notification?.source?.image}
-                            width='50px'
-                            height='50px'
+                            width='30px'
+                            height='30px'
                             style={{ borderRadius: '90%' }}
                           />
                           {notification?.source?.name} commented on your post{' '}
                         </span>
-                      </>
+                      </MenuItem>
                     ) : notification?.notificationType === 'LIKE' ? (
-                      <span>
-                        {' '}
-                        <img
-                          src={notification?.source?.image}
-                          width='50px'
-                          height='50px'
-                          style={{ borderRadius: '90%' }}
-                        />
-                        {notification?.source?.name} liked your post
-                      </span>
+                      <MenuItem>
+                        <span className='notification'>
+                          {' '}
+                          <img
+                            src={notification?.source?.image}
+                            width='30px'
+                            height='30px'
+                            style={{ borderRadius: '90%' }}
+                          />
+                          {notification?.source?.name} liked your post
+                        </span>
+                      </MenuItem>
                     ) : notification?.notificationType === 'FOLLOW' ? (
-                      <span>
-                        {' '}
-                        <img
-                          src={notification?.source?.image}
-                          width='50px'
-                          height='50px'
-                          style={{ borderRadius: '90%' }}
-                        />
-                        {notification?.source?.name} followed you
-                      </span>
+                      <MenuItem>
+                        <span className='notification'>
+                          {' '}
+                          <img
+                            src={notification?.source?.image}
+                            width='30px'
+                            height='30px'
+                            style={{ borderRadius: '90%' }}
+                          />
+                          {notification?.source?.name} followed you
+                        </span>
+                      </MenuItem>
                     ) : (
-                      ''
+                      'There are no notifications.'
                     )}
+                    {/* <MenuItem></MenuItem> */}
                     <button
-                      className='nButton'
+                      className='n__button'
                       onClick={() =>
                         clearNotifications({
                           id: notification?._id,
@@ -85,13 +109,14 @@ export const Notification = ({ socket, open }) => {
                         })
                       }
                     >
-                      X
+                      <DeleteIcon />
                     </button>
-                  </p>
-                </div>
+                  </Menu>
+                </p>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,23 +1,22 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { useAuth } from './authContext';
 import React, { useState } from 'react';
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LoginWithCredentials } from './AuthSlice';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { TextField } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { validateForm } from '../../Components/ValidateForm';
 import '../../style.css';
-export default function Login() {
+export const Login = () => {
   const auth = useSelector((state) => state.auth.login);
   const { token } = auth;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { state } = useLocation();
-
-  const [email, setEmail] = useState('an@gmail.com');
-  const [password, setPassword] = useState('12345678');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (token) {
@@ -27,23 +26,14 @@ export default function Login() {
       }
     }
   }, [token]);
-  const userNameHandler = (e) => {
-    let email = e.target.value;
-    setEmail(email);
-  };
-
-  const passwordHandler = (e) => {
-    let password = e.target.value;
-    setPassword(password);
-  };
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(LoginWithCredentials(email, password));
+    validateForm({ email, password, setErrorMessage }) &&
+      dispatch(LoginWithCredentials({ email, password }));
   };
 
   return (
     <>
-      <h1>This is login page</h1>
       <form
         onSubmit={submitHandler}
         style={{
@@ -51,40 +41,39 @@ export default function Login() {
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
-          margin: '6rem auto',
+          margin: '4rem auto 2rem auto',
           padding: '4rem',
           border: '2px solid #f0f0f0',
+          width: '20rem',
         }}
       >
+        <h2>Login</h2>
         <TextField
           id='standard__basic'
           label='Email'
-          variant='standard'
           type='text'
           name='email'
           helperText='Enter your email here'
-          onChange={userNameHandler}
+          onChange={(e) => setEmail(e.target.value)}
           required
           value={email}
         />
 
-        {/* <div className='email__error'>{error && error.email}</div> */}
         <br />
         <br />
 
         <TextField
           id='standard__basic'
           label='Password'
-          variant='standard'
           type='password'
           name='password'
           helperText='Enter your password here'
-          onChange={passwordHandler}
+          onChange={(e) => setPassword(e.target.value)}
           required
           value={password}
         />
 
-        {/* <div className='password__error'>{error && error.password}</div> */}
+        <div className='name__error'>{errorMessage !== '' && errorMessage}</div>
         <br />
         {/*Login button*/}
         <input type='submit' value='LOGIN' id='login__btn__outlined' />
@@ -94,9 +83,8 @@ export default function Login() {
             style={{
               textDecoration: 'none',
               color: 'black',
-              fontWeight: '400',
             }}
-            activeStyle={{ fontWeight: 'bold', color: 'white' }}
+            activeStyle={{ fontWeight: 'bold' }}
             to='/signup'
           >
             Create an account
@@ -105,4 +93,4 @@ export default function Login() {
       </form>
     </>
   );
-}
+};

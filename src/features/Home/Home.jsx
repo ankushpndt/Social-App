@@ -5,11 +5,7 @@ import { CreatePost } from '../Post/CreatePost';
 import { followUser } from '../User/userSlice';
 import { Button } from '@mui/material';
 import '../Post/Post.css';
-import { io } from 'socket.io-client';
-import { API_URL } from '../../utils/API_URL';
-import { useEffect, useState } from 'react';
 export const Home = ({ socket }) => {
-  // const [socket, setSocket] = useState(null);
   const dispatch = useDispatch();
   const postData = useSelector((state) => state.post.posts);
   const user = useSelector((state) => state.user.users.user);
@@ -17,12 +13,12 @@ export const Home = ({ socket }) => {
 
   const { token } = auth;
   const findCurrentUser = user?.find((user) => user?.name !== auth.user);
-
+  // console.log(findCurrentUser);
   const userToBeFollowed = findCurrentUser?._id;
-  // useEffect(() => {
-  //   setSocket(io.connect(`${API_URL}`));
-  // }, []);
 
+  const currentUserFollowers = findCurrentUser?.followers;
+  console.log(currentUserFollowers);
+  // const usersNotYetFollowed = user.find((user)=>user._id!==)
   return (
     <div>
       <h2>Home</h2>
@@ -45,24 +41,37 @@ export const Home = ({ socket }) => {
           <h4>People who you can follow</h4>
           {user?.map((user) => (
             <div key={uuidv4()}>
-              <p>{user?.name}</p>
-              <Button
-                variant='contained'
-                id='btn__contained'
-                onClick={() =>
-                  user._id !== auth.userId
-                    ? dispatch(
-                        followUser({
-                          _id: auth?.userId,
-                          token,
-                          userToBeFollowed,
-                        })
-                      )
-                    : ''
-                }
-              >
-                Follow
-              </Button>
+              {currentUserFollowers.find((id) => id !== user._id) ? (
+                <>
+                  <p>{user?.name}</p>
+
+                  <Button
+                    variant='contained'
+                    id='btn__contained'
+                    onClick={() => {
+                      if (user._id !== auth.userId) {
+                        dispatch(
+                          followUser({
+                            _id: auth?.userId,
+                            token,
+                            userToBeFollowed: user._id,
+                          })
+                        );
+                        socket?.emit('sendNotification', {
+                          senderId: auth?.userId,
+
+                          receiverId: user._id,
+                          type: 'FOLLOW',
+                        });
+                      }
+                    }}
+                  >
+                    Follow
+                  </Button>
+                </>
+              ) : (
+                ''
+              )}
             </div>
           ))}
         </div>

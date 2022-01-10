@@ -28,7 +28,7 @@ export const Followers = () => {
         return (
           <div key={uuidv4()}>
             <UserCard userId={item} key={item} />
-            {console.log(item)}
+
             <button
               onClick={() =>
                 dispatch(

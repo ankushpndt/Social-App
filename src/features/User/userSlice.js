@@ -48,7 +48,7 @@ export const followUser = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
   }
 );
@@ -90,6 +90,7 @@ const UserSlice = createSlice({
     },
     [LoadUsers.fulfilled]: (state, action) => {
       state.users = action.payload;
+      state.status = 'fulfilled';
     },
     [LoadUsers.rejected]: (state) => {
       state.status = 'rejected';
@@ -98,11 +99,20 @@ const UserSlice = createSlice({
     //   state.users = action.payload;
     //   state.status = 'fulfilled';
     // },
+    [UserDetails.pending]: (state) => {
+      state.status = 'pending';
+    },
     [UserDetails.fulfilled]: (state, action) => {
       state.users.user = state.users.user.map((el) =>
         el._id === action.payload._id ? action.payload : el
       );
       state.status = 'fulfilled';
+    },
+    [UserDetails.rejected]: (state) => {
+      state.status = 'rejected';
+    },
+    [followUser.pending]: (state) => {
+      state.status = 'pending';
     },
     [followUser.fulfilled]: (state, action) => {
       const indexOfCurrentUser = state.users.user.findIndex(
@@ -114,6 +124,13 @@ const UserSlice = createSlice({
 
       state.users.user[indexOfCurrentUser] = action.payload.currentUser;
       state.users.user[indexOfFollowedUser] = action.payload.userToBeFollowed;
+      state.status = 'fulfilled';
+    },
+    [followUser.rejected]: (state) => {
+      state.status = 'rejected';
+    },
+    [unfollowUser.pending]: (state) => {
+      state.status = 'pending';
     },
     [unfollowUser.fulfilled]: (state, action) => {
       const indexOfCurrentUser = state.users.user.findIndex(
@@ -126,6 +143,10 @@ const UserSlice = createSlice({
       state.users.user[indexOfCurrentUser] = action.payload.currentUser;
       state.users.user[indexOfUnFollowedUser] =
         action.payload.userToBeUnFollowed;
+      state.status = 'fulfilled';
+    },
+    [unfollowUser.rejected]: (state) => {
+      state.status = 'rejected';
     },
   },
 });
