@@ -22,3 +22,48 @@
 #filled__comment:focus-within::after {
   color: black;
 }
+.user__profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid #dcdcdc;
+}
+.user__details {
+  display: flex;
+  align-items: center;
+}
+.user__posts {
+  margin: 1rem;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+
+  border-radius: 0.3rem;
+}
+
+.post__desc {
+  padding: 1rem 0;
+  border-bottom: 1px solid #dcdcdc;
+}
+.post__btn {
+  padding-bottom: 1rem;
+
+  padding: 1rem 0;
+}
+.create__post {
+  box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+  border-radius: 0.3rem;
+  margin: 1rem;
+
+  /* width: 68%; */
+  max-width: 660px;
+  padding: 2rem 1rem;
+}
+.create__post__btn {
+  padding-top: 1rem;
+  border-top: 1px solid #dcdcdc;
+}
+.create__post__user__profile {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2rem;
+}

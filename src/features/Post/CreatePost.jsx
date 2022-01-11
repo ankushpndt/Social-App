@@ -10,7 +10,10 @@ export const CreatePost = () => {
   const [postData, setpostData] = useState('');
   const [status, setStatus] = useState(false);
   const [imgUrl, setUrl] = useState('');
-  const { userId } = useSelector((state) => state.auth.login);
+  const auth = useSelector((state) => state.auth.login);
+  const users = useSelector((state) => state.user.users.user);
+  const { userId } = auth;
+
   const dispatch = useDispatch();
   const postHandler = async () => {
     setStatus(true);
@@ -37,27 +40,35 @@ export const CreatePost = () => {
   };
 
   return (
-    <div
-      className='create__post'
-      style={{
-        border: '1px solid black',
-        width: '650px',
-        margin: 'auto',
-        padding: '1rem',
-      }}
-    >
-      <div>Create Post</div>
-      <textarea
-        name=''
-        id=''
-        cols='40'
-        rows='2'
-        placeholder="What's happening?"
-        onChange={(e) => {
-          setpostData(e.target.value);
-        }}
-        value={postData}
-      />
+    <div className='create__post'>
+      <div className='create__post__user__profile'>
+        {users?.map(
+          (user) =>
+            user?._id === auth?.userId && (
+              <div className='user__details'>
+                <img src={user.image} alt='' width='30px' height='30px' />
+                <p style={{ margin: '1rem' }}>{user.name}</p>
+              </div>
+            )
+        )}
+
+        <textarea
+          name=''
+          id=''
+          cols='40'
+          rows='2'
+          placeholder="What's happening?"
+          onChange={(e) => {
+            setpostData(e.target.value);
+          }}
+          value={postData}
+          style={{
+            border: 'none',
+            resize: 'none',
+            padding: '2rem 0 1rem 1rem',
+          }}
+        />
+      </div>
       {/* show uploaded img here*/}
       {imgUrl ? (
         <div className='createpost-uploaded-img-div'>
@@ -66,30 +77,30 @@ export const CreatePost = () => {
       ) : (
         <div> </div>
       )}
-
-      <label htmlFor='upload__btn'>
-        <input type='file' id='upload__btn' hidden onChange={uploadImage} />
-        <IconButton
-          color='primary'
-          aria-label='upload picture'
-          component='span'
-          id='btn__outlined'
-        >
-          <PhotoCamera />
-        </IconButton>
-      </label>
-      <span style={{ cursor: 'not-allowed' }}>
-        <Button
-          variant='outlined'
-          id='btn__outlined'
-          disabled={!postData}
-          onClick={postHandler}
-          style={{ marginLeft: '0.2rem' }}
-        >
-          {status ? 'Posting...' : 'Post'}
-          {/* Post */}
-        </Button>
-      </span>
+      <div className='create__post__btn'>
+        <label htmlFor='upload__btn'>
+          <input type='file' id='upload__btn' hidden onChange={uploadImage} />
+          <IconButton
+            color='primary'
+            aria-label='upload picture'
+            component='span'
+            id='btn__outlined'
+          >
+            <PhotoCamera />
+          </IconButton>
+        </label>
+        <span style={{ cursor: 'not-allowed' }}>
+          <Button
+            variant='outlined'
+            id='btn__outlined'
+            disabled={!postData}
+            onClick={postHandler}
+            style={{ marginLeft: '0.2rem' }}
+          >
+            {status ? 'Posting...' : 'Post'}
+          </Button>
+        </span>
+      </div>
     </div>
   );
 };

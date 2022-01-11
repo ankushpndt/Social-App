@@ -8,18 +8,20 @@ import { useState, useEffect } from 'react';
 import Input from './Input';
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import CommentIcon from '@mui/icons-material/Comment';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 export const Post = ({ postItem, socket }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const [commentData, setCommentData] = useState([]);
-  const user = useSelector((state) => state.auth.login);
+  const users = useSelector((state) => state.user.users.user);
+  const auth = useSelector((state) => state.auth.login);
 
-  const { userId, token } = user;
+  const { userId, token } = auth;
 
   const findUser = postItem.likes.find((likesId) => likesId === userId);
-
+  // const findUserProfile =
   useEffect(() => {
     (async () => {
       const response = await axios.get(
@@ -32,33 +34,49 @@ export const Post = ({ postItem, socket }) => {
 
   return (
     <div>
-      <div
-        key={uuidv4()}
-        style={{ border: '1px solid black', margin: '0.5rem' }}
-      >
-        {postItem?.media ? (
-          <div>
-            <img
-              src={postItem?.media}
-              alt='image'
-              width='300px'
-              height='250px'
-            />
+      <div key={uuidv4()} className='user__posts'>
+        <div className='user__profile'>
+          {users?.map(
+            (user) =>
+              user?._id === postItem?.userId && (
+                <div className='user__details'>
+                  <img src={user.image} alt='' width='30px' height='30px' />
+                  <p style={{ margin: '1rem' }}>{user.name}</p>
+                </div>
+              )
+          )}
+
+          <div className='delete__btn'>
+            <Button
+              size='small'
+              variant='contained'
+              startIcon={<DeleteIcon />}
+              id='btn__contained'
+              onClick={() =>
+                dispatch(RemoveBtn({ postId: postItem?._id, userId }))
+              }
+            >
+              Delete
+            </Button>
           </div>
-        ) : (
-          ''
-        )}
-        <Button
-          size='small'
-          variant='contained'
-          startIcon={<DeleteIcon />}
-          id='btn__contained'
-          onClick={() => dispatch(RemoveBtn({ postId: postItem?._id, userId }))}
-        >
-          Delete
-        </Button>
-        <div>{postItem?.description}</div>
-        <div>
+        </div>
+        <div className='post__image'>
+          {postItem?.media ? (
+            <div>
+              <img
+                src={postItem?.media}
+                alt='image'
+                width='300px'
+                height='250px'
+                style={{ paddingTop: '1rem' }}
+              />
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+        <div className='post__desc'>{postItem?.description}</div>
+        <div className='post__btn'>
           <span>
             <Button
               size='small'
@@ -67,11 +85,11 @@ export const Post = ({ postItem, socket }) => {
               onClick={() => {
                 if (findUser) {
                   dispatch(
-                    LikeBtn({ postId: postItem?._id, userId: user?.userId })
+                    LikeBtn({ postId: postItem?._id, userId: auth?.userId })
                   );
                 } else {
                   dispatch(
-                    LikeBtn({ postId: postItem?._id, userId: user?.userId })
+                    LikeBtn({ postId: postItem?._id, userId: auth?.userId })
                   );
 
                   socket?.emit('sendNotification', {
@@ -83,7 +101,8 @@ export const Post = ({ postItem, socket }) => {
                 }
               }}
             >
-              {postItem?.likes?.length < 1 ? '' : postItem?.likes?.length} Like
+              {postItem?.likes?.length < 1 ? '' : postItem?.likes?.length}{' '}
+              <ThumbUpAltIcon />
             </Button>{' '}
             <Button
               size='small'
@@ -93,7 +112,7 @@ export const Post = ({ postItem, socket }) => {
                 postItem?._id === postItem?._id ? setShow((show) => !show) : ''
               }
             >
-              Comment
+              <CommentIcon />
             </Button>
             {show ? (
               <div>
