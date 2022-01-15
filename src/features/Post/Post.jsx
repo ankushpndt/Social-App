@@ -21,7 +21,7 @@ export const Post = ({ postItem, socket }) => {
   const { userId, token } = auth;
 
   const findUser = postItem.likes.find((likesId) => likesId === userId);
-  // const findUserProfile =
+
   useEffect(() => {
     (async () => {
       const response = await axios.get(

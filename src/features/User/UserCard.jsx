@@ -1,22 +1,27 @@
 import { useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router';
-import '../Post/Post.css';
+import '../../style.css';
 export const UserCard = ({ userId }) => {
   const user = useSelector((state) => state.user.users.user).find(
     (el) => el._id === userId
   );
-  console.log(user);
+
   const navigate = useNavigate();
   return (
     <div>
       <div
-        className='user__profile'
+        className='usercard__profile'
         onClick={() => navigate(`/user/${user._id}`)}
-        style={{ cursor: 'pointer' }}
       >
+        <img
+          src={user?.image}
+          alt=''
+          width='30px'
+          height='30px'
+          style={{ borderRadius: '80%' }}
+        />
         <p>{user.name}</p>
-        <p>@{user.name}</p>
       </div>
     </div>
   );

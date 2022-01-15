@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { useNavigate, useParams } from 'react-router';
-import { userPosts } from '../Post/postSlice';
+import '../Post/Post.css';
 import { useEffect } from 'react';
 import { API_URL } from '../../utils/API_URL';
 import axios from 'axios';
 import { Post } from '../Post/Post';
+import { Button } from '@mui/material';
 export const Account = () => {
   const [singlePost, setSinglePost] = useState([]);
 
@@ -35,13 +35,49 @@ export const Account = () => {
       <p>{CurrentUser?.name}</p>
       <p>{CurrentUser?.email} </p>
       <p>Bio:{CurrentUser?.bio}</p>
-
-      <NavLink to={`/user/${CurrentUser?._id}/editprofile`}>
-        Edit Profile
-      </NavLink>
-      <NavLink to={`/user/${CurrentUser?._id}/followers`}>Followers</NavLink>
-      <NavLink to={`/user/${CurrentUser?._id}/following`}>Following</NavLink>
-      <div className='userPosts'>
+      <div
+        style={{
+          display: 'flex',
+          gap: '1rem',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <NavLink
+          to={`/user/${CurrentUser?._id}/editprofile`}
+          style={{
+            textDecoration: 'none',
+            // color: 'black',
+          }}
+        >
+          <Button size='small' variant='contained' id='btn__contained'>
+            Edit Profile
+          </Button>
+        </NavLink>
+        <NavLink
+          to={`/user/${CurrentUser?._id}/followers`}
+          style={{
+            textDecoration: 'none',
+            color: 'black',
+          }}
+        >
+          <Button size='small' variant='contained' id='btn__contained'>
+            Followers
+          </Button>
+        </NavLink>
+        <NavLink
+          to={`/user/${CurrentUser?._id}/following`}
+          style={{
+            textDecoration: 'none',
+            color: 'black',
+          }}
+        >
+          <Button size='small' variant='contained' id='btn__contained'>
+            Following
+          </Button>
+        </NavLink>
+      </div>
+      <div className='userPosts' style={{ width: '50%', margin: 'auto' }}>
         <h4>{CurrentUser?.name}'s Posts</h4>
         {singlePost.map((post, i) => {
           return (

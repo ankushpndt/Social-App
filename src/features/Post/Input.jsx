@@ -52,14 +52,6 @@ export default function Input({ postItem, socket }) {
             receiverId: postItem?.userId,
             type: 'COMMENT',
           });
-          // dispatch(
-          //   AddNotifications({
-          //     postId: postItem?._id,
-          //     target: postItem?.userId,
-          //     notificationType: 'COMMENT',
-          //     token,
-          //   })
-          // );
         }}
       >
         {post.status === 'pending' ? 'Commenting...' : 'Comment'}

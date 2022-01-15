@@ -21,12 +21,6 @@ export const Home = ({ socket }) => {
   const currentUserFollowing = findCurrentUser?.following;
   console.log(currentUserFollowing);
 
-  let isUserAlreadyFollowed = showUsersToBeFollowed?.filter((user) =>
-    currentUserFollowing?.some((id) => id !== user?._id)
-  );
-
-  console.log(isUserAlreadyFollowed);
-
   return (
     <div>
       <h2>Home</h2>

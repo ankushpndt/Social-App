@@ -35,6 +35,7 @@ export const UserDetails = createAsyncThunk(
 export const followUser = createAsyncThunk(
   'user/followUser',
   async ({ _id, token, userToBeFollowed }) => {
+    console.log({ _id, token, userToBeFollowed });
     try {
       const response = await axios.put(
         `${API_URL}/user/${userToBeFollowed}/follow`,
@@ -56,6 +57,7 @@ export const unfollowUser = createAsyncThunk(
   'user/unfollowUser',
 
   async ({ _id, token, following }) => {
+    console.log({ _id, token, following });
     try {
       const response = await axios.put(
         `${API_URL}/user/${following}/unfollow`,
@@ -116,7 +118,7 @@ const UserSlice = createSlice({
     },
     [followUser.fulfilled]: (state, action) => {
       const indexOfCurrentUser = state.users.user.findIndex(
-        (user) => user._id === action.payload.currentUser._id
+        (user) => user._id === action.payload.currentUser?._id
       );
       const indexOfFollowedUser = state.users.user.findIndex(
         (user) => user._id === action.payload.userToBeFollowed._id
@@ -134,7 +136,7 @@ const UserSlice = createSlice({
     },
     [unfollowUser.fulfilled]: (state, action) => {
       const indexOfCurrentUser = state.users.user.findIndex(
-        (user) => user._id === action.payload.currentUser._id
+        (user) => user._id === action.payload.currentUser?._id
       );
       const indexOfUnFollowedUser = state.users.user.findIndex(
         (user) => user._id === action.payload.userToBeUnFollowed._id
