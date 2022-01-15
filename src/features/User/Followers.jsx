@@ -57,22 +57,6 @@ export const Followers = () => {
                 Follow
               </Button>
             )}
-            {/* <Button
-              size='small'
-              variant='contained'
-              id='btn__contained'
-              onClick={() =>
-                dispatch(
-                  followUser({
-                    _id: findCurrentUser._id,
-                    token,
-                    userToBeFollowed: id,
-                  })
-                )
-              }
-            >
-              Follow
-            </Button> */}
           </div>
         );
       })}

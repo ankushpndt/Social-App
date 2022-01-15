@@ -25,8 +25,8 @@ export const Home = ({ socket }) => {
     <div>
       <h2>Home</h2>
       <CreatePost />
-      <div style={{ display: 'flex' }}>
-        <div className='posts' style={{ width: '70%' }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className='posts' style={{ width: '50%' }}>
           {postData
             ?.slice(0)
             .reverse()

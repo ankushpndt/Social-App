@@ -1,4 +1,5 @@
 import './Post.css';
+import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostBtn } from './postSlice';
@@ -45,7 +46,7 @@ export const CreatePost = () => {
         {users?.map(
           (user) =>
             user?._id === auth?.userId && (
-              <div className='user__details'>
+              <div className='user__details' key={uuidv4()}>
                 <img
                   src={user.image}
                   alt=''

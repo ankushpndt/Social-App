@@ -9,14 +9,11 @@ import { Post } from '../Post/Post';
 import { Button } from '@mui/material';
 export const Account = () => {
   const [singlePost, setSinglePost] = useState([]);
-
-  const [post, setPost] = useState(0);
-  const [followers, setFollowers] = useState(0);
-  const [following, setFollowing] = useState(0);
   const user = useSelector((state) => state.user.users.user);
   const auth = useSelector((state) => state.auth.login);
 
   const CurrentUser = user?.find((user) => user._id === auth.userId);
+  console.log(CurrentUser);
   useEffect(() => {
     (async () => {
       const response = await axios.get(`${API_URL}/post/${CurrentUser?._id}`);
@@ -25,16 +22,16 @@ export const Account = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ margin: '1rem' }}>
       <img
         src={CurrentUser?.image}
         width='100px'
         height='100px'
         style={{ borderRadius: '80%' }}
       />
-      <p>{CurrentUser?.name}</p>
-      <p>{CurrentUser?.email} </p>
-      <p>Bio:{CurrentUser?.bio}</p>
+      <p>Name: {CurrentUser?.name}</p>
+      <p>Email: {CurrentUser?.email} </p>
+      <p>Bio: {CurrentUser?.bio}</p>
       <div
         style={{
           display: 'flex',
@@ -47,7 +44,7 @@ export const Account = () => {
           to={`/user/${CurrentUser?._id}/editprofile`}
           style={{
             textDecoration: 'none',
-            // color: 'black',
+            color: 'black',
           }}
         >
           <Button size='small' variant='contained' id='btn__contained'>
@@ -62,7 +59,7 @@ export const Account = () => {
           }}
         >
           <Button size='small' variant='contained' id='btn__contained'>
-            Followers
+            Followers {CurrentUser?.followers.length}
           </Button>
         </NavLink>
         <NavLink
@@ -73,7 +70,7 @@ export const Account = () => {
           }}
         >
           <Button size='small' variant='contained' id='btn__contained'>
-            Following
+            Following {CurrentUser?.following.length}
           </Button>
         </NavLink>
       </div>

@@ -22,7 +22,7 @@ import { SearchBar } from './Components/SearchBar';
 import HomeIcon from '@mui/icons-material/Home';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import LogoutIcon from '@mui/icons-material/Logout';
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -73,29 +73,28 @@ function App() {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            {/* <NavLink
-              style={{ color: 'white', textDecoration: 'none' }}
-              to='/notifications'
-            > */}
-            {/* <img src={NotificationIcon} className='icon__img' alt='' /> */}
             <NotificationsIcon />
             {notifications.length > 0 && (
               <div className='counter'>{notifications.length}</div>
             )}
-            {/* </NavLink> */}
           </div>
           <div className='icon'>
             <NavLink to='/home'>
               {' '}
-              {/* <img src={HomeIcon} className='icon__img' alt='' /> */}
               <HomeIcon style={{ color: 'white' }} />
             </NavLink>
           </div>
           <div className='icon'>
             <NavLink to='/user'>
-              {/* <img src={Settings} className='icon__img' alt='' /> */}
               <AccountCircleIcon style={{ color: 'white' }} />
             </NavLink>
+          </div>
+          <div className='icon'>
+            {isUserLoggedIn && (
+              <div onClick={logoutHandler}>
+                <LogoutIcon />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -107,11 +106,6 @@ function App() {
         handleClose={handleClose}
       />
 
-      {isUserLoggedIn && (
-        <button onClick={logoutHandler} id='login__btn__outlined'>
-          Logout
-        </button>
-      )}
       <Routes>
         <Route path='/' element={<Login socket={socket} />} />
         <Route path='/signup' element={<SignUp />} />

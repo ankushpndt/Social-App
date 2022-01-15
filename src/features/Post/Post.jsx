@@ -39,7 +39,7 @@ export const Post = ({ postItem, socket }) => {
           {users?.map(
             (user) =>
               user?._id === postItem?.userId && (
-                <div className='user__details'>
+                <div className='user__details' key={uuidv4()}>
                   <img
                     src={user.image}
                     alt=''
@@ -107,8 +107,16 @@ export const Post = ({ postItem, socket }) => {
                 }
               }}
             >
-              {postItem?.likes?.length < 1 ? '' : postItem?.likes?.length}{' '}
-              <ThumbUpAltIcon />
+              <div className='like__btn' style={{ display: 'flex' }}>
+                <span style={{ fontSize: '1rem', paddingRight: '5px' }}>
+                  {' '}
+                  {postItem?.likes?.length < 1
+                    ? ''
+                    : postItem?.likes?.length}{' '}
+                </span>
+
+                <ThumbUpAltIcon />
+              </div>
             </Button>{' '}
             <Button
               size='small'
