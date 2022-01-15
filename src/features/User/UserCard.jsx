@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router';
+import '../Post/Post.css';
 export const UserCard = ({ userId }) => {
   const user = useSelector((state) => state.user.users.user).find(
     (el) => el._id === userId
@@ -12,7 +13,7 @@ export const UserCard = ({ userId }) => {
       <div
         className='user__profile'
         onClick={() => navigate(`/user/${user._id}`)}
-        style={{ cursor: 'pointer', border: '1px solid red' }}
+        style={{ cursor: 'pointer' }}
       >
         <p>{user.name}</p>
         <p>@{user.name}</p>

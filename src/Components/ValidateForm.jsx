@@ -12,13 +12,12 @@ export const validateForm = ({ name, email, password, setErrorMessage }) => {
     setErrorMessage('Invalid Password');
     return false;
   }
-  // if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/i.test(password)) {
+  // else if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/i.test(password)) {
   //   setErrorMessage(
   //     'Invalid Password. Must be atleast 8 characters long and contain 1 uppercase, lowercase letter and number.'
   //   );
   //   return false;
   // }
-
   setErrorMessage('');
   return true;
 };

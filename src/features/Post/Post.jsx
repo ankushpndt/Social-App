@@ -40,7 +40,13 @@ export const Post = ({ postItem, socket }) => {
             (user) =>
               user?._id === postItem?.userId && (
                 <div className='user__details'>
-                  <img src={user.image} alt='' width='30px' height='30px' />
+                  <img
+                    src={user.image}
+                    alt=''
+                    width='30px'
+                    height='30px'
+                    style={{ borderRadius: '80%' }}
+                  />
                   <p style={{ margin: '1rem' }}>{user.name}</p>
                 </div>
               )

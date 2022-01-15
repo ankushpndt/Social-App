@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState, useRef } from 'react';
 import { LoadUsers } from '../features/User/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import '../App.css';
 import { SearchBox } from '../utils/SearchBox';
 import { Backdrop } from '../utils/Backdrop';
@@ -34,7 +34,7 @@ export const SearchBar = () => {
             className='search__bar__backdrop'
           />
         )}
-        <i className='fa fa-search'></i>
+
         <input
           type='search'
           value={searchTerm}

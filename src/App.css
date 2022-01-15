@@ -14,6 +14,26 @@
   --danger-color: red;
   --primary-link: #053a6d;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #747272;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(46, 46, 46);
+  border-radius: 15px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(0, 0, 0);
+}
 .App {
   text-align: center;
 }

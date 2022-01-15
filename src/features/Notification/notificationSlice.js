@@ -1,7 +1,6 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_URL } from '../../utils/API_URL';
-// import { GET_NOTI } from './actions';
 export const socketsData = createAction('notifications/socketData');
 export const clearSocketData = createAction('notifications/clearSocketData');
 export const GetNotifications = createAsyncThunk(

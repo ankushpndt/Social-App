@@ -8,17 +8,25 @@ import '../Post/Post.css';
 export const Home = ({ socket }) => {
   const dispatch = useDispatch();
   const postData = useSelector((state) => state.post.posts);
-  const user = useSelector((state) => state.user.users.user);
+  const users = useSelector((state) => state.user.users.user);
   const auth = useSelector((state) => state.auth.login);
 
   const { token } = auth;
-  const findCurrentUser = user?.find((user) => user?.name !== auth.user);
-  // console.log(findCurrentUser);
-  const userToBeFollowed = findCurrentUser?._id;
+  const showUsersToBeFollowed = users?.filter(
+    (user) => user._id !== auth?.userId
+  );
+  // console.log(showUsersToBeFollowed);
+  const findCurrentUser = users?.find((user) => user?._id === auth?.userId);
 
-  const currentUserFollowers = findCurrentUser?.followers;
-  console.log(currentUserFollowers);
-  // const usersNotYetFollowed = user.find((user)=>user._id!==)
+  const currentUserFollowing = findCurrentUser?.following;
+  console.log(currentUserFollowing);
+
+  let isUserAlreadyFollowed = showUsersToBeFollowed?.filter((user) =>
+    currentUserFollowing?.some((id) => id !== user?._id)
+  );
+
+  console.log(isUserAlreadyFollowed);
+
   return (
     <div>
       <h2>Home</h2>
@@ -39,39 +47,43 @@ export const Home = ({ socket }) => {
         </div>
         <div className='people__to__follow' style={{ width: '30%' }}>
           <h4>People who you can follow</h4>
-          {user?.map((user) => (
+          {showUsersToBeFollowed?.map((user) => (
             <div key={uuidv4()}>
-              {currentUserFollowers.find((id) => id !== user._id) ? (
+              {
                 <>
-                  <p>{user?.name}</p>
+                  {currentUserFollowing?.includes(user?._id) ? (
+                    ''
+                  ) : (
+                    <>
+                      <p>{user?.name}</p>
 
-                  <Button
-                    variant='contained'
-                    id='btn__contained'
-                    onClick={() => {
-                      if (user._id !== auth.userId) {
-                        dispatch(
-                          followUser({
-                            _id: auth?.userId,
-                            token,
-                            userToBeFollowed: user._id,
-                          })
-                        );
-                        socket?.emit('sendNotification', {
-                          senderId: auth?.userId,
+                      <Button
+                        variant='contained'
+                        id='btn__contained'
+                        onClick={() => {
+                          if (user._id !== auth.userId) {
+                            dispatch(
+                              followUser({
+                                _id: auth?.userId,
+                                token,
+                                userToBeFollowed: user._id,
+                              })
+                            );
+                            socket?.emit('sendNotification', {
+                              senderId: auth?.userId,
 
-                          receiverId: user._id,
-                          type: 'FOLLOW',
-                        });
-                      }
-                    }}
-                  >
-                    Follow
-                  </Button>
+                              receiverId: user._id,
+                              type: 'FOLLOW',
+                            });
+                          }
+                        }}
+                      >
+                        Follow
+                      </Button>
+                    </>
+                  )}
                 </>
-              ) : (
-                ''
-              )}
+              }
             </div>
           ))}
         </div>

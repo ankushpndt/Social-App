@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+
 import '../../App.css';
 export const Notification = ({ socket, open, anchorEl, handleClose }) => {
   const notifications = useSelector(
@@ -33,28 +34,22 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
   return (
     <div>
       <div className='notifications'>
-        {notifications?.map((notification) => {
-          return (
-            <div key={uuidv4()}>
-              <div className='display__noti'>
-                <p
-                // style={{
-                //   display: 'flex',
-                //   flexDirection: 'row',
-                // }}
-                >
-                  <Menu
-                    id='basic-menu'
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                      'aria-labelledby': 'basic-button',
-                    }}
-                    sx={{
-                      '& .MuiList-root.MuiList-padding.MuiMenu-list': {
-                        display: 'flex',
-                      },
+        <Menu
+          id='basic-menu'
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          {notifications?.map((notification) => {
+            return (
+              <div key={uuidv4()}>
+                <div className='display__noti'>
+                  <p
+                    style={{
+                      display: 'flex',
                     }}
                   >
                     {notification?.notificationType === 'COMMENT' ? (
@@ -111,12 +106,12 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
                     >
                       <DeleteIcon />
                     </button>
-                  </Menu>
-                </p>
+                  </p>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </Menu>
       </div>
     </div>
   );

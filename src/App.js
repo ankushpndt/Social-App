@@ -19,9 +19,6 @@ import { Notification } from './features/Notification/Notification';
 import { Account } from './features/User/Account';
 import { io } from 'socket.io-client';
 import { SearchBar } from './Components/SearchBar';
-// import NotificationIcon from './assets/notification.svg';
-// import HomeIcon from './assets/home.svg';
-// import Settings from './assets/settings.svg';
 import HomeIcon from '@mui/icons-material/Home';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -38,8 +35,7 @@ function App() {
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
-  // const users = useSelector((state) => state.user.users.user);
-  // let socket = io.connect('https://socialMediaBackend.ankushpndt.repl.co');
+
   useEffect(() => {
     if (token) {
       dispatch(LoadPosts({ userId }));
