@@ -8,6 +8,10 @@ export const SignUpWithCredentials = createAsyncThunk(
   '/Auth/SignUp',
   async ({ name, email, password }) => {
     try {
+      toast('Signing Up!', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
       const response = await axios.post(`${API_URL}/user/signup`, {
         name: name,
         email: email,
@@ -24,6 +28,10 @@ export const LoginWithCredentials = createAsyncThunk(
   '/Auth/Login',
   async ({ email, password }) => {
     try {
+      toast('Logging In!', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
       const response = await axios.post(`${API_URL}/user/login`, {
         email: email,
         password: password,
@@ -51,10 +59,10 @@ export const AuthSlice = createSlice({
   },
   reducers: {
     logoutBtnPressed: (state, action) => {
-      // toast('Logging out !', {
-      //   position: 'top-right',
-      //   autoClose: 2000,
-      // });
+      toast('Logging out !', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
 
       localStorage.removeItem('login');
       state.login = { isUserLoggedIn: false, token: '', user: '' };

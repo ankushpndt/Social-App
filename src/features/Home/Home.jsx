@@ -19,7 +19,6 @@ export const Home = ({ socket }) => {
   const findCurrentUser = users?.find((user) => user?._id === auth?.userId);
 
   const currentUserFollowing = findCurrentUser?.following;
-  console.log(currentUserFollowing);
 
   return (
     <div>

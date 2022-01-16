@@ -42,6 +42,7 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}
+          sx={{ paddingTop: '0', paddingBottom: '0' }}
         >
           {notifications?.map((notification) => {
             return (
@@ -94,7 +95,7 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
                     ) : (
                       'There are no notifications.'
                     )}
-                    {/* <MenuItem></MenuItem> */}
+
                     <button
                       className='n__button'
                       onClick={() =>
