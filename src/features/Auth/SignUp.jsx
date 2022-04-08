@@ -86,7 +86,7 @@ export const SignUp = () => {
 					</div>
 					<br />
 					<input type="submit" value="SIGN UP" id="login__btn__outlined" />
-					<p>
+					<p style={{ paddingTop: "1rem" }}>
 						<NavLink
 							style={{
 								textDecoration: "none",
