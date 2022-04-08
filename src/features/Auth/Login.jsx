@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -15,19 +15,16 @@ export const Login = () => {
 	const { token } = auth;
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { state } = useLocation();
+
 	const [errorMessage, setErrorMessage] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	useEffect(() => {
 		if (token) {
-			if (state?.from) navigate(state?.from);
-			else {
-				navigate("/home");
-			}
+			navigate("/home");
 		}
-	}, [token]);
+	}, [token, navigate]);
 	const submitHandler = (e) => {
 		e.preventDefault();
 		validateForm({ email, password, setErrorMessage }) &&

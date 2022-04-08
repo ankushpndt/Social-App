@@ -1,6 +1,6 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SignUpWithCredentials } from "./AuthSlice";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { validateForm } from "../../Components/ValidateForm";
@@ -11,7 +11,6 @@ export const SignUp = () => {
 	const auth = useSelector((state) => state.auth.login);
 	const loader = useSelector((state) => state.auth.loader);
 	const { token } = auth;
-	const { state } = useLocation();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -20,12 +19,9 @@ export const SignUp = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		if (token) {
-			if (state?.from) navigate(state?.from);
-			else {
-				navigate("/home");
-			}
+			navigate("/home");
 		}
-	}, [token]);
+	}, [token, navigate]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -49,7 +45,7 @@ export const SignUp = () => {
 					}}
 					onSubmit={submitHandler}
 				>
-					<h2>Sign Up</h2>
+					<h2 style={{ paddingBottom: "1rem" }}>Sign Up</h2>
 					<TextField
 						type="text"
 						label="Name"
