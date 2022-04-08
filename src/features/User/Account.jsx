@@ -19,7 +19,7 @@ export const Account = () => {
 			const response = await axios.get(`${API_URL}/post/${CurrentUser?._id}`);
 			setSinglePost(response.data.userPosts);
 		})();
-	}, []);
+	}, [CurrentUser?._id]);
 
 	return (
 		<div style={{ margin: "1rem" }}>
@@ -29,6 +29,7 @@ export const Account = () => {
 					width="100px"
 					height="100px"
 					style={{ borderRadius: "80%" }}
+					alt="userpic"
 				/>
 				<p>Name: {CurrentUser?.name}</p>
 				<p>Email: {CurrentUser?.email} </p>

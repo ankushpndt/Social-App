@@ -78,8 +78,13 @@ export const CreatePost = () => {
 			</div>
 			{/* show uploaded img here*/}
 			{imgUrl ? (
-				<div className="createpost-uploaded-img-div">
-					<img className="createpost-img-show" src={imgUrl} width="300px" />
+				<div className="createpost__uploaded__img__div">
+					<img
+						className="createpost__img__show"
+						src={imgUrl}
+						width="300px"
+						alt="userpic"
+					/>
 				</div>
 			) : (
 				<div> </div>

@@ -48,6 +48,7 @@ export const EditProfile = () => {
 									className="createpost-img-show"
 									src={imgUrl}
 									width="300px"
+									alt="userpic"
 								/>
 							</div>
 						)}
@@ -60,7 +61,7 @@ export const EditProfile = () => {
 						<span
 							style={{
 								cursor: "pointer",
-								padding: "0.5rem",
+
 								borderRadius: "4px",
 								padding: "0.45rem",
 								backgroundColor: "black",
