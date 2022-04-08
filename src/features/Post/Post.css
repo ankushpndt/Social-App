@@ -1,64 +1,161 @@
 #btn__outlined {
-  border-color: black;
-  color: black;
-  cursor: pointer;
+	border-color: black;
+	color: black;
+	cursor: pointer;
 }
 #btn__contained {
-  color: white;
-  background-color: black;
-  cursor: pointer;
+	color: white;
+	background-color: black;
+	cursor: pointer;
 }
 #btn__outlined:hover {
-  color: white;
-  background-color: black;
+	color: white;
+	background-color: black;
 }
 #btn__contained:hover {
-  color: black;
-  background-color: white;
+	color: black;
+	background-color: white;
 }
 #filled__comment:focus-within::after {
-  color: black;
+	color: black;
 }
 .user__profile {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  border-bottom: 1px solid #dcdcdc;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem;
+	border-bottom: 1px solid #dcdcdc;
 }
 .user__details {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 .user__posts {
-  margin: 1rem;
-  box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
-
-  border-radius: 0.3rem;
+	margin: 1rem auto;
+	box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+	width: 50%;
+	border-radius: 0.3rem;
 }
 
 .post__desc {
-  padding: 1rem 0;
-  border-bottom: 1px solid #dcdcdc;
+	padding: 1rem 0;
+	border-bottom: 1px solid #dcdcdc;
 }
 .post__btn {
-  padding-bottom: 1rem;
+	padding-bottom: 1rem;
 
-  padding: 1rem 0;
+	padding: 1rem 0;
+}
+.home__container {
+	padding: 1rem 0;
+}
+.posts__container {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	padding: 1rem;
+}
+.createpost__container {
+	padding: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .create__post {
-  box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
-  border-radius: 0.3rem;
-  margin: 1rem auto;
-  max-width: 660px;
-  padding: 2rem 1rem;
+	box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+	border-radius: 0.3rem;
+
+	width: 100%;
+	max-width: 500px;
+	padding: 1rem;
 }
 .create__post__btn {
-  padding-top: 1rem;
-  border-top: 1px solid #dcdcdc;
+	padding-top: 1rem;
+	border-top: 1px solid #dcdcdc;
 }
 .create__post__user__profile {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 2rem;
+	display: flex;
+	justify-content: center;
+	padding-bottom: 1rem;
+}
+.posts {
+	width: 100%;
+	max-width: 900px;
+}
+.home__usercard__profile__image {
+	width: 50px;
+	border-radius: 50%;
+	height: 6.93vh;
+}
+.who__to__follow {
+	width: 100%;
+	max-width: 200px;
+	padding: 1rem;
+	box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+	height: 100%;
+}
+.who__to__follow h4 {
+	padding-bottom: 1rem;
+}
+.who__to__follow__details {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 1rem;
+	height: 100%;
+}
+#comment__data {
+	padding-top: 1rem;
+}
+.input__comment {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	padding-top: 1rem;
+}
+@media (max-width: 648px) {
+	.posts__container {
+		flex-direction: column;
+		padding: 1rem;
+	}
+	.posts {
+		width: 100%;
+		order: 2;
+	}
+	.who__to__follow {
+		width: 100%;
+		min-width: 100%;
+		height: 200px;
+		order: 1;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.who__to__follow__details {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+		gap: 0;
+
+		height: 100%;
+	}
+	.home__usercard__profile__container {
+		padding-right: 1rem;
+	}
+	.home__usercard__profile__image {
+		width: 50px;
+		border-radius: 50%;
+		height: 5.925vh;
+	}
+	.usercard__profile__container {
+		padding-right: 1rem;
+	}
+	.user__posts {
+		width: 100%;
+	}
 }

@@ -1,84 +1,114 @@
-import { UserDetails } from './userSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
-import { useState } from 'react';
-import axios from 'axios';
+import { UserDetails } from "./userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import axios from "axios";
+import { Button, TextField } from "@mui/material";
+import "./User.css";
+import { Loader } from "../../Components/Loader";
 export const EditProfile = () => {
-  const [imgUrl, setUrl] = useState('');
-  const [username, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const dispatch = useDispatch();
-  // const { userId } = useParams();
-  // const user = useSelector((state) => state.user.users.user)?.find(
-  //   (user) => user.name === name
-  // );
-  const { token } = useSelector((state) => state.auth.login);
+	const [imgUrl, setUrl] = useState("");
+	const [username, setName] = useState("");
+	const [bio, setBio] = useState("");
+	const dispatch = useDispatch();
+	const { token } = useSelector((state) => state.auth.login);
+	const [loader, setLoader] = useState(false);
+	const userHandler = async () => {
+		await dispatch(UserDetails({ username, bio, imgUrl, token }));
+		setName("");
+		setBio("");
+	};
+	// upload image
+	const uploadImage = async (e) => {
+		const files = e.target.files;
+		const data = new FormData();
+		data.append("file", files[0]);
+		data.append("upload_preset", "e2pkko9m");
+		try {
+			setLoader(true);
+			const response = await axios.post(
+				"https://api.cloudinary.com/v1_1/dzvkso0q0/image/upload",
+				data
+			);
 
-  const userHandler = async () => {
-    await dispatch(UserDetails({ username, bio, imgUrl, token }));
-    setName('');
-    setBio('');
-  };
-  // upload image
-  const uploadImage = async (e) => {
-    const files = e.target.files;
-    const data = new FormData();
-    data.append('file', files[0]);
-    data.append('upload_preset', 'e2pkko9m');
-    // data.append('cloud_name', 'dzvkso0q0');
-    try {
-      const response = await axios.post(
-        'https://api.cloudinary.com/v1_1/dzvkso0q0/image/upload',
-        data
-      );
+			setUrl(response.data.url);
+			setLoader(false);
+		} catch (err) {
+			console.log(err.response);
+		}
+	};
+	return (
+		<div className="edit__profile__container">
+			<div className="edit__profile">
+				Edit Profile
+				{!loader ? (
+					<>
+						{imgUrl && (
+							<div className="createpost-uploaded-img-div">
+								<img
+									className="createpost-img-show"
+									src={imgUrl}
+									width="300px"
+								/>
+							</div>
+						)}
+					</>
+				) : (
+					<Loader />
+				)}
+				<div className="upload">
+					<label htmlFor="upload__btn">
+						<span
+							style={{
+								cursor: "pointer",
+								padding: "0.5rem",
+								borderRadius: "4px",
+								padding: "0.45rem",
+								backgroundColor: "black",
+								color: "white",
+								fontSize: "0.8125rem",
+								fontWeight: "500",
+								letterSpacing: "0.02857em",
+								fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+								minWidth: "64px",
+							}}
+						>
+							UPLOAD
+						</span>
 
-      setUrl(response.data.url);
-
-      // console.log(response);
-    } catch (err) {
-      console.log(err.response);
-    }
-  };
-  return (
-    <div>
-      edit Profile
-      {imgUrl ? (
-        <div className='createpost-uploaded-img-div'>
-          <img className='createpost-img-show' src={imgUrl} width='300px' />
-        </div>
-      ) : (
-        <div> </div>
-      )}
-      <label htmlFor='upload__btn'>
-        Upload
-        <input
-          type='file'
-          id='upload__btn'
-          hidden
-          // onChange={(e) => setImage(e.target.files[0])}
-          onChange={uploadImage}
-        />
-      </label>
-      <button className='btn__post' onClick={userHandler}>
-        {/* {user.status === 'fulfilled' ? 'Post' : 'Posting...'} */}
-        Post
-      </button>
-      <label htmlFor=''>
-        Name:
-        <input
-          type='text'
-          onChange={(e) => setName(e.target.value)}
-          value={username}
-        />
-      </label>
-      <label htmlFor=''>
-        Bio
-        <input
-          type='text'
-          onChange={(e) => setBio(e.target.value)}
-          value={bio}
-        />
-      </label>
-    </div>
-  );
+						<input
+							type="file"
+							id="upload__btn"
+							hidden
+							onChange={uploadImage}
+							name="Upload"
+						/>
+					</label>
+					<Button
+						size="small"
+						variant="contained"
+						id="btn__contained"
+						onClick={userHandler}
+					>
+						{/* {user.status === 'fulfilled' ? 'Post' : 'Posting...'} */}
+						Post
+					</Button>
+				</div>
+				<TextField
+					id="standard__basic"
+					label="Name"
+					type="text"
+					onChange={(e) => setName(e.target.value)}
+					value={username}
+					required
+				/>
+				<TextField
+					id="standard__basic"
+					label="Bio"
+					type="text"
+					onChange={(e) => setName(e.target.value)}
+					value={bio}
+				/>
+			</div>
+		</div>
+	);
 };
