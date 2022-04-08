@@ -5,7 +5,7 @@
 	font-family: "Roboto Condensed", sans-serif;
 }
 body {
-	padding: 0;
+	padding-right: 0;
 }
 :root {
 	--primary-color: #fafafa;

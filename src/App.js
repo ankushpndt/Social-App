@@ -40,7 +40,7 @@ const App = () => {
 			dispatch(LoadPosts({ userId }));
 			dispatch(LoadUsers());
 		}
-	}, [auth, token]);
+	}, [auth, token, dispatch, userId]);
 
 	useEffect(() => {
 		socket?.emit("addUser", userId);
@@ -116,19 +116,7 @@ const App = () => {
 						</PrivateRoute>
 					}
 				/>
-				{/* <Route
-					path="/notifications"
-					element={
-						<PrivateRoute>
-							<Notification
-								socket={socket}
-								open={open}
-								anchorEl={anchorEl}
-								handleClose={handleClose}
-							/>
-						</PrivateRoute>
-					}
-				/> */}
+
 				<Route path="/user/:userId/editprofile" element={<EditProfile />} />
 				<Route path="/user/:userId/followers" element={<Followers />} />
 				<Route path="/user/:userId/following" element={<Following />} />

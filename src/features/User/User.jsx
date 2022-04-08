@@ -21,8 +21,7 @@ export const User = () => {
 			const response = await axios.get(`${API_URL}/post/${userId}`);
 			setSpecificUserPost(response.data.userPosts);
 		})();
-	}, [setSpecificUserPost]);
-	console.log(specificUserPost);
+	}, [setSpecificUserPost, userId]);
 	return (
 		<div style={{ margin: "1rem" }}>
 			<div className="user__container">
@@ -31,6 +30,7 @@ export const User = () => {
 					width="100px"
 					height="100px"
 					style={{ borderRadius: "80%" }}
+					alt="userpic"
 				/>
 				<p>Name: {CurrentUser?.name}</p>
 				<p>Email: {CurrentUser?.email} </p>
@@ -78,7 +78,7 @@ export const User = () => {
 					</Button>
 				</NavLink>
 			</div>
-			<div className="userPosts">
+			<div className="user__posts">
 				<h4>{CurrentUser?.name}'s Posts</h4>
 				{specificUserPost.map((post, i) => {
 					return (

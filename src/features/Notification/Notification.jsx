@@ -51,6 +51,8 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 										<p
 											style={{
 												display: "flex",
+
+												padding: "0 0.3rem",
 											}}
 										>
 											{notification?.notificationType === "COMMENT" ? (

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CommentBtn } from "./postSlice";
-import { AddNotifications } from "../Notification/notificationSlice";
 import { Button, TextField } from "@mui/material";
 import "./Post.css";
 export default function Input({ postItem, socket }) {

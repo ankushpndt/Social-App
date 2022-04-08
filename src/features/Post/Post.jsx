@@ -21,7 +21,9 @@ export const Post = ({ postItem, socket }) => {
 	const { userId } = auth;
 
 	const findUser = postItem.likes.find((likesId) => likesId === userId);
-
+	let findUserPic;
+	console.log(postItem);
+	// let findUserByPost =
 	useEffect(() => {
 		(async () => {
 			const response = await axios.get(
@@ -31,7 +33,7 @@ export const Post = ({ postItem, socket }) => {
 			setCommentData(response.data.comments);
 		})();
 	}, [postItem, setCommentData]);
-	console.log(commentData);
+
 	return (
 		<div>
 			<div key={uuidv4()} className="user__posts">
@@ -84,61 +86,94 @@ export const Post = ({ postItem, socket }) => {
 				<div className="post__desc">{postItem?.description}</div>
 				<div className="post__btn">
 					<span>
-						<Button
-							size="small"
-							variant="contained"
-							id="btn__contained"
-							onClick={() => {
-								if (findUser) {
-									dispatch(
-										LikeBtn({ postId: postItem?._id, userId: auth?.userId })
-									);
-								} else {
-									dispatch(
-										LikeBtn({ postId: postItem?._id, userId: auth?.userId })
-									);
-
-									socket?.emit("sendNotification", {
-										postId: postItem?._id,
-										senderId: userId,
-										receiverId: postItem?.userId,
-										type: "LIKE",
-									});
-								}
+						<div
+							style={{
+								borderBottom: "1px solid #dcdcdc",
+								paddingBottom: "1rem",
 							}}
 						>
-							<div className="like__btn" style={{ display: "flex" }}>
-								<span style={{ fontSize: "1rem", paddingRight: "5px" }}>
-									{" "}
-									{postItem?.likes?.length < 1
-										? ""
-										: postItem?.likes?.length}{" "}
-								</span>
+							<Button
+								size="small"
+								variant="contained"
+								id="btn__contained"
+								onClick={() => {
+									if (findUser) {
+										dispatch(
+											LikeBtn({ postId: postItem?._id, userId: auth?.userId })
+										);
+									} else {
+										dispatch(
+											LikeBtn({ postId: postItem?._id, userId: auth?.userId })
+										);
 
-								<ThumbUpAltIcon />
-							</div>
-						</Button>{" "}
-						<Button
-							size="small"
-							variant="outlined"
-							id="btn__outlined"
-							onClick={() => postItem?._id && setShow((show) => !show)}
-						>
-							<CommentIcon />
-						</Button>
+										socket?.emit("sendNotification", {
+											postId: postItem?._id,
+											senderId: userId,
+											receiverId: postItem?.userId,
+											type: "LIKE",
+										});
+									}
+								}}
+							>
+								<div className="like__btn" style={{ display: "flex" }}>
+									<span style={{ fontSize: "1rem", paddingRight: "5px" }}>
+										{" "}
+										{postItem?.likes?.length < 1
+											? ""
+											: postItem?.likes?.length}{" "}
+									</span>
+
+									<ThumbUpAltIcon />
+								</div>
+							</Button>{" "}
+							<Button
+								size="small"
+								variant="outlined"
+								id="btn__outlined"
+								onClick={() => postItem?._id && setShow((show) => !show)}
+							>
+								<CommentIcon />
+							</Button>
+						</div>
 						{show ? (
 							<div>
 								<div id="comment__data">
 									{commentData.map((item, i) => {
+										findUserPic = users?.find((el) => el._id === item?.userId);
+
 										return (
 											<div
 												key={i}
 												style={{
 													display: "flex",
 													justifyContent: "space-around",
+													alignItems: "center",
+													padding: "0.5rem",
+													borderBottom: "1px solid #dcdcdc",
 												}}
 											>
-												<p style={{ padding: "0.5rem" }}>{item?.comment}</p>
+												<span style={{ display: "flex", alignItems: "center" }}>
+													<img
+														src={findUserPic?.image}
+														alt="userpic"
+														className="home__usercard__profile__image"
+													/>
+													<span
+														style={{
+															paddingLeft: "0.5rem",
+														}}
+													>
+														<p
+															style={{
+																paddingBottom: "0.5rem",
+																fontWeight: "bold",
+															}}
+														>
+															{findUserPic?.name}
+														</p>
+														<p>{item?.comment}</p>
+													</span>
+												</span>
 												{item?.userId === userId && (
 													<span>
 														<Button
