@@ -47,7 +47,7 @@ export const Login = () => {
 						width: "20rem",
 					}}
 				>
-					<h2>Login</h2>
+					<h2 style={{ paddingBottom: "1rem" }}>Login</h2>
 					<TextField
 						id="standard__basic"
 						label="Email"
