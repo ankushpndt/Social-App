@@ -9,12 +9,12 @@ import { Button } from "@mui/material";
 import "./User.css";
 export const User = () => {
 	const { userId } = useParams();
-	console.log(userId);
-	const user = useSelector((state) => state.user.users.user);
-	console.log(user);
-	const CurrentUser = user?.find((user) => user._id === userId);
-	console.log(CurrentUser);
 
+	const user = useSelector((state) => state.user.users.user);
+
+	const CurrentUser = user?.find((user) => user._id === userId);
+
+	const auth = useSelector((state) => state.auth.login);
 	const [specificUserPost, setSpecificUserPost] = useState([]);
 	useEffect(() => {
 		(async () => {
@@ -44,17 +44,19 @@ export const User = () => {
 					alignItems: "center",
 				}}
 			>
-				<NavLink
-					to={`/user/${CurrentUser?._id}/editprofile`}
-					style={{
-						textDecoration: "none",
-						color: "black",
-					}}
-				>
-					<Button size="small" variant="contained" id="btn__contained">
-						Edit Profile
-					</Button>
-				</NavLink>
+				{CurrentUser?._id === auth?.userId && (
+					<NavLink
+						to={`/user/${CurrentUser?._id}/editprofile`}
+						style={{
+							textDecoration: "none",
+							color: "black",
+						}}
+					>
+						<Button size="small" variant="contained" id="btn__contained">
+							Edit Profile
+						</Button>
+					</NavLink>
+				)}
 				<NavLink
 					to={`/user/${CurrentUser?._id}/followers`}
 					style={{
@@ -78,8 +80,8 @@ export const User = () => {
 					</Button>
 				</NavLink>
 			</div>
-			<div className="user__posts">
-				<h4>{CurrentUser?.name}'s Posts</h4>
+			<div className="user__account">
+				<h4 style={{ padding: "1rem 0" }}>{CurrentUser?.name}'s Posts</h4>
 				{specificUserPost.map((post, i) => {
 					return (
 						<div key={i}>

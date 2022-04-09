@@ -23,6 +23,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { API_URL } from "./utils/API_URL";
 const App = () => {
 	const navigate = useNavigate();
@@ -64,37 +66,57 @@ const App = () => {
 				<span className="logo">Social App</span>
 				<SearchBar />
 				<div className="icons">
-					<div
-						className="icon"
-						id="basic-button"
-						aria-controls={open ? "basic-menu" : undefined}
-						aria-haspopup="true"
-						aria-expanded={open ? "true" : undefined}
-						onClick={handleClick}
-					>
-						<NotificationsIcon />
-						{notifications.length > 0 && (
-							<div className="counter">{notifications.length}</div>
-						)}
-					</div>
+					{token && (
+						<div
+							className="icon"
+							id="basic-button"
+							aria-controls={open ? "basic-menu" : undefined}
+							aria-haspopup="true"
+							aria-expanded={open ? "true" : undefined}
+							onClick={handleClick}
+						>
+							<NotificationsIcon />
+							{notifications.length > 0 && (
+								<div className="counter">{notifications.length}</div>
+							)}
+						</div>
+					)}
 					<div className="icon">
-						<NavLink to="/home">
+						<NavLink to={token ? "/home" : "/"}>
 							{" "}
 							<HomeIcon style={{ color: "white" }} />
 						</NavLink>
 					</div>
-					<div className="icon">
-						<NavLink to="/user">
-							<AccountCircleIcon style={{ color: "white" }} />
-						</NavLink>
-					</div>
-					<div className="icon">
-						{isUserLoggedIn && (
-							<div onClick={logoutHandler}>
-								<LogoutIcon />
-							</div>
-						)}
-					</div>
+					{token && (
+						<div className="icon">
+							<NavLink to="/user">
+								<AccountCircleIcon style={{ color: "white" }} />
+							</NavLink>
+						</div>
+					)}
+					{!token && (
+						<div className="icon">
+							<NavLink to="/">
+								<LoginIcon style={{ color: "white" }} />
+							</NavLink>
+						</div>
+					)}
+					{!token && (
+						<div className="icon">
+							<NavLink to="/signup">
+								<PersonAddAlt1Icon style={{ color: "white" }} />
+							</NavLink>
+						</div>
+					)}
+					{token && (
+						<div className="icon">
+							{isUserLoggedIn && (
+								<div onClick={logoutHandler}>
+									<LogoutIcon />
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
 

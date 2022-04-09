@@ -5,7 +5,6 @@ import { SearchBoxResult } from "./SearchBoxResult";
 import "./SearchBox.css";
 
 export const SearchBox = ({ setToggleDropbox, searchTerm }) => {
-	// const { status } = useSelector((state) => state.user);
 	const users = useSelector((state) => state.user.users.user);
 	const searchedUsers = users.filter((user) =>
 		user.name.toLowerCase().includes(searchTerm.toLowerCase())

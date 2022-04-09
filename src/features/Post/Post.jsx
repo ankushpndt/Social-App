@@ -22,16 +22,16 @@ export const Post = ({ postItem, socket }) => {
 
 	const findUser = postItem.likes.find((likesId) => likesId === userId);
 	let findUserPic;
-	console.log(postItem);
-	// let findUserByPost =
+
 	useEffect(() => {
 		(async () => {
 			const response = await axios.get(
 				`${API_URL}/post/${postItem?._id}/comment`
 			);
-			console.log(response.data);
+
 			setCommentData(response.data.comments);
 		})();
+		return () => {};
 	}, [postItem, setCommentData]);
 
 	return (
@@ -54,19 +54,21 @@ export const Post = ({ postItem, socket }) => {
 							)
 					)}
 
-					<div className="delete__btn">
-						<Button
-							size="small"
-							variant="contained"
-							startIcon={<DeleteIcon />}
-							id="btn__contained"
-							onClick={() =>
-								dispatch(RemoveBtn({ postId: postItem?._id, userId }))
-							}
-						>
-							Delete
-						</Button>
-					</div>
+					{postItem?.userId === auth?.userId && (
+						<div className="delete__btn">
+							<Button
+								size="small"
+								variant="contained"
+								startIcon={<DeleteIcon />}
+								id="btn__contained"
+								onClick={() =>
+									dispatch(RemoveBtn({ postId: postItem?._id, userId }))
+								}
+							>
+								Delete
+							</Button>
+						</div>
+					)}
 				</div>
 				<div className="post__image">
 					{postItem?.media ? (

@@ -13,12 +13,13 @@ export const Account = () => {
 	const auth = useSelector((state) => state.auth.login);
 
 	const CurrentUser = user?.find((user) => user._id === auth.userId);
-	console.log(CurrentUser);
+
 	useEffect(() => {
 		(async () => {
 			const response = await axios.get(`${API_URL}/post/${CurrentUser?._id}`);
 			setSinglePost(response.data.userPosts);
 		})();
+		return () => {};
 	}, [CurrentUser?._id]);
 
 	return (
@@ -44,17 +45,19 @@ export const Account = () => {
 					padding: "1rem",
 				}}
 			>
-				<NavLink
-					to={`/user/${CurrentUser?._id}/editprofile`}
-					style={{
-						textDecoration: "none",
-						color: "black",
-					}}
-				>
-					<Button size="small" variant="contained" id="btn__contained">
-						Edit Profile
-					</Button>
-				</NavLink>
+				{CurrentUser?._id === auth?.userId && (
+					<NavLink
+						to={`/user/${CurrentUser?._id}/editprofile`}
+						style={{
+							textDecoration: "none",
+							color: "black",
+						}}
+					>
+						<Button size="small" variant="contained" id="btn__contained">
+							Edit Profile
+						</Button>
+					</NavLink>
+				)}
 				<NavLink
 					to={`/user/${CurrentUser?._id}/followers`}
 					style={{
