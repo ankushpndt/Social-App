@@ -63,7 +63,15 @@ const App = () => {
 	return (
 		<div className="App">
 			<div className="navbar">
-				<span className="logo">Social App</span>
+				<div className="icon">
+					<NavLink
+						to={token ? "/home" : "/"}
+						style={{ color: "white", textDecoration: "none" }}
+					>
+						{" "}
+						Ligma Social
+					</NavLink>
+				</div>
 				<SearchBar />
 				<div className="icons">
 					{token && (
@@ -81,12 +89,14 @@ const App = () => {
 							)}
 						</div>
 					)}
-					<div className="icon">
-						<NavLink to={token ? "/home" : "/"}>
-							{" "}
-							<HomeIcon style={{ color: "white" }} />
-						</NavLink>
-					</div>
+					{token && (
+						<div className="icon">
+							<NavLink to="/home">
+								{" "}
+								<HomeIcon style={{ color: "white" }} />
+							</NavLink>
+						</div>
+					)}
 					{token && (
 						<div className="icon">
 							<NavLink to="/user">

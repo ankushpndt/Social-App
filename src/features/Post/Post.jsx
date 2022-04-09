@@ -76,9 +76,8 @@ export const Post = ({ postItem, socket }) => {
 							<img
 								src={postItem?.media}
 								alt="post pic"
-								width="300px"
 								height="250px"
-								style={{ paddingTop: "1rem" }}
+								style={{ paddingTop: "1rem", width: "100%", maxWidth: "300px" }}
 							/>
 						</div>
 					) : (
