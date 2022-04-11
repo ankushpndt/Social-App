@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 import { API_URL } from "../../utils/API_URL";
-
+import "react-toastify/dist/ReactToastify.css";
 export const LoadPosts = createAsyncThunk(
 	"post/LoadPosts",
 	async ({ userId }) => {
@@ -11,7 +11,11 @@ export const LoadPosts = createAsyncThunk(
 
 			return response.data.bothPosts;
 		} catch (error) {
-			console.log(error.message);
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
@@ -26,9 +30,18 @@ export const PostBtn = createAsyncThunk(
 				_id: userId,
 			});
 			setStatus(false);
+			toast.success(response.data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			return response.data.newPost;
 		} catch (error) {
-			console.log(error);
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
@@ -40,10 +53,18 @@ export const RemoveBtn = createAsyncThunk(
 				userId,
 				postId,
 			});
-
+			toast.success(response.data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			return response.data.deletedPost;
-		} catch (err) {
-			console.log(err.response);
+		} catch (error) {
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
@@ -56,8 +77,12 @@ export const LikeBtn = createAsyncThunk(
 			});
 
 			return response.data.post;
-		} catch (err) {
-			console.log(err);
+		} catch (error) {
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
@@ -70,9 +95,18 @@ export const CommentBtn = createAsyncThunk(
 				comment,
 			});
 
+			toast.success(response.data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			return response.data.comments;
-		} catch (err) {
-			console.log(err);
+		} catch (error) {
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
@@ -84,10 +118,18 @@ export const RemoveComment = createAsyncThunk(
 				postId,
 				commentId,
 			});
-
+			toast.success(response.data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			return response.data.post;
-		} catch (err) {
-			console.log(err);
+		} catch (error) {
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );

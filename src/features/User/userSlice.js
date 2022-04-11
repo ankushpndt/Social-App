@@ -1,21 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "../../utils/API_URL";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const LoadUsers = createAsyncThunk("Auth/LoadUsers", async () => {
-	const response = await axios.get(`${API_URL}/user/getall`);
-
-	return response.data;
+	try {
+		const response = await axios.get(`${API_URL}/user/getall`);
+		return response.data;
+	} catch (error) {
+		toast.dark(error?.response?.data?.message, {
+			position: "bottom-center",
+			autoClose: 3000,
+			hideProgressBar: true,
+		});
+	}
 });
-// export const User = createAsyncThunk('user/User', async () => {
-//   const response = await axios.get(`${API_URL}/user`);
-//   console.log(response);
-//   // return response.data
-// });
+
 export const UserDetails = createAsyncThunk(
 	"user/UserDetails",
 	async ({ username, bio, imgUrl, token }) => {
 		try {
-			console.log(username, bio, imgUrl);
 			const response = await axios.post(
 				`${API_URL}/user`,
 				{
@@ -25,17 +29,24 @@ export const UserDetails = createAsyncThunk(
 				},
 				{ headers: { "auth-token": token } }
 			);
-			console.log(response);
+			toast.success(response.data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			return response.data.user;
 		} catch (error) {
-			console.log(error.response);
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
 export const followUser = createAsyncThunk(
 	"user/followUser",
 	async ({ _id, token, userToBeFollowed }) => {
-		console.log({ _id, token, userToBeFollowed });
 		try {
 			const response = await axios.put(
 				`${API_URL}/user/${userToBeFollowed}/follow`,
@@ -46,10 +57,18 @@ export const followUser = createAsyncThunk(
 					headers: { "auth-token": token },
 				}
 			);
-
+			toast.success(response.data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			return response.data;
 		} catch (error) {
-			console.log(error.response);
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
@@ -57,7 +76,6 @@ export const unfollowUser = createAsyncThunk(
 	"user/unfollowUser",
 
 	async ({ _id, token, following }) => {
-		console.log({ _id, token, following });
 		try {
 			const response = await axios.put(
 				`${API_URL}/user/${following}/unfollow`,
@@ -68,10 +86,18 @@ export const unfollowUser = createAsyncThunk(
 					headers: { "auth-token": token },
 				}
 			);
-
+			toast.success(response.data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			return response.data;
 		} catch (error) {
-			console.log(error.response);
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	}
 );
@@ -97,10 +123,6 @@ const UserSlice = createSlice({
 		[LoadUsers.rejected]: (state) => {
 			state.status = "rejected";
 		},
-		// [User.fulfilled]: (state, action) => {
-		//   state.users = action.payload;
-		//   state.status = 'fulfilled';
-		// },
 		[UserDetails.pending]: (state) => {
 			state.status = "pending";
 		},

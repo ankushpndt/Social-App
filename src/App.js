@@ -26,6 +26,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { API_URL } from "./utils/API_URL";
+import { ToastContainer } from "react-toastify";
 const App = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -169,6 +170,7 @@ const App = () => {
 					}
 				/>
 			</Routes>
+			<ToastContainer />
 		</div>
 	);
 };
