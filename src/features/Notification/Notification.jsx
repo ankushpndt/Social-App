@@ -11,8 +11,6 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 	const notifications = useSelector(
 		(state) => state.notification.notifications
 	);
-	useSelector((state) => console.log(state));
-
 	const dispatch = useDispatch();
 	useEffect(() => {
 		socket.on("getNotification", (data) => {
