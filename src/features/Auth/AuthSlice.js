@@ -67,7 +67,7 @@ export const AuthSlice = createSlice({
 	},
 	reducers: {
 		logoutBtnPressed: (state, action) => {
-			toast("Logging out !", {
+			toast("Logged out!", {
 				position: "bottom-center",
 				autoClose: 3000,
 				hideProgressBar: true,

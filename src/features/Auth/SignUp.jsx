@@ -28,7 +28,6 @@ export const SignUp = () => {
 		validateForm({ name, email, password, setErrorMessage }) &&
 			dispatch(SignUpWithCredentials({ name, email, password }));
 	};
-	console.log(errorMessage);
 	return (
 		<div className="signup">
 			{!loader ? (
