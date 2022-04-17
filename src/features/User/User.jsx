@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router";
 import axios from "axios";
@@ -7,7 +7,8 @@ import { API_URL } from "../../utils/API_URL";
 import { Post } from "../Post/Post";
 import { Button } from "@mui/material";
 import "./User.css";
-export const User = () => {
+import { followUser } from "../User/userSlice";
+export const User = ({ socket }) => {
 	const { userId } = useParams();
 
 	const user = useSelector((state) => state.user.users.user);
@@ -15,6 +16,8 @@ export const User = () => {
 	const CurrentUser = user?.find((user) => user._id === userId);
 
 	const auth = useSelector((state) => state.auth.login);
+	const { token } = auth;
+	const dispatch = useDispatch();
 	const [specificUserPost, setSpecificUserPost] = useState([]);
 	useEffect(() => {
 		(async () => {
@@ -56,6 +59,31 @@ export const User = () => {
 							Edit Profile
 						</Button>
 					</NavLink>
+				)}
+				{CurrentUser?._id !== auth?.userId && (
+					<Button
+						variant="contained"
+						id="btn__contained"
+						onClick={() => {
+							if (user._id !== auth.userId) {
+								dispatch(
+									followUser({
+										_id: auth?.userId,
+										token,
+										userToBeFollowed: user._id,
+									})
+								);
+								socket?.emit("sendNotification", {
+									senderId: auth?.userId,
+
+									receiverId: user._id,
+									type: "FOLLOW",
+								});
+							}
+						}}
+					>
+						Follow
+					</Button>
 				)}
 				<NavLink
 					to={`/user/${CurrentUser?._id}/followers`}

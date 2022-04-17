@@ -35,7 +35,7 @@
 }
 .followers {
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	align-items: center;
 	box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
 	padding: 1rem;
@@ -49,9 +49,4 @@
 	align-items: center;
 	cursor: pointer;
 	gap: 1rem;
-}
-@media (max-width: 648px) {
-	/* .usercard__profile {
-		flex-direction: column;
-	} */
 }

@@ -60,6 +60,7 @@ export const Home = ({ socket }) => {
 													<div className="home__usercard__profile__container">
 														<div
 															className="home__usercard__profile"
+															style={{ cursor: "pointer" }}
 															onClick={() => navigate(`/user/${user._id}`)}
 														>
 															<img
@@ -68,7 +69,7 @@ export const Home = ({ socket }) => {
 																alt="profile pic"
 															/>
 
-															<p style={{ paddingBottom: "1rem" }}>
+															<p style={{ paddingBottom: "0.3rem" }}>
 																{user?.name}
 															</p>
 														</div>

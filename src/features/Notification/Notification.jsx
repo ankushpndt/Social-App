@@ -1,21 +1,31 @@
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
-import { clearSocketData, socketsData } from "./notificationSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
+import { getNotification, clearNotification } from "./notificationSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../../App.css";
 export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 	const notifications = useSelector(
 		(state) => state.notification.notifications
 	);
+
 	const dispatch = useDispatch();
 	useEffect(() => {
-		socket.on("getNotification", (data) => {
-			dispatch(socketsData(data));
-		});
+		try {
+			socket.on("getNotification", (data) => {
+				dispatch(getNotification(data));
+			});
+		} catch (error) {
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
+		}
 	}, [socket, dispatch]);
 
 	const clearNotifications = ({ id, receiverId }) => {
@@ -24,10 +34,9 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 			receiverId,
 		});
 		socket?.on("getClearNotification", (data) => {
-			dispatch(clearSocketData(data));
+			dispatch(clearNotification(data));
 		});
 	};
-
 	return (
 		<div>
 			<div className="notifications">

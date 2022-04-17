@@ -7,20 +7,31 @@ import { API_URL } from "../../utils/API_URL";
 import axios from "axios";
 import { Post } from "../Post/Post";
 import { Button } from "@mui/material";
+import { useParams } from "react-router";
 export const Account = () => {
 	const [singlePost, setSinglePost] = useState([]);
 	const user = useSelector((state) => state.user.users.user);
 	const auth = useSelector((state) => state.auth.login);
 
 	const CurrentUser = user?.find((user) => user._id === auth.userId);
-
+	const { userId } = useParams();
 	useEffect(() => {
+		let abortCont = new AbortController();
 		(async () => {
-			const response = await axios.get(`${API_URL}/post/${CurrentUser?._id}`);
-			setSinglePost(response.data.userPosts);
+			try {
+				const response = await axios.get(`${API_URL}/post/${userId}`, {
+					signal: abortCont.signal,
+				});
+				setSinglePost(response.data.userPosts);
+			} catch (err) {
+				console.log(err);
+				if (err.name === "AbortError") {
+					console.log(err);
+				}
+			}
 		})();
-		return () => {};
-	}, [CurrentUser?._id]);
+		return () => abortCont.abort();
+	}, [userId]);
 
 	return (
 		<div style={{ margin: "1rem" }}>
@@ -58,6 +69,7 @@ export const Account = () => {
 						</Button>
 					</NavLink>
 				)}
+
 				<NavLink
 					to={`/user/${CurrentUser?._id}/followers`}
 					style={{

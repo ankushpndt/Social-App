@@ -24,14 +24,22 @@ export const Post = ({ postItem, socket }) => {
 	let findUserPic;
 
 	useEffect(() => {
+		let abortCont = new AbortController();
 		(async () => {
-			const response = await axios.get(
-				`${API_URL}/post/${postItem?._id}/comment`
-			);
-
-			setCommentData(response.data.comments);
+			try {
+				const response = await axios.get(
+					`${API_URL}/post/${postItem?._id}/comment`,
+					{ signal: abortCont.signal }
+				);
+				setCommentData(response.data.comments);
+			} catch (err) {
+				console.log(err);
+				if (err.name === "AbortError") {
+					console.log(err);
+				}
+			}
 		})();
-		return () => {};
+		return () => abortCont?.abort();
 	}, [postItem, setCommentData]);
 
 	return (
@@ -76,8 +84,13 @@ export const Post = ({ postItem, socket }) => {
 							<img
 								src={postItem?.media}
 								alt="post pic"
-								height="250px"
-								style={{ paddingTop: "1rem", width: "100%", maxWidth: "300px" }}
+								style={{
+									paddingTop: "1rem",
+									width: "100%",
+									maxWidth: "300px",
+									height: "100%",
+									maxHeight: "300px",
+								}}
 							/>
 						</div>
 					) : (

@@ -27,6 +27,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { API_URL } from "./utils/API_URL";
 import { ToastContainer } from "react-toastify";
+import { PageNotFound } from "./Components/PageNotFound";
 const App = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const App = () => {
 
 	useEffect(() => {
 		socket?.emit("addUser", userId);
+		// return () => socket.close();
 	}, [socket, userId]);
 	const logoutHandler = () => {
 		dispatch(logoutBtnPressed());
@@ -100,7 +102,7 @@ const App = () => {
 					)}
 					{token && (
 						<div className="icon">
-							<NavLink to="/user">
+							<NavLink to={`/account/${userId}`}>
 								<AccountCircleIcon style={{ color: "white" }} />
 							</NavLink>
 						</div>
@@ -154,7 +156,7 @@ const App = () => {
 				<Route path="/user/:userId/followers" element={<Followers />} />
 				<Route path="/user/:userId/following" element={<Following />} />
 				<Route
-					path="/user"
+					path="/account/:userId"
 					element={
 						<PrivateRoute>
 							<Account socket={socket} />
@@ -165,11 +167,13 @@ const App = () => {
 					path="/user/:userId"
 					element={
 						<PrivateRoute>
-							<User />
+							<User socket={socket} />
 						</PrivateRoute>
 					}
 				/>
+				<Route path="*" element={<PageNotFound />} />
 			</Routes>
+
 			<ToastContainer />
 		</div>
 	);
