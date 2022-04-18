@@ -54,11 +54,12 @@ export const CreatePost = () => {
 					(user) =>
 						user?._id === auth?.userId && (
 							<NavLink
+								key={uuidv4()}
 								to={`/account/${auth?.userId}`}
 								style={{ textDecoration: "none", color: "black" }}
 							>
 								{" "}
-								<div className="user__details" key={uuidv4()}>
+								<div className="user__details">
 									<img
 										src={user.image}
 										alt=""

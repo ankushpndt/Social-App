@@ -34,10 +34,9 @@ export const SpecificPost = ({ socket }) => {
 		let source = axios.CancelToken.source();
 		(async () => {
 			try {
-				const response = await axios.get(
-					`${API_URL}/post/${postItem?._id}/comment`,
-					{ cancelToken: source.token }
-				);
+				const response = await axios.get(`${API_URL}/post/${postId}/comment`, {
+					cancelToken: source.token,
+				});
 				setCommentData(response.data.comments);
 			} catch (err) {
 				if (axios.isCancel(err)) {
@@ -55,7 +54,7 @@ export const SpecificPost = ({ socket }) => {
 			console.log("unmounting post");
 			source.cancel();
 		};
-	}, [postItem, setCommentData]);
+	}, [postItem, setCommentData, postId]);
 	return (
 		<div style={{ padding: "1rem" }}>
 			<div key={uuidv4()} className="user__posts">
