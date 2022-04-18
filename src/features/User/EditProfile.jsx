@@ -90,7 +90,6 @@ export const EditProfile = () => {
 						id="btn__contained"
 						onClick={userHandler}
 					>
-						{/* {user.status === 'fulfilled' ? 'Post' : 'Posting...'} */}
 						Post
 					</Button>
 				</div>
