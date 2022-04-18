@@ -88,17 +88,18 @@ export const SpecificPost = ({ socket }) => {
 
 					{postItem?.userId === auth?.userId && (
 						<div className="delete__btn">
-							<Button
-								size="small"
-								variant="contained"
-								startIcon={<DeleteIcon />}
-								id="btn__contained"
+							<button
+								style={{
+									background: "transparent",
+									border: "none",
+									cursor: "pointer",
+								}}
 								onClick={() =>
 									dispatch(RemoveBtn({ postId: postItem?._id, userId }))
 								}
 							>
-								Delete
-							</Button>
+								<DeleteIcon />
+							</button>
 						</div>
 					)}
 				</div>
@@ -182,7 +183,6 @@ export const SpecificPost = ({ socket }) => {
 												key={i}
 												style={{
 													display: "flex",
-
 													alignItems: "center",
 													padding: "0.5rem",
 													borderBottom: "1px solid #dcdcdc",
@@ -212,22 +212,23 @@ export const SpecificPost = ({ socket }) => {
 												</span>
 												{item?.userId === userId && (
 													<span>
-														<Button
-															size="small"
-															variant="contained"
-															id="btn__contained"
-															startIcon={<DeleteIcon />}
+														<button
+															style={{
+																background: "transparent",
+																border: "none",
+																cursor: "pointer",
+															}}
 															onClick={() =>
 																dispatch(
 																	RemoveComment({
-																		postId: postItem._id,
+																		postId: postItem?._id,
 																		commentId: item._id,
 																	})
 																)
 															}
 														>
-															Delete
-														</Button>
+															<DeleteIcon />
+														</button>
 													</span>
 												)}
 											</div>

@@ -23,7 +23,7 @@ export const Post = ({ postItem, socket }) => {
 
 	const { userId } = auth;
 
-	const findUser = postItem.likes.find((likesId) => likesId === userId);
+	const findUser = postItem?.likes.find((likesId) => likesId === userId);
 	let findUserPic;
 
 	useEffect(() => {
@@ -84,17 +84,18 @@ export const Post = ({ postItem, socket }) => {
 
 					{postItem?.userId === auth?.userId && (
 						<div className="delete__btn">
-							<Button
-								size="small"
-								variant="contained"
-								startIcon={<DeleteIcon />}
-								id="btn__contained"
+							<button
+								style={{
+									background: "transparent",
+									border: "none",
+									cursor: "pointer",
+								}}
 								onClick={() =>
 									dispatch(RemoveBtn({ postId: postItem?._id, userId }))
 								}
 							>
-								Delete
-							</Button>
+								<DeleteIcon />
+							</button>
 						</div>
 					)}
 				</div>
@@ -217,22 +218,23 @@ export const Post = ({ postItem, socket }) => {
 												</span>
 												{item?.userId === userId && (
 													<span>
-														<Button
-															size="small"
-															variant="contained"
-															id="btn__contained"
-															startIcon={<DeleteIcon />}
+														<button
+															style={{
+																background: "transparent",
+																border: "none",
+																cursor: "pointer",
+															}}
 															onClick={() =>
 																dispatch(
 																	RemoveComment({
-																		postId: postItem._id,
+																		postId: postItem?._id,
 																		commentId: item._id,
 																	})
 																)
 															}
 														>
-															Delete
-														</Button>
+															<DeleteIcon />
+														</button>
 													</span>
 												)}
 											</div>
