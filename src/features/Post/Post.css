@@ -23,7 +23,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 1rem;
+	padding: 0.5rem;
 	border-bottom: 1px solid #dcdcdc;
 }
 .user__details {
@@ -42,9 +42,7 @@
 	border-bottom: 1px solid #dcdcdc;
 }
 .post__btn {
-	padding-bottom: 1rem;
-
-	padding: 1rem 0;
+	padding-top: 1rem;
 }
 .home__container {
 	padding: 1rem 0;
@@ -70,6 +68,8 @@
 	padding: 1rem;
 }
 .create__post__btn {
+	display: flex;
+	justify-content: space-between;
 	padding-top: 1rem;
 	border-top: 1px solid #dcdcdc;
 }
@@ -108,7 +108,7 @@
 	justify-content: center;
 	align-items: center;
 	gap: 1rem;
-	padding-top: 1rem;
+	padding: 1rem;
 }
 @media (max-width: 648px) {
 	.posts__container {

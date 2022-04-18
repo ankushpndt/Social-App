@@ -8,23 +8,40 @@ import { Post } from "../Post/Post";
 import { Button } from "@mui/material";
 import "./User.css";
 import { followUser } from "../User/userSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const User = ({ socket }) => {
 	const { userId } = useParams();
-
 	const user = useSelector((state) => state.user.users.user);
-
 	const CurrentUser = user?.find((user) => user._id === userId);
-
 	const auth = useSelector((state) => state.auth.login);
 	const { token } = auth;
 	const dispatch = useDispatch();
 	const [specificUserPost, setSpecificUserPost] = useState([]);
 	useEffect(() => {
+		let source = axios.CancelToken.source();
 		(async () => {
-			const response = await axios.get(`${API_URL}/post/${userId}`);
-			setSpecificUserPost(response.data.userPosts);
+			try {
+				const response = await axios.get(`${API_URL}/post/${userId}`);
+				setSpecificUserPost(response.data.userPosts);
+			} catch (err) {
+				if (axios.isCancel(err)) {
+					console.log("caught cancelToken error");
+				} else {
+					toast.dark(err?.response?.data?.message, {
+						position: "bottom-center",
+						autoClose: 3000,
+						hideProgressBar: true,
+					});
+				}
+			}
 		})();
-	}, [setSpecificUserPost, userId]);
+		return () => {
+			console.log("unmounting account");
+			source.cancel();
+		};
+	}, [userId]);
+
 	return (
 		<div style={{ margin: "1rem" }}>
 			<div className="user__container">
@@ -64,6 +81,7 @@ export const User = ({ socket }) => {
 					<Button
 						variant="contained"
 						id="btn__contained"
+						style={{ padding: " 0.2rem 0.5rem" }}
 						onClick={() => {
 							if (user._id !== auth.userId) {
 								dispatch(

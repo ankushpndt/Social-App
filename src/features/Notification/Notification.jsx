@@ -8,6 +8,8 @@ import { getNotification, clearNotification } from "./notificationSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../App.css";
+import { NavLink } from "react-router-dom";
+
 export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 	const notifications = useSelector(
 		(state) => state.notification.notifications
@@ -48,6 +50,7 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 					MenuListProps={{
 						"aria-labelledby": "basic-button",
 					}}
+					disableScrollLock={true}
 					sx={{ paddingTop: "0", paddingBottom: "0" }}
 				>
 					{notifications?.length > 0 ? (
@@ -62,52 +65,59 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 												padding: "0 0.3rem",
 											}}
 										>
-											{notification?.notificationType === "COMMENT" ? (
-												<MenuItem>
-													<span className="notification">
-														{" "}
-														<img
-															src={notification?.source?.image}
-															width="30px"
-															height="30px"
-															style={{ borderRadius: "90%" }}
-															alt="profile pic"
-														/>
-														{notification?.source?.name} commented on your post{" "}
-													</span>
-												</MenuItem>
-											) : notification?.notificationType === "LIKE" ? (
-												<MenuItem>
-													<span className="notification">
-														{" "}
-														<img
-															src={notification?.source?.image}
-															width="30px"
-															height="30px"
-															style={{ borderRadius: "90%" }}
-															alt="profile pic"
-														/>
-														{notification?.source?.name} liked your post
-													</span>
-												</MenuItem>
-											) : notification?.notificationType === "FOLLOW" ? (
-												<MenuItem>
-													<span className="notification">
-														{" "}
-														<img
-															src={notification?.source?.image}
-															width="30px"
-															height="30px"
-															style={{ borderRadius: "90%" }}
-															alt="profile pic"
-														/>
-														{notification?.source?.name} followed you
-													</span>
-												</MenuItem>
-											) : (
-												"There are no notifications."
-											)}
-
+											<NavLink
+												to={`/post/${notification?.postId}`}
+												style={{ textDecoration: "none", color: "black" }}
+											>
+												<>
+													{notification?.notificationType === "COMMENT" ? (
+														<MenuItem>
+															<span className="notification">
+																{" "}
+																<img
+																	src={notification?.source?.image}
+																	width="30px"
+																	height="30px"
+																	style={{ borderRadius: "90%" }}
+																	alt="profile pic"
+																/>
+																{notification?.source?.name} commented on your
+																post{" "}
+															</span>
+														</MenuItem>
+													) : notification?.notificationType === "LIKE" ? (
+														<MenuItem>
+															<span className="notification">
+																{" "}
+																<img
+																	src={notification?.source?.image}
+																	width="30px"
+																	height="30px"
+																	style={{ borderRadius: "90%" }}
+																	alt="profile pic"
+																/>
+																{notification?.source?.name} liked your post
+															</span>
+														</MenuItem>
+													) : notification?.notificationType === "FOLLOW" ? (
+														<MenuItem>
+															<span className="notification">
+																{" "}
+																<img
+																	src={notification?.source?.image}
+																	width="30px"
+																	height="30px"
+																	style={{ borderRadius: "90%" }}
+																	alt="profile pic"
+																/>
+																{notification?.source?.name} followed you
+															</span>
+														</MenuItem>
+													) : (
+														"There are no notifications."
+													)}
+												</>
+											</NavLink>
 											<button
 												className="n__button"
 												onClick={() =>

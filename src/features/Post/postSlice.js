@@ -75,7 +75,7 @@ export const LikeBtn = createAsyncThunk(
 			const response = await axios.post(`${API_URL}/post/${postId}/like`, {
 				_id: userId,
 			});
-
+			console.table(response.data);
 			return response.data.post;
 		} catch (error) {
 			toast.dark(error?.response?.data?.message, {

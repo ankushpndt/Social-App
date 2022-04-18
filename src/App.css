@@ -4,9 +4,6 @@
 	margin: 0;
 	font-family: "Roboto Condensed", sans-serif;
 }
-body {
-	padding-right: 0;
-}
 :root {
 	--primary-color: #fafafa;
 	--secondary-color: #ffffff;
@@ -50,7 +47,6 @@ body {
 	align-items: center;
 	justify-content: space-around;
 	color: white;
-	/* position: relative; */
 }
 
 .logo {
@@ -61,10 +57,10 @@ body {
 .icons {
 	display: flex;
 	align-items: center;
+	gap: 1rem;
 }
 
 .icon {
-	margin-left: 15px;
 	cursor: pointer;
 	position: relative;
 }
@@ -90,7 +86,6 @@ body {
 }
 
 .notification {
-	/* padding: 5px; */
 	font-size: 14px;
 	display: flex;
 	justify-content: space-evenly;

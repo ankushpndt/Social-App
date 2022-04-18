@@ -18,34 +18,37 @@ export default function Input({ postItem, socket }) {
 				variant="standard"
 				type="text"
 				value={commentValue}
-				label="Comment here"
+				label="Add a comment..."
 				onChange={(e) => {
 					setCommentValue(e.target.value);
 				}}
 			/>
-			<Button
-				size="small"
-				variant="contained"
-				id="btn__contained"
-				onClick={() => {
-					dispatch(
-						CommentBtn({
+			<span style={{ cursor: "not-allowed" }}>
+				<Button
+					size="small"
+					variant="contained"
+					id="btn__contained"
+					disabled={!commentValue}
+					onClick={() => {
+						dispatch(
+							CommentBtn({
+								postId: postItem?._id,
+								comment: commentValue,
+								userId,
+							})
+						);
+						setCommentValue("");
+						socket?.emit("sendNotification", {
 							postId: postItem?._id,
-							comment: commentValue,
-							userId,
-						})
-					);
-					setCommentValue("");
-					socket?.emit("sendNotification", {
-						postId: postItem?._id,
-						senderId: userId,
-						receiverId: postItem?.userId,
-						type: "COMMENT",
-					});
-				}}
-			>
-				{post.status === "pending" ? "Commenting..." : "Comment"}
-			</Button>
+							senderId: userId,
+							receiverId: postItem?.userId,
+							type: "COMMENT",
+						});
+					}}
+				>
+					{post.status === "pending" ? "Commenting..." : "Comment"}
+				</Button>
+			</span>
 		</div>
 	);
 }

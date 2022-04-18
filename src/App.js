@@ -25,9 +25,13 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { API_URL } from "./utils/API_URL";
 import { ToastContainer } from "react-toastify";
 import { PageNotFound } from "./Components/PageNotFound";
+import { SpecificPost } from "./features/Post/SpecificPost";
 const App = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -48,11 +52,12 @@ const App = () => {
 
 	useEffect(() => {
 		socket?.emit("addUser", userId);
-		// return () => socket.close();
 	}, [socket, userId]);
 	const logoutHandler = () => {
 		dispatch(logoutBtnPressed());
 		navigate("/");
+		setHome(false);
+		setAccount(false);
 	};
 	//noti toggle
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -63,6 +68,8 @@ const App = () => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+	const [home, setHome] = useState(false);
+	const [account, setAccount] = useState(false);
 	return (
 		<div className="App">
 			<div className="navbar">
@@ -71,7 +78,6 @@ const App = () => {
 						to={token ? "/home" : "/"}
 						style={{ color: "white", textDecoration: "none" }}
 					>
-						{" "}
 						Ligma Social
 					</NavLink>
 				</div>
@@ -86,7 +92,7 @@ const App = () => {
 							aria-expanded={open ? "true" : undefined}
 							onClick={handleClick}
 						>
-							<NotificationsIcon />
+							{open ? <NotificationsIcon /> : <NotificationsNoneOutlinedIcon />}
 							{notifications.length > 0 && (
 								<div className="counter">{notifications.length}</div>
 							)}
@@ -94,30 +100,48 @@ const App = () => {
 					)}
 					{token && (
 						<div className="icon">
-							<NavLink to="/home">
+							<NavLink
+								to="/home"
+								style={{ color: "white" }}
+								onClick={() => {
+									setHome(true);
+									setAccount(false);
+								}}
+							>
 								{" "}
-								<HomeIcon style={{ color: "white" }} />
+								{home ? <HomeIcon /> : <HomeOutlinedIcon />}
 							</NavLink>
 						</div>
 					)}
 					{token && (
 						<div className="icon">
-							<NavLink to={`/account/${userId}`}>
-								<AccountCircleIcon style={{ color: "white" }} />
+							<NavLink
+								to={`/account/${userId}`}
+								style={{ color: "white" }}
+								onClick={() => {
+									setHome(false);
+									setAccount(true);
+								}}
+							>
+								{account ? (
+									<AccountCircleIcon />
+								) : (
+									<AccountCircleOutlinedIcon />
+								)}
 							</NavLink>
 						</div>
 					)}
 					{!token && (
 						<div className="icon">
-							<NavLink to="/">
-								<LoginIcon style={{ color: "white" }} />
+							<NavLink to="/" style={{ color: "white" }}>
+								<LoginIcon />
 							</NavLink>
 						</div>
 					)}
 					{!token && (
 						<div className="icon">
-							<NavLink to="/signup">
-								<PersonAddAlt1Icon style={{ color: "white" }} />
+							<NavLink to="/signup" style={{ color: "white" }}>
+								<PersonAddAlt1Icon />
 							</NavLink>
 						</div>
 					)}
@@ -151,7 +175,10 @@ const App = () => {
 						</PrivateRoute>
 					}
 				/>
-
+				<Route
+					path="/post/:postId"
+					element={<SpecificPost socket={socket} />}
+				/>
 				<Route path="/user/:userId/editprofile" element={<EditProfile />} />
 				<Route path="/user/:userId/followers" element={<Followers />} />
 				<Route path="/user/:userId/following" element={<Following />} />

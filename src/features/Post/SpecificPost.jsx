@@ -12,8 +12,12 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NavLink } from "react-router-dom";
-export const Post = ({ postItem, socket }) => {
+import { NavLink, useParams } from "react-router-dom";
+
+export const SpecificPost = ({ socket }) => {
+	const { postId } = useParams();
+	const postData = useSelector((state) => state.post.posts);
+	const postItem = postData?.find((el) => el?._id === postId);
 	const dispatch = useDispatch();
 	const [show, setShow] = useState(false);
 
@@ -23,7 +27,7 @@ export const Post = ({ postItem, socket }) => {
 
 	const { userId } = auth;
 
-	const findUser = postItem.likes.find((likesId) => likesId === userId);
+	const findUser = postItem?.likes?.find((likesId) => likesId === userId);
 	let findUserPic;
 
 	useEffect(() => {
@@ -53,7 +57,7 @@ export const Post = ({ postItem, socket }) => {
 		};
 	}, [postItem, setCommentData]);
 	return (
-		<div>
+		<div style={{ padding: "1rem" }}>
 			<div key={uuidv4()} className="user__posts">
 				<div className="user__profile">
 					{users?.map(
@@ -76,7 +80,7 @@ export const Post = ({ postItem, socket }) => {
 											height="30px"
 											style={{ borderRadius: "80%" }}
 										/>
-										<p style={{ margin: "0.5rem" }}>{user.name}</p>
+										<p style={{ margin: "1rem" }}>{user.name}</p>
 									</NavLink>
 								</div>
 							)
@@ -100,13 +104,12 @@ export const Post = ({ postItem, socket }) => {
 				</div>
 				<div className="post__image">
 					{postItem?.media && (
-						<div
-							style={{ padding: "1rem 0", borderBottom: "1px solid #dcdcdc" }}
-						>
+						<div>
 							<img
 								src={postItem?.media}
 								alt="post pic"
 								style={{
+									paddingTop: "1rem",
 									width: "100%",
 									maxWidth: "300px",
 									height: "100%",
@@ -123,9 +126,6 @@ export const Post = ({ postItem, socket }) => {
 							style={{
 								borderBottom: "1px solid #dcdcdc",
 								paddingBottom: "1rem",
-								display: "flex",
-								justifyContent: "space-around",
-								alignItems: "center",
 							}}
 						>
 							<Button

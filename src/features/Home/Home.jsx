@@ -7,6 +7,7 @@ import { followUser } from "../User/userSlice";
 import { Button } from "@mui/material";
 import "../Post/Post.css";
 import { Loader } from "../../Components/Loader";
+import { Fragment } from "react";
 export const Home = ({ socket }) => {
 	const dispatch = useDispatch();
 	const postData = useSelector((state) => state.post.posts);
@@ -48,15 +49,13 @@ export const Home = ({ socket }) => {
 							)}
 						</div>
 						<div className="who__to__follow">
-							<h4>Who to follow</h4>
+							<h4 style={{ paddingBottom: "0.5rem" }}>Who to follow</h4>
 							<div className="who__to__follow__details">
 								{showUsersToBeFollowed?.map((user) => (
-									<div key={uuidv4()}>
+									<Fragment key={uuidv4()}>
 										{
 											<>
-												{currentUserFollowing?.includes(user?._id) ? (
-													""
-												) : (
+												{!currentUserFollowing?.includes(user?._id) && (
 													<div className="home__usercard__profile__container">
 														<div
 															className="home__usercard__profile"
@@ -100,7 +99,7 @@ export const Home = ({ socket }) => {
 												)}
 											</>
 										}
-									</div>
+									</Fragment>
 								))}
 							</div>
 						</div>

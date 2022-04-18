@@ -8,6 +8,8 @@ import axios from "axios";
 import { Post } from "../Post/Post";
 import { Button } from "@mui/material";
 import { useParams } from "react-router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const Account = () => {
 	const [singlePost, setSinglePost] = useState([]);
 	const user = useSelector((state) => state.user.users.user);
@@ -16,21 +18,29 @@ export const Account = () => {
 	const CurrentUser = user?.find((user) => user._id === auth.userId);
 	const { userId } = useParams();
 	useEffect(() => {
-		let abortCont = new AbortController();
+		let source = axios.CancelToken.source();
 		(async () => {
 			try {
 				const response = await axios.get(`${API_URL}/post/${userId}`, {
-					signal: abortCont.signal,
+					cancelToken: source.token,
 				});
 				setSinglePost(response.data.userPosts);
 			} catch (err) {
-				console.log(err);
-				if (err.name === "AbortError") {
-					console.log(err);
+				if (axios.isCancel(err)) {
+					console.log("caught cancelToken error");
+				} else {
+					toast.dark(err?.response?.data?.message, {
+						position: "bottom-center",
+						autoClose: 3000,
+						hideProgressBar: true,
+					});
 				}
 			}
 		})();
-		return () => abortCont.abort();
+		return () => {
+			console.log("unmounting account");
+			source.cancel();
+		};
 	}, [userId]);
 
 	return (

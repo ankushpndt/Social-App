@@ -7,6 +7,8 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const CreatePost = () => {
 	const [postData, setpostData] = useState("");
 	const [status, setStatus] = useState(false);
@@ -35,8 +37,12 @@ export const CreatePost = () => {
 			);
 
 			setUrl(response.data.url);
-		} catch (err) {
-			console.log(err);
+		} catch (error) {
+			toast.dark(error?.response?.data?.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		}
 	};
 
@@ -72,7 +78,7 @@ export const CreatePost = () => {
 					style={{
 						border: "none",
 						resize: "none",
-						padding: "1rem 0 1rem 1rem",
+						padding: "0.5rem 0 0.5rem 0.5rem",
 					}}
 				/>
 			</div>
