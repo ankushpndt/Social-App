@@ -182,13 +182,18 @@ export const Post = ({ postItem, socket }) => {
 												key={i}
 												style={{
 													display: "flex",
-
+													justifyContent: "space-between",
 													alignItems: "center",
 													padding: "0.5rem",
 													borderBottom: "1px solid #dcdcdc",
 												}}
 											>
-												<span style={{ display: "flex", alignItems: "center" }}>
+												<span
+													style={{
+														display: "flex",
+														alignItems: "center",
+													}}
+												>
 													<img
 														src={findUserPic?.image}
 														alt="userpic"
