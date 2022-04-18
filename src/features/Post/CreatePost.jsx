@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { NavLink } from "react-router-dom";
 export const CreatePost = () => {
 	const [postData, setpostData] = useState("");
 	const [status, setStatus] = useState(false);
@@ -52,16 +53,22 @@ export const CreatePost = () => {
 				{users?.map(
 					(user) =>
 						user?._id === auth?.userId && (
-							<div className="user__details" key={uuidv4()}>
-								<img
-									src={user.image}
-									alt=""
-									width="30px"
-									height="30px"
-									style={{ borderRadius: "80%" }}
-								/>
-								<p style={{ margin: "1rem" }}>{user.name}</p>
-							</div>
+							<NavLink
+								to={`/account/${auth?.userId}`}
+								style={{ textDecoration: "none", color: "black" }}
+							>
+								{" "}
+								<div className="user__details" key={uuidv4()}>
+									<img
+										src={user.image}
+										alt=""
+										width="30px"
+										height="30px"
+										style={{ borderRadius: "80%" }}
+									/>
+									<p style={{ margin: "1rem" }}>{user.name}</p>
+								</div>
+							</NavLink>
 						)
 				)}
 
@@ -79,6 +86,8 @@ export const CreatePost = () => {
 						border: "none",
 						resize: "none",
 						padding: "0.5rem 0 0.5rem 0.5rem",
+						minHeight: "45px",
+						lineHeight: "37px",
 					}}
 				/>
 			</div>
