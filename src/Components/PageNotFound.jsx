@@ -10,6 +10,7 @@ export const PageNotFound = () => {
 						src={ghost}
 						alt="ghost.png"
 						style={{ width: "100%", maxWidth: "120px" }}
+						className="ghost__image"
 					/>
 				</span>
 				4
