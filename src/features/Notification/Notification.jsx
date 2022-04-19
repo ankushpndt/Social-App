@@ -66,7 +66,11 @@ export const Notification = ({ socket, open, anchorEl, handleClose }) => {
 											}}
 										>
 											<NavLink
-												to={`/post/${notification?.postId}`}
+												to={
+													notification?.notificationType === "FOLLOW"
+														? `/user/${notification?.source?._id}`
+														: `/post/${notification?.postId}`
+												}
 												style={{ textDecoration: "none", color: "black" }}
 											>
 												<>
