@@ -13,7 +13,7 @@ export const SignUpWithCredentials = createAsyncThunk(
 				email: email,
 				password: password,
 			});
-			toast("Signing Up!", {
+			toast.success("Signing Up!", {
 				position: "bottom-center",
 				autoClose: 3000,
 				hideProgressBar: true,
@@ -25,6 +25,7 @@ export const SignUpWithCredentials = createAsyncThunk(
 				autoClose: 3000,
 				hideProgressBar: true,
 			});
+			throw error;
 		}
 	}
 );
@@ -37,7 +38,7 @@ export const LoginWithCredentials = createAsyncThunk(
 				password: password,
 			});
 
-			toast("Logging In!", {
+			toast.success("Logging In!", {
 				position: "bottom-center",
 				autoClose: 2000,
 				hideProgressBar: true,
@@ -49,6 +50,7 @@ export const LoginWithCredentials = createAsyncThunk(
 				autoClose: 3000,
 				hideProgressBar: true,
 			});
+			throw error;
 		}
 	}
 );
@@ -66,7 +68,7 @@ export const AuthSlice = createSlice({
 		loader: false,
 	},
 	reducers: {
-		logoutBtnPressed: (state, action) => {
+		logoutBtnPressed: (state) => {
 			toast("Logged out!", {
 				position: "bottom-center",
 				autoClose: 3000,

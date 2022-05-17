@@ -210,11 +210,12 @@ export const Post = ({ postItem, socket }) => {
 															style={{
 																paddingBottom: "0.5rem",
 																fontWeight: "bold",
+																textAlign: "left",
 															}}
 														>
 															{findUserPic?.name}
 														</p>
-														<p>{item?.comment}</p>
+														<p style={{ textAlign: "left" }}>{item?.comment}</p>
 													</span>
 												</span>
 												{item?.userId === userId && (

@@ -189,6 +189,7 @@ export const SpecificPost = ({ socket }) => {
 														alignItems: "center",
 														padding: "0.5rem",
 														borderBottom: "1px solid #dcdcdc",
+														justifyContent: "space-between",
 													}}
 												>
 													<span
@@ -208,11 +209,14 @@ export const SpecificPost = ({ socket }) => {
 																style={{
 																	paddingBottom: "0.5rem",
 																	fontWeight: "bold",
+																	textAlign: "left",
 																}}
 															>
 																{findUserPic?.name}
 															</p>
-															<p>{item?.comment}</p>
+															<p style={{ textAlign: "left" }}>
+																{item?.comment}
+															</p>
 														</span>
 													</span>
 													{item?.userId === userId && (
