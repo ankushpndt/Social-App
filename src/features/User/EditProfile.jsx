@@ -6,11 +6,14 @@ import { Button, TextField } from "@mui/material";
 import "./User.css";
 import { Loader } from "../../Components/Loader";
 export const EditProfile = () => {
-	const [imgUrl, setUrl] = useState("");
-	const [username, setName] = useState("");
-	const [bio, setBio] = useState("");
+	const { token, userId } = useSelector((state) => state.auth.login);
+	const allUsers = useSelector((state) => state.user.users.user);
+	const currentUser = allUsers?.find((user) => user?._id === userId);
+	const [imgUrl, setUrl] = useState(currentUser?.image);
+	const [username, setName] = useState(currentUser?.name);
+	const [bio, setBio] = useState(currentUser?.bio);
 	const dispatch = useDispatch();
-	const { token } = useSelector((state) => state.auth.login);
+
 	const [loader, setLoader] = useState(false);
 	const userHandler = async () => {
 		await dispatch(UserDetails({ username, bio, imgUrl, token }));
@@ -105,7 +108,7 @@ export const EditProfile = () => {
 					id="standard__basic"
 					label="Bio"
 					type="text"
-					onChange={(e) => setName(e.target.value)}
+					onChange={(e) => setBio(e.target.value)}
 					value={bio}
 				/>
 			</div>
