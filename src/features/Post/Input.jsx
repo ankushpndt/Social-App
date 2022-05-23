@@ -5,7 +5,6 @@ import { Button, TextField } from "@mui/material";
 import "./Post.css";
 export default function Input({ postItem, socket }) {
 	const dispatch = useDispatch();
-	const post = useSelector((state) => state.post);
 	const [commentValue, setCommentValue] = useState("");
 	const auth = useSelector((state) => state.auth.login);
 
@@ -46,7 +45,7 @@ export default function Input({ postItem, socket }) {
 						});
 					}}
 				>
-					{post.status === "pending" ? "Commenting..." : "Comment"}
+					Comment
 				</Button>
 			</span>
 		</div>

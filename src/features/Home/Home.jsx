@@ -11,7 +11,7 @@ import { Fragment } from "react";
 export const Home = ({ socket }) => {
 	const dispatch = useDispatch();
 	const postData = useSelector((state) => state.post.posts);
-	const users = useSelector((state) => state.user.users.user);
+	const users = useSelector((state) => state?.user?.users.user);
 	const auth = useSelector((state) => state.auth.login);
 	const loader = useSelector((state) => state.post.loader);
 	const { token } = auth;

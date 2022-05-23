@@ -39,11 +39,7 @@ export const CreatePost = () => {
 
 			setUrl(response.data.url);
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.dark(error?.response?.data?.message);
 		}
 	};
 

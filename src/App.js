@@ -29,15 +29,19 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { API_URL } from "./utils/API_URL";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { PageNotFound } from "./Components/PageNotFound";
 import { SpecificPost } from "./features/Post/SpecificPost";
 const App = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth.login);
-	const [socket] = useState(() => io(`${API_URL}`));
+	const [socket, setSocket] = useState(null);
 
+	useEffect(() => {
+		setSocket(io(`${API_URL}`));
+	}, []);
 	const { userId, isUserLoggedIn, token } = auth;
 	const notifications = useSelector(
 		(state) => state.notification.notifications
@@ -201,7 +205,13 @@ const App = () => {
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 
-			<ToastContainer />
+			<ToastContainer
+				position="bottom-center"
+				autoClose={3000}
+				hideProgressBar={true}
+				transition={Slide}
+				theme="dark"
+			/>
 		</div>
 	);
 };

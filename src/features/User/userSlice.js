@@ -8,11 +8,7 @@ export const LoadUsers = createAsyncThunk("Auth/LoadUsers", async () => {
 		const response = await axios.get(`${API_URL}/user/getall`);
 		return response.data;
 	} catch (error) {
-		toast.dark(error?.response?.data?.message, {
-			position: "bottom-center",
-			autoClose: 3000,
-			hideProgressBar: true,
-		});
+		toast.error(error?.response?.data?.message);
 	}
 });
 
@@ -29,18 +25,10 @@ export const UserDetails = createAsyncThunk(
 				},
 				{ headers: { "auth-token": token } }
 			);
-			toast.success(response.data.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+
 			return response.data.user;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -57,18 +45,9 @@ export const followUser = createAsyncThunk(
 					headers: { "auth-token": token },
 				}
 			);
-			toast.success(response.data.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
 			return response.data;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -86,18 +65,10 @@ export const unfollowUser = createAsyncThunk(
 					headers: { "auth-token": token },
 				}
 			);
-			toast.success(response.data.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+
 			return response.data;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -125,18 +96,23 @@ const UserSlice = createSlice({
 		},
 		[UserDetails.pending]: (state) => {
 			state.status = "pending";
+			toast.loading("Please wait");
 		},
 		[UserDetails.fulfilled]: (state, action) => {
 			state.users.user = state.users.user.map((el) =>
 				el._id === action.payload?._id ? action.payload : el
 			);
 			state.status = "fulfilled";
+			toast.dismiss();
+			toast.success("Profile updated successfully");
 		},
 		[UserDetails.rejected]: (state) => {
 			state.status = "rejected";
+			toast.dismiss();
 		},
 		[followUser.pending]: (state) => {
 			state.status = "pending";
+			toast.loading("Please wait");
 		},
 		[followUser.fulfilled]: (state, action) => {
 			const indexOfCurrentUser = state.users.user.findIndex(
@@ -149,12 +125,16 @@ const UserSlice = createSlice({
 			state.users.user[indexOfCurrentUser] = action.payload.currentUser;
 			state.users.user[indexOfFollowedUser] = action.payload.userToBeFollowed;
 			state.status = "fulfilled";
+			toast.dismiss();
+			toast.success("User has been followed");
 		},
 		[followUser.rejected]: (state) => {
 			state.status = "rejected";
+			toast.loading("Please wait");
 		},
 		[unfollowUser.pending]: (state) => {
 			state.status = "pending";
+			toast.loading("Please wait");
 		},
 		[unfollowUser.fulfilled]: (state, action) => {
 			const indexOfCurrentUser = state.users.user.findIndex(
@@ -168,9 +148,12 @@ const UserSlice = createSlice({
 			state.users.user[indexOfUnFollowedUser] =
 				action.payload.userToBeUnFollowed;
 			state.status = "fulfilled";
+			toast.dismiss();
+			toast.success("User has been unfollowed");
 		},
 		[unfollowUser.rejected]: (state) => {
 			state.status = "rejected";
+			toast.dismiss();
 		},
 	},
 });

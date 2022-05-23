@@ -11,11 +11,7 @@ export const LoadPosts = createAsyncThunk(
 
 			return response.data.bothPosts;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -30,18 +26,10 @@ export const PostBtn = createAsyncThunk(
 				_id: userId,
 			});
 			setStatus(false);
-			toast.success(response.data.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.success(response.data.message);
 			return response.data.newPost;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -53,18 +41,10 @@ export const RemoveBtn = createAsyncThunk(
 				userId,
 				postId,
 			});
-			toast.success(response.data.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.success(response.data.message);
 			return response.data.deletedPost;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -75,14 +55,9 @@ export const LikeBtn = createAsyncThunk(
 			const response = await axios.post(`${API_URL}/post/${postId}/like`, {
 				_id: userId,
 			});
-			console.table(response.data);
 			return response.data.post;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -95,18 +70,9 @@ export const CommentBtn = createAsyncThunk(
 				comment,
 			});
 
-			toast.success(response.data.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
 			return response.data.comments;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -118,18 +84,10 @@ export const RemoveComment = createAsyncThunk(
 				postId,
 				commentId,
 			});
-			toast.success(response.data.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+
 			return response.data.post;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.error(error?.response?.data?.message);
 		}
 	}
 );
@@ -188,9 +146,11 @@ export const PostSlice = createSlice({
 		},
 		[LikeBtn.pending]: (state) => {
 			state.status = "pending";
+			toast.loading("Please wait");
 		},
 		[LikeBtn.rejected]: (state) => {
 			state.status = "rejected";
+			toast.dismiss();
 		},
 		[LikeBtn.fulfilled]: (state, action) => {
 			state.posts = state.posts.map((post) => {
@@ -198,10 +158,11 @@ export const PostSlice = createSlice({
 			});
 
 			state.status = "fulfilled";
+			toast.dismiss();
 		},
 		[CommentBtn.pending]: (state) => {
 			state.status = "pending";
-			state.loader = true;
+			toast.loading("Please wait");
 		},
 		[CommentBtn.fulfilled]: (state, action) => {
 			state.posts = state.posts.map((post) => {
@@ -210,15 +171,16 @@ export const PostSlice = createSlice({
 					: post;
 			});
 			state.status = "fulfilled";
-			state.loader = false;
+			toast.dismiss();
+			toast.success("Comment added successfully");
 		},
 		[CommentBtn.rejected]: (state) => {
 			state.status = "rejected";
-			state.loader = false;
+			toast.dismiss();
 		},
 		[RemoveComment.pending]: (state) => {
 			state.status = "pending";
-			state.loader = true;
+			toast.loading("Please wait");
 		},
 		[RemoveComment.fulfilled]: (state, action) => {
 			let post = state.posts.find((post) => {
@@ -227,11 +189,12 @@ export const PostSlice = createSlice({
 			if (post) post.comments = action.payload.comments;
 
 			state.status = "fulfilled";
-			state.loader = false;
+			toast.dismiss();
+			toast.success("Comment removed successfully");
 		},
 		[RemoveComment.rejected]: (state) => {
 			state.status = "rejected";
-			state.loader = false;
+			toast.dismiss();
 		},
 	},
 });

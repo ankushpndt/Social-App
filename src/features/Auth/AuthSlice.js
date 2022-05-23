@@ -13,14 +13,10 @@ export const SignUpWithCredentials = createAsyncThunk(
 				email: email,
 				password: password,
 			});
-			toast.success("Signing Up!", {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+
 			return response.data;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
+			toast.error(error?.response?.data?.message, {
 				position: "bottom-center",
 				autoClose: 3000,
 				hideProgressBar: true,
@@ -38,14 +34,9 @@ export const LoginWithCredentials = createAsyncThunk(
 				password: password,
 			});
 
-			toast.success("Logging In!", {
-				position: "bottom-center",
-				autoClose: 2000,
-				hideProgressBar: true,
-			});
 			return response.data;
 		} catch (error) {
-			toast.dark(error?.response?.data?.message, {
+			toast.error(error?.response?.data?.message, {
 				position: "bottom-center",
 				autoClose: 3000,
 				hideProgressBar: true,
@@ -69,11 +60,7 @@ export const AuthSlice = createSlice({
 	},
 	reducers: {
 		logoutBtnPressed: (state) => {
-			toast("Logged out!", {
-				position: "bottom-center",
-				autoClose: 3000,
-				hideProgressBar: true,
-			});
+			toast.success("Logged out successfully");
 
 			localStorage.removeItem("login");
 			state.login = { isUserLoggedIn: false, token: "", user: "" };
@@ -103,6 +90,7 @@ export const AuthSlice = createSlice({
 			};
 			state.status = "fulfilled";
 			state.loader = false;
+			toast.success("Signed Up successfully");
 		},
 		[SignUpWithCredentials.rejected]: (state) => {
 			state.status = "rejected";
@@ -131,6 +119,7 @@ export const AuthSlice = createSlice({
 			};
 			state.status = "fulfilled";
 			state.loader = false;
+			toast.success("Signed in successfully");
 		},
 		[LoginWithCredentials.rejected]: (state) => {
 			state.status = "rejected";

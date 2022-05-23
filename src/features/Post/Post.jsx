@@ -39,12 +39,7 @@ export const Post = ({ postItem, socket }) => {
 				if (axios.isCancel(err)) {
 					console.log("caught cancelToken error");
 				} else {
-					console.log(err?.response?.data?.message);
-					toast.dark(err?.response?.data?.message, {
-						position: "bottom-center",
-						autoClose: 3000,
-						hideProgressBar: true,
-					});
+					toast.dark(err?.response?.data?.message);
 				}
 			}
 		})();
