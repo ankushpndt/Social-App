@@ -13,6 +13,8 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink } from "react-router-dom";
+import { unfollowUser, followUser } from "../User/userSlice";
+
 export const Post = ({ postItem, socket }) => {
 	const dispatch = useDispatch();
 	const [show, setShow] = useState(false);
@@ -21,11 +23,10 @@ export const Post = ({ postItem, socket }) => {
 	const users = useSelector((state) => state.user.users.user);
 	const auth = useSelector((state) => state.auth.login);
 
-	const { userId } = auth;
+	const { userId, token } = auth;
 
 	const findUser = postItem?.likes.find((likesId) => likesId === userId);
 	let findUserPic;
-
 	useEffect(() => {
 		let source = axios.CancelToken.source();
 		(async () => {
@@ -48,6 +49,7 @@ export const Post = ({ postItem, socket }) => {
 			source.cancel();
 		};
 	}, [postItem, setCommentData]);
+
 	return (
 		<div>
 			<div key={uuidv4()} className="user__posts">
@@ -67,7 +69,7 @@ export const Post = ({ postItem, socket }) => {
 									>
 										<img
 											src={user.image}
-											alt=""
+											alt="userImage"
 											width="30px"
 											height="30px"
 											style={{ borderRadius: "80%" }}
@@ -77,23 +79,78 @@ export const Post = ({ postItem, socket }) => {
 								</div>
 							)
 					)}
-
-					{postItem?.userId === auth?.userId && (
-						<div className="delete__btn">
-							<button
-								style={{
-									background: "transparent",
-									border: "none",
-									cursor: "pointer",
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "row",
+							gap: "0.5rem",
+							alignItems: "center",
+						}}
+					>
+						{postItem?.userId !== auth?.userId && (
+							<Button
+								id="btn__contained"
+								variant="contained"
+								style={{ padding: "0.1rem 0.5rem" }}
+								onClick={() => {
+									dispatch(
+										unfollowUser({
+											_id: userId,
+											token,
+											following: postItem?.userId,
+										})
+									);
+									socket?.emit("sendClearNotification", {
+										senderId: userId,
+										receiverId: postItem?.userId,
+										type: "FOLLOW",
+									});
 								}}
-								onClick={() =>
-									dispatch(RemoveBtn({ postId: postItem?._id, userId }))
-								}
 							>
-								<DeleteIcon />
-							</button>
-						</div>
-					)}
+								Following
+							</Button>
+						)}
+						{/* {!postItem?.userId !== auth?.userId && (
+							<Button
+								variant="contained"
+								id="btn__contained"
+								style={{ padding: " 0.2rem 0.5rem" }}
+								onClick={() => {
+									dispatch(
+										followUser({
+											_id: userId,
+											token,
+											userToBeFollowed: postItem?.userId,
+										})
+									);
+									socket?.emit("sendNotification", {
+										senderId: userId,
+
+										receiverId: postItem?.userId,
+										type: "FOLLOW",
+									});
+								}}
+							>
+								Follow
+							</Button>
+						)} */}
+						{postItem?.userId === auth?.userId && (
+							<div className="delete__btn">
+								<button
+									style={{
+										background: "transparent",
+										border: "none",
+										cursor: "pointer",
+									}}
+									onClick={() =>
+										dispatch(RemoveBtn({ postId: postItem?._id, userId }))
+									}
+								>
+									<DeleteIcon />
+								</button>
+							</div>
+						)}
+					</div>
 				</div>
 				<div className="post__image">
 					{postItem?.media && (

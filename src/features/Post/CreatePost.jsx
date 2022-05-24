@@ -14,8 +14,8 @@ export const CreatePost = () => {
 	const [postData, setpostData] = useState("");
 	const [status, setStatus] = useState(false);
 	const [imgUrl, setUrl] = useState("");
-	const auth = useSelector((state) => state.auth.login);
-	const users = useSelector((state) => state.user.users.user);
+	const auth = useSelector((state) => state?.auth?.login);
+	const users = useSelector((state) => state?.user?.users?.user);
 	const { userId } = auth;
 
 	const dispatch = useDispatch();

@@ -39,9 +39,9 @@ const App = () => {
 	const auth = useSelector((state) => state.auth.login);
 	const [socket, setSocket] = useState(null);
 
-	useEffect(() => {
-		setSocket(io(`${API_URL}`));
-	}, []);
+	// useEffect(() => {
+	// 	setSocket(io(`${API_URL}`));
+	// }, []);
 	const { userId, isUserLoggedIn, token } = auth;
 	const notifications = useSelector(
 		(state) => state.notification.notifications
@@ -52,7 +52,7 @@ const App = () => {
 			dispatch(LoadPosts({ userId }));
 			dispatch(LoadUsers());
 		}
-	}, [auth, token, dispatch, userId]);
+	}, [token, dispatch, userId]);
 
 	useEffect(() => {
 		socket?.emit("addUser", userId);

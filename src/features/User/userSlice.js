@@ -130,7 +130,7 @@ const UserSlice = createSlice({
 		},
 		[followUser.rejected]: (state) => {
 			state.status = "rejected";
-			toast.loading("Please wait");
+			toast.dismiss("Please wait");
 		},
 		[unfollowUser.pending]: (state) => {
 			state.status = "pending";
@@ -138,15 +138,15 @@ const UserSlice = createSlice({
 		},
 		[unfollowUser.fulfilled]: (state, action) => {
 			const indexOfCurrentUser = state.users.user.findIndex(
-				(user) => user._id === action.payload.currentUser?._id
+				(user) => user._id === action.payload?.currentUser?._id
 			);
 			const indexOfUnFollowedUser = state.users.user.findIndex(
-				(user) => user._id === action.payload.userToBeUnFollowed._id
+				(user) => user._id === action.payload?.userToBeUnFollowed._id
 			);
 
-			state.users.user[indexOfCurrentUser] = action.payload.currentUser;
+			state.users.user[indexOfCurrentUser] = action.payload?.currentUser;
 			state.users.user[indexOfUnFollowedUser] =
-				action.payload.userToBeUnFollowed;
+				action.payload?.userToBeUnFollowed;
 			state.status = "fulfilled";
 			toast.dismiss();
 			toast.success("User has been unfollowed");

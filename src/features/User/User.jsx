@@ -7,17 +7,19 @@ import { API_URL } from "../../utils/API_URL";
 import { Post } from "../Post/Post";
 import { Button } from "@mui/material";
 import "./User.css";
-import { followUser } from "../User/userSlice";
+import { followUser, LoadUsers, unfollowUser } from "../User/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export const User = ({ socket }) => {
 	const { userId } = useParams();
-	const user = useSelector((state) => state.user.users.user);
-	const CurrentUser = user?.find((user) => user._id === userId);
-	const auth = useSelector((state) => state.auth.login);
+	const [specificUserPost, setSpecificUserPost] = useState([]);
+	const user = useSelector((state) => state?.user?.users?.user);
+	const CurrentUser = user?.find((user) => user?._id === userId);
+	const auth = useSelector((state) => state?.auth?.login);
 	const { token } = auth;
 	const dispatch = useDispatch();
-	const [specificUserPost, setSpecificUserPost] = useState([]);
+	const findCurrentUser = user?.find((user) => user?._id === auth?.userId);
+	console.log(user);
 	useEffect(() => {
 		let source = axios.CancelToken.source();
 		(async () => {
@@ -41,6 +43,7 @@ export const User = ({ socket }) => {
 			source.cancel();
 		};
 	}, [userId]);
+	useEffect(() => dispatch(LoadUsers()), [dispatch]);
 
 	return (
 		<div style={{ margin: "1rem" }}>
@@ -77,30 +80,49 @@ export const User = ({ socket }) => {
 						</Button>
 					</NavLink>
 				)}
-				{CurrentUser?._id !== auth?.userId && (
-					<Button
-						variant="contained"
-						id="btn__contained"
-						style={{ padding: " 0.2rem 0.5rem" }}
-						onClick={() => {
-							if (user._id !== auth.userId) {
-								dispatch(
-									followUser({
-										_id: auth?.userId,
-										token,
-										userToBeFollowed: user._id,
-									})
-								);
-								socket?.emit("sendNotification", {
-									senderId: auth?.userId,
+				{!findCurrentUser?.following.includes(userId) &&
+					!findCurrentUser?._id !== auth?.userId && (
+						<Button
+							variant="contained"
+							id="btn__contained"
+							style={{ padding: " 0.2rem 0.5rem" }}
+							onClick={() => {
+								if (user._id !== auth.userId) {
+									dispatch(
+										followUser({
+											_id: auth?.userId,
+											token,
+											userToBeFollowed: userId,
+										})
+									);
+									socket?.emit("sendNotification", {
+										senderId: auth?.userId,
 
-									receiverId: user._id,
-									type: "FOLLOW",
-								});
-							}
+										receiverId: user._id,
+										type: "FOLLOW",
+									});
+								}
+							}}
+						>
+							Follow
+						</Button>
+					)}
+				{findCurrentUser?.following.includes(userId) && (
+					<Button
+						id="btn__contained"
+						variant="contained"
+						style={{ padding: "0.1rem 0.5rem" }}
+						onClick={() => {
+							dispatch(
+								unfollowUser({
+									_id: auth?.userId,
+									token,
+									following: userId,
+								})
+							);
 						}}
 					>
-						Follow
+						Following
 					</Button>
 				)}
 				<NavLink

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import "../Post/Post.css";
 import { useEffect } from "react";
@@ -11,13 +11,20 @@ import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Loader } from "../../Components/Loader";
+import { LoadPosts } from "../Post/postSlice";
 export const Account = () => {
 	const [singlePost, setSinglePost] = useState([]);
 	const user = useSelector((state) => state.user.users.user);
 	const auth = useSelector((state) => state.auth.login);
 	const loader = useSelector((state) => state.post.loader);
+	const posts = useSelector((state) => state.post.posts);
+
+	const CurrentUserPosts = posts?.find((post) => post.userId === auth?.userId);
+	const CurrentPostLikes = CurrentUserPosts?.likes;
+	// console.log(CurrentPostLikes);
 	const CurrentUser = user?.find((user) => user._id === auth.userId);
 	const { userId } = useParams();
+	const dispatch = useDispatch();
 	useEffect(() => {
 		let source = axios.CancelToken.source();
 		(async () => {
@@ -43,7 +50,9 @@ export const Account = () => {
 			source.cancel();
 		};
 	}, [userId]);
-
+	useEffect(() => {
+		dispatch(LoadPosts({ userId }));
+	}, [dispatch, userId]);
 	return (
 		<>
 			{!loader ? (

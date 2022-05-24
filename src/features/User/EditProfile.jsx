@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button, TextField } from "@mui/material";
 import "./User.css";
 import { Loader } from "../../Components/Loader";
+import { useNavigate } from "react-router-dom";
 export const EditProfile = () => {
 	const { token, userId } = useSelector((state) => state.auth.login);
 	const allUsers = useSelector((state) => state.user.users.user);
@@ -13,12 +14,13 @@ export const EditProfile = () => {
 	const [username, setName] = useState(currentUser?.name);
 	const [bio, setBio] = useState(currentUser?.bio);
 	const dispatch = useDispatch();
-
 	const [loader, setLoader] = useState(false);
-	const userHandler = async () => {
-		await dispatch(UserDetails({ username, bio, imgUrl, token }));
+	const navigate = useNavigate();
+	const userHandler = () => {
+		dispatch(UserDetails({ username, bio, imgUrl, token }));
 		setName("");
 		setBio("");
+		navigate(`/account/${userId}`);
 	};
 	// upload image
 	const uploadImage = async (e) => {
@@ -64,7 +66,6 @@ export const EditProfile = () => {
 						<span
 							style={{
 								cursor: "pointer",
-
 								borderRadius: "4px",
 								padding: "0.45rem",
 								backgroundColor: "black",

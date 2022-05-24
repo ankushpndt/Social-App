@@ -7,14 +7,15 @@ import { followUser } from "../User/userSlice";
 import { Button } from "@mui/material";
 import "../Post/Post.css";
 import { Loader } from "../../Components/Loader";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
+import { LoadPosts } from "../Post/postSlice";
 export const Home = ({ socket }) => {
 	const dispatch = useDispatch();
 	const postData = useSelector((state) => state.post.posts);
-	const users = useSelector((state) => state?.user?.users.user);
+	const users = useSelector((state) => state?.user?.users?.user);
 	const auth = useSelector((state) => state.auth.login);
 	const loader = useSelector((state) => state.post.loader);
-	const { token } = auth;
+	const { token, userId } = auth;
 	const showUsersToBeFollowed = users?.filter(
 		(user) => user._id !== auth?.userId
 	);
@@ -22,6 +23,13 @@ export const Home = ({ socket }) => {
 
 	const currentUserFollowing = findCurrentUser?.following;
 	const navigate = useNavigate();
+	let checkUser;
+	showUsersToBeFollowed?.forEach((el) => {
+		checkUser = currentUserFollowing?.includes(el?._id);
+	});
+	useEffect(() => {
+		dispatch(LoadPosts({ userId }));
+	}, [dispatch, currentUserFollowing, userId]);
 	return (
 		<div className="home__container">
 			{!loader ? (
@@ -35,7 +43,6 @@ export const Home = ({ socket }) => {
 							{postData?.length > 0 ? (
 								postData
 									?.slice(0)
-									.reverse()
 									.map((item) => (
 										<Post
 											postItem={item}
@@ -48,61 +55,63 @@ export const Home = ({ socket }) => {
 								<div style={{ padding: "1rem" }}>You have no posts yet.</div>
 							)}
 						</div>
-						<div className="who__to__follow">
-							<h4 style={{ paddingBottom: "0.5rem" }}>Who to follow</h4>
-							<div className="who__to__follow__details">
-								{showUsersToBeFollowed?.map((user) => (
-									<Fragment key={uuidv4()}>
-										{
-											<>
-												{!currentUserFollowing?.includes(user?._id) && (
-													<div className="home__usercard__profile__container">
-														<div
-															className="home__usercard__profile"
-															style={{ cursor: "pointer" }}
-															onClick={() => navigate(`/user/${user._id}`)}
-														>
-															<img
-																className="home__usercard__profile__image"
-																src={user?.image}
-																alt="profile pic"
-															/>
+						{!checkUser && (
+							<div className="who__to__follow">
+								<h4 style={{ paddingBottom: "0.5rem" }}>Who to follow</h4>
+								<div className="who__to__follow__details">
+									{showUsersToBeFollowed?.map((user) => (
+										<Fragment key={uuidv4()}>
+											{
+												<>
+													{!currentUserFollowing?.includes(user?._id) && (
+														<div className="home__usercard__profile__container">
+															<div
+																className="home__usercard__profile"
+																style={{ cursor: "pointer" }}
+																onClick={() => navigate(`/user/${user._id}`)}
+															>
+																<img
+																	className="home__usercard__profile__image"
+																	src={user?.image}
+																	alt="profile pic"
+																/>
 
-															<p style={{ paddingBottom: "0.3rem" }}>
-																{user?.name}
-															</p>
+																<p style={{ paddingBottom: "0.3rem" }}>
+																	{user?.name}
+																</p>
+															</div>
+															<Button
+																variant="contained"
+																id="btn__contained"
+																onClick={() => {
+																	if (user._id !== auth.userId) {
+																		dispatch(
+																			followUser({
+																				_id: auth?.userId,
+																				token,
+																				userToBeFollowed: user._id,
+																			})
+																		);
+																		socket?.emit("sendNotification", {
+																			senderId: auth?.userId,
+
+																			receiverId: user._id,
+																			type: "FOLLOW",
+																		});
+																	}
+																}}
+															>
+																Follow
+															</Button>
 														</div>
-														<Button
-															variant="contained"
-															id="btn__contained"
-															onClick={() => {
-																if (user._id !== auth.userId) {
-																	dispatch(
-																		followUser({
-																			_id: auth?.userId,
-																			token,
-																			userToBeFollowed: user._id,
-																		})
-																	);
-																	socket?.emit("sendNotification", {
-																		senderId: auth?.userId,
-
-																		receiverId: user._id,
-																		type: "FOLLOW",
-																	});
-																}
-															}}
-														>
-															Follow
-														</Button>
-													</div>
-												)}
-											</>
-										}
-									</Fragment>
-								))}
+													)}
+												</>
+											}
+										</Fragment>
+									))}
+								</div>
 							</div>
-						</div>
+						)}
 					</div>
 				</>
 			) : (

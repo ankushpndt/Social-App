@@ -153,7 +153,7 @@ export const PostSlice = createSlice({
 			toast.dismiss();
 		},
 		[LikeBtn.fulfilled]: (state, action) => {
-			state.posts = state.posts.map((post) => {
+			state.posts = state?.posts?.map((post) => {
 				return post._id === action.payload._id ? action.payload : post;
 			});
 

@@ -17,26 +17,28 @@ export const Following = () => {
 		<div style={{ padding: "1rem" }}>
 			<p>{findCurrentUser?.userId} Following</p>
 			{findCurrentUser?.following?.length > 0 ? (
-				findCurrentUser?.following?.map((id, i) => {
+				findCurrentUser?.following?.map((id) => {
 					return (
 						<div key={uuidv4()} className="followers">
 							<UserCard userId={id} key={id} />
-							<Button
-								size="small"
-								variant="contained"
-								id="btn__contained"
-								onClick={() =>
-									dispatch(
-										unfollowUser({
-											_id: findCurrentUser._id,
-											token,
-											following: id,
-										})
-									)
-								}
-							>
-								Remove
-							</Button>
+							{findCurrentUser?._id === auth?.userId && (
+								<Button
+									size="small"
+									variant="contained"
+									id="btn__contained"
+									onClick={() =>
+										dispatch(
+											unfollowUser({
+												_id: findCurrentUser._id,
+												token,
+												following: id,
+											})
+										)
+									}
+								>
+									Remove
+								</Button>
+							)}
 						</div>
 					);
 				})
