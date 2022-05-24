@@ -17,10 +17,10 @@ export const Account = () => {
 	const user = useSelector((state) => state.user.users.user);
 	const auth = useSelector((state) => state.auth.login);
 	const loader = useSelector((state) => state.post.loader);
-	const posts = useSelector((state) => state.post.posts);
+	// const posts = useSelector((state) => state.post.posts);
 
-	const CurrentUserPosts = posts?.find((post) => post.userId === auth?.userId);
-	const CurrentPostLikes = CurrentUserPosts?.likes;
+	// const CurrentUserPosts = posts?.find((post) => post.userId === auth?.userId);
+	// const CurrentPostLikes = CurrentUserPosts?.likes;
 	// console.log(CurrentPostLikes);
 	const CurrentUser = user?.find((user) => user._id === auth.userId);
 	const { userId } = useParams();

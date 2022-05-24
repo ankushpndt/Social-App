@@ -13,7 +13,7 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink } from "react-router-dom";
-import { unfollowUser, followUser } from "../User/userSlice";
+import { unfollowUser } from "../User/userSlice";
 
 export const Post = ({ postItem, socket }) => {
 	const dispatch = useDispatch();
