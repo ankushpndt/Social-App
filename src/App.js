@@ -29,6 +29,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { API_URL } from "./utils/API_URL";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -43,8 +44,9 @@ const App = () => {
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth.login);
 	const [socket, setSocket] = useState(null);
-	const [home, setHome] = useState(false);
+	const [home, setHome] = useState(true);
 	const [account, setAccount] = useState(false);
+	const [toggleBookmark, setToggleBookmark] = useState(false);
 	useEffect(() => {
 		setSocket(io(`${API_URL}`));
 	}, []);
@@ -58,6 +60,8 @@ const App = () => {
 			dispatch(LoadPosts({ userId }));
 			dispatch(LoadUsers());
 			dispatch(getBookmarks({ userId }));
+
+			setHome(true);
 		}
 	}, [token, dispatch, userId]);
 
@@ -116,9 +120,9 @@ const App = () => {
 								onClick={() => {
 									setHome(true);
 									setAccount(false);
+									setToggleBookmark(false);
 								}}
 							>
-								{" "}
 								{home ? <HomeIcon /> : <HomeOutlinedIcon />}
 							</NavLink>
 						</div>
@@ -131,6 +135,7 @@ const App = () => {
 								onClick={() => {
 									setHome(false);
 									setAccount(true);
+									setToggleBookmark(false);
 								}}
 							>
 								{account ? (
@@ -146,12 +151,17 @@ const App = () => {
 							<NavLink
 								to={`/bookmarks`}
 								style={{ color: "white" }}
-								// onClick={() => {
-								// 	setHome(false);
-								// 	setAccount(true);
-								// }}
+								onClick={() => {
+									setHome(false);
+									setAccount(false);
+									setToggleBookmark(true);
+								}}
 							>
-								<BookmarkIcon />
+								{toggleBookmark ? (
+									<BookmarkIcon />
+								) : (
+									<BookmarkBorderOutlinedIcon />
+								)}
 							</NavLink>
 						</div>
 					)}
@@ -259,7 +269,7 @@ const App = () => {
 			/>
 
 			<Routes>
-				<Route path="/" element={<Login socket={socket} />} />
+				<Route path="/" element={<Login />} />
 				<Route path="/signup" element={<SignUp />} />
 				<Route
 					path="/home"
@@ -294,9 +304,20 @@ const App = () => {
 				/>
 				<Route
 					path="/notifications"
-					element={<NotificationMobile socket={socket} />}
+					element={
+						<PrivateRoute>
+							<NotificationMobile socket={socket} />
+						</PrivateRoute>
+					}
 				/>
-				<Route path="/bookmarks" element={<Bookmarks />} />
+				<Route
+					path="/bookmarks"
+					element={
+						<PrivateRoute>
+							<Bookmarks />
+						</PrivateRoute>
+					}
+				/>
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 

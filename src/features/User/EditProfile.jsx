@@ -17,10 +17,10 @@ export const EditProfile = () => {
 	const [loader, setLoader] = useState(false);
 	const navigate = useNavigate();
 	const userHandler = () => {
-		dispatch(UserDetails({ username, bio, imgUrl, token }));
+		dispatch(UserDetails({ username, bio, imgUrl, token })) &&
+			navigate(`/account/${userId}`);
 		setName("");
 		setBio("");
-		navigate(`/account/${userId}`);
 	};
 	// upload image
 	const uploadImage = async (e) => {
@@ -94,7 +94,7 @@ export const EditProfile = () => {
 						id="btn__contained"
 						onClick={userHandler}
 					>
-						Post
+						Save
 					</Button>
 				</div>
 				<TextField

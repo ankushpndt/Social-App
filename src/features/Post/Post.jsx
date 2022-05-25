@@ -22,14 +22,22 @@ export const Post = ({ postItem, socket }) => {
 	const [show, setShow] = useState(false);
 
 	const [commentData, setCommentData] = useState([]);
-	const users = useSelector((state) => state.user.users.user);
-	const auth = useSelector((state) => state.auth.login);
-	const bookmark = useSelector((state) => state.bookmark.bookmarks);
-	const checkInBookmark = bookmark.find((item) => item.postId === postItem._id);
+	const users = useSelector((state) => state?.user?.users?.user);
+	const auth = useSelector((state) => state?.auth?.login);
+	const bookmark = useSelector((state) => state?.bookmark?.bookmarks);
+	const checkInBookmark = bookmark?.find(
+		(item) => item?.postId === postItem?._id
+	);
 
 	const { userId, token } = auth;
+	const loggedInUser = users?.find((user) => user?._id === userId);
 
-	const findUser = postItem?.likes.find((likesId) => likesId === userId);
+	const peopleWhoLoggedInUserFollows = loggedInUser?.following;
+
+	const showFollowingWhichLoggedInUserFollows =
+		peopleWhoLoggedInUserFollows?.find((userId) => postItem?.userId === userId);
+
+	const findUser = postItem?.likes?.find((likesId) => likesId === userId);
 	let findUserPic;
 	useEffect(() => {
 		let source = axios.CancelToken.source();
@@ -91,7 +99,7 @@ export const Post = ({ postItem, socket }) => {
 							alignItems: "center",
 						}}
 					>
-						{postItem?.userId !== auth?.userId && (
+						{Boolean(showFollowingWhichLoggedInUserFollows) && (
 							<Button
 								id="btn__contained"
 								variant="contained"
@@ -106,33 +114,9 @@ export const Post = ({ postItem, socket }) => {
 									);
 								}}
 							>
-								Following
+								Unfollow
 							</Button>
 						)}
-						{/* {!postItem?.userId !== auth?.userId && (
-							<Button
-								variant="contained"
-								id="btn__contained"
-								style={{ padding: " 0.2rem 0.5rem" }}
-								onClick={() => {
-									dispatch(
-										followUser({
-											_id: userId,
-											token,
-											userToBeFollowed: postItem?.userId,
-										})
-									);
-									socket?.emit("sendNotification", {
-										senderId: userId,
-
-										receiverId: postItem?.userId,
-										type: "FOLLOW",
-									});
-								}}
-							>
-								Follow
-							</Button>
-						)} */}
 						{
 							<div className="bookmark__btn">
 								<button

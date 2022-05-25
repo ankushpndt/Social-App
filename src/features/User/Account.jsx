@@ -1,58 +1,20 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import "../Post/Post.css";
-import { useEffect } from "react";
-import { API_URL } from "../../utils/API_URL";
-import axios from "axios";
 import { Post } from "../Post/Post";
 import { Button } from "@mui/material";
-import { useParams } from "react-router";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Loader } from "../../Components/Loader";
-import { LoadPosts } from "../Post/postSlice";
 export const Account = () => {
-	const [singlePost, setSinglePost] = useState([]);
 	const user = useSelector((state) => state.user.users.user);
 	const auth = useSelector((state) => state.auth.login);
 	const loader = useSelector((state) => state.post.loader);
-	// const posts = useSelector((state) => state.post.posts);
-
-	// const CurrentUserPosts = posts?.find((post) => post.userId === auth?.userId);
-	// const CurrentPostLikes = CurrentUserPosts?.likes;
-	// console.log(CurrentPostLikes);
+	const posts = useSelector((state) => state.post.posts);
+	const CurrentUserPosts = posts?.filter(
+		(post) => post.userId === auth?.userId
+	);
 	const CurrentUser = user?.find((user) => user._id === auth.userId);
-	const { userId } = useParams();
-	const dispatch = useDispatch();
-	useEffect(() => {
-		let source = axios.CancelToken.source();
-		(async () => {
-			try {
-				const response = await axios.get(`${API_URL}/post/${userId}`, {
-					cancelToken: source.token,
-				});
-				setSinglePost(response.data.userPosts);
-			} catch (err) {
-				if (axios.isCancel(err)) {
-					console.log("caught cancelToken error");
-				} else {
-					toast.dark(err?.response?.data?.message, {
-						position: "bottom-center",
-						autoClose: 3000,
-						hideProgressBar: true,
-					});
-				}
-			}
-		})();
-		return () => {
-			console.log("unmounting account");
-			source.cancel();
-		};
-	}, [userId]);
-	useEffect(() => {
-		dispatch(LoadPosts({ userId }));
-	}, [dispatch, userId]);
+
 	return (
 		<>
 			{!loader ? (
@@ -117,9 +79,9 @@ export const Account = () => {
 					</div>
 					<div className="user__account">
 						<h4 style={{ padding: "1rem 0" }}>{CurrentUser?.name}'s Posts</h4>
-						{singlePost?.length > 0 ? (
+						{CurrentUserPosts?.length > 0 ? (
 							<>
-								{singlePost.map((post, i) => {
+								{CurrentUserPosts.map((post, i) => {
 									return (
 										<div key={i}>
 											<Post postItem={post} />

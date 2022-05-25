@@ -110,6 +110,10 @@
 	gap: 1rem;
 	padding: 1rem;
 }
+.bookmark__btn,
+.delete__btn {
+	padding-top: 4px;
+}
 @media (max-width: 648px) {
 	.posts__container {
 		flex-direction: column;

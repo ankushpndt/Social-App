@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { API_URL } from "../../utils/API_URL";
 import "react-toastify/dist/ReactToastify.css";
+
 export const LoadPosts = createAsyncThunk(
 	"post/LoadPosts",
 	async ({ userId }) => {
@@ -15,7 +16,21 @@ export const LoadPosts = createAsyncThunk(
 		}
 	}
 );
-
+// export const userPosts = createAsyncThunk(
+// 	"post/userPosts",
+// 	async ({ userId }) => {
+// 		try {
+// 			const response = await axios.get(`${API_URL}/post/${userId}`);
+// 			return response.data.userPosts;
+// 		} catch (err) {
+// 			toast.dark(err?.response?.data?.message, {
+// 				position: "bottom-center",
+// 				autoClose: 3000,
+// 				hideProgressBar: true,
+// 			});
+// 		}
+// 	}
+// );
 export const PostBtn = createAsyncThunk(
 	"posts/PostBtn",
 	async ({ postData, imgUrl, userId, setStatus }) => {
@@ -94,6 +109,7 @@ export const RemoveComment = createAsyncThunk(
 export const PostSlice = createSlice({
 	name: "Post",
 	initialState: {
+		userPost: [],
 		posts: [],
 		loader: false,
 		status: "",
@@ -104,6 +120,19 @@ export const PostSlice = createSlice({
 		},
 	},
 	extraReducers: {
+		// [userPosts.pending]: (state) => {
+		// 	state.status = "pending";
+		// 	state.loader = true;
+		// },
+		// [userPosts.fulfilled]: (state, action) => {
+		// 	state.userPost = action.payload;
+		// 	state.status = "fulfilled";
+		// 	state.loader = false;
+		// },
+		// [userPosts.rejected]: (state) => {
+		// 	state.status = "rejected";
+		// 	state.loader = false;
+		// },
 		[LoadPosts.pending]: (state) => {
 			state.status = "pending";
 			state.loader = true;
@@ -113,7 +142,7 @@ export const PostSlice = createSlice({
 			state.status = "fulfilled";
 			state.loader = false;
 		},
-		[LoadPosts.rejected]: (state, action) => {
+		[LoadPosts.rejected]: (state) => {
 			state.status = "rejected";
 			state.loader = false;
 		},
@@ -154,7 +183,7 @@ export const PostSlice = createSlice({
 		},
 		[LikeBtn.fulfilled]: (state, action) => {
 			state.posts = state?.posts?.map((post) => {
-				return post._id === action.payload._id ? action.payload : post;
+				return post?._id === action?.payload?._id ? action?.payload : post;
 			});
 
 			state.status = "fulfilled";

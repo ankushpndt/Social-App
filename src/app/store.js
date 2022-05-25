@@ -4,6 +4,7 @@ import AuthSliceReducer from "../features/Auth/AuthSlice";
 import UserSliceReducer from "../features/User/userSlice";
 import NotificationSliceReducer from "../features/Notification/notificationSlice";
 import BookmarkSliceReducer from "../features/Bookmark/BookmarkSlice";
+import UserPostSliceReducer from "../features/Post/userPostSlice";
 export const store = configureStore({
 	reducer: {
 		post: PostSliceReducer,
@@ -11,5 +12,6 @@ export const store = configureStore({
 		user: UserSliceReducer,
 		notification: NotificationSliceReducer,
 		bookmark: BookmarkSliceReducer,
+		usersPost: UserPostSliceReducer,
 	},
 });

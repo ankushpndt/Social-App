@@ -19,14 +19,11 @@ export const Home = ({ socket }) => {
 	const showUsersToBeFollowed = users?.filter(
 		(user) => user._id !== auth?.userId
 	);
-	const findCurrentUser = users?.find((user) => user?._id === auth?.userId);
 
+	const findCurrentUser = users?.find((user) => user?._id === auth?.userId);
 	const currentUserFollowing = findCurrentUser?.following;
 	const navigate = useNavigate();
-	let checkUser;
-	showUsersToBeFollowed?.forEach((el) => {
-		checkUser = currentUserFollowing?.includes(el?._id);
-	});
+
 	useEffect(() => {
 		dispatch(LoadPosts({ userId }));
 	}, [dispatch, currentUserFollowing, userId]);
@@ -55,7 +52,7 @@ export const Home = ({ socket }) => {
 								<div style={{ padding: "1rem" }}>You have no posts yet.</div>
 							)}
 						</div>
-						{!checkUser && (
+						{currentUserFollowing?.length !== showUsersToBeFollowed?.length && (
 							<div className="who__to__follow">
 								<h4 style={{ paddingBottom: "0.5rem" }}>Who to follow</h4>
 								<div className="who__to__follow__details">
