@@ -1,8 +1,7 @@
 export const Backdrop = ({ children, toggle, className }) => {
-  console.log(className);
-  return (
-    <div className={`backdrop `} onClick={() => toggle(false)}>
-      {children}
-    </div>
-  );
+	return (
+		<div className={`backdrop ${className} `} onClick={() => toggle(false)}>
+			{children}
+		</div>
+	);
 };

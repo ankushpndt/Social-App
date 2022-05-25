@@ -1,55 +1,36 @@
-import { useEffect } from 'react';
-import { useState, useRef } from 'react';
-import { LoadUsers } from '../features/User/userSlice';
-import { useDispatch } from 'react-redux';
-import '../App.css';
-import { SearchBox } from '../utils/SearchBox';
-import { Backdrop } from '../utils/Backdrop';
+import { useState } from "react";
+import "../App.css";
+import { SearchBox } from "../utils/SearchBox";
+import { Backdrop } from "../utils/Backdrop";
 export const SearchBar = () => {
-  const [toggleDropbox, setToggleDropbox] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const timeoutRef = useRef(null);
+	const [toggleDropbox, setToggleDropbox] = useState(false);
+	const [searchTerm, setSearchTerm] = useState("");
 
-  const dispatch = useDispatch();
+	return (
+		<div>
+			<div className="search__bar">
+				{toggleDropbox && (
+					<Backdrop
+						toggle={setToggleDropbox}
+						className="search__bar__backdrop"
+					/>
+				)}
 
-  useEffect(() => {
-    if (timeoutRef.current !== null) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      timeoutRef.current = null;
-      if (searchTerm !== '') {
-        dispatch(LoadUsers());
-      }
-    }, 1000);
-  }, [searchTerm, dispatch]);
-
-  return (
-    <div>
-      <div className='search__bar'>
-        {toggleDropbox && (
-          <Backdrop
-            toggle={setToggleDropbox}
-            className='search__bar__backdrop'
-          />
-        )}
-
-        <input
-          type='search'
-          value={searchTerm}
-          onFocus={() => setToggleDropbox(true)}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className='search__input'
-          placeholder='Search'
-        />
-        {toggleDropbox && (
-          <SearchBox
-            setToggleDropbox={setToggleDropbox}
-            searchTerm={searchTerm}
-          />
-        )}
-      </div>
-    </div>
-  );
+				<input
+					type="search"
+					value={searchTerm}
+					onFocus={() => setToggleDropbox(true)}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					className="search__input"
+					placeholder="Search"
+				/>
+				{toggleDropbox && (
+					<SearchBox
+						setToggleDropbox={setToggleDropbox}
+						searchTerm={searchTerm}
+					/>
+				)}
+			</div>
+		</div>
+	);
 };
