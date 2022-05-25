@@ -6,13 +6,15 @@ import "./SearchBox.css";
 
 export const SearchBox = ({ setToggleDropbox, searchTerm }) => {
 	const users = useSelector((state) => state.user.users.user);
+	const status = useSelector((state) => state.user.status);
+
 	const searchedUsers = users.filter((user) =>
 		user.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 	return (
-		<div className="searchBox">
+		<div className="search__box">
 			{searchTerm?.length !== 0 && (
-				<div className="searchBox__results">
+				<div className="search__box__results">
 					{searchedUsers.map((user) => (
 						<SearchBoxResult
 							key={user._id}
@@ -22,15 +24,20 @@ export const SearchBox = ({ setToggleDropbox, searchTerm }) => {
 					))}
 				</div>
 			)}
-
-			{(searchTerm?.length === 0 || searchedUsers?.length === 0) && (
+			{searchTerm?.length === 0 && (
 				<>
-					<h4 className="searchBox__heading">Search</h4>
-					<div className="searchBox__empty">No results found</div>
+					<h4 className="search__box__heading">Search</h4>
+					<div className="search__box__empty">Try searching for any user</div>
+				</>
+			)}
+			{searchedUsers?.length === 0 && (
+				<>
+					<h4 className="search__box__heading">Search</h4>
+					<div className="search__box__empty">No results found</div>
 				</>
 			)}
 
-			{searchedUsers?.status === "pending" && <>Loading...</>}
+			{status === "pending" && <>Loading...</>}
 		</div>
 	);
 };

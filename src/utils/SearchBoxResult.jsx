@@ -10,7 +10,7 @@ export const SearchBoxResult = ({ user, setToggleDropbox }) => {
 				user._id === auth?.userId ? `/account/${user._id}` : `/user/${user._id}`
 			}
 			onClick={setToggleDropbox ? () => setToggleDropbox(false) : () => {}}
-			className="searchBox__result"
+			className="search__box__result"
 		>
 			<div className="avatar">
 				<img className="avatar__img" src={user.image} alt="avatar" />
