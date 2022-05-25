@@ -39,6 +39,7 @@
 }
 .App {
 	text-align: center;
+	padding-top: 3rem;
 }
 .navbar {
 	height: 50px;
@@ -47,6 +48,10 @@
 	align-items: center;
 	justify-content: space-around;
 	color: white;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 100;
 }
 
 .logo {
@@ -125,13 +130,67 @@
 	font-size: 0.7rem;
 	color: var(--tertiary-color-shade-1);
 }
-
-@media (max-width: 550px) {
-	.search__bar {
-		display: none;
-	}
+.mobile__menu {
+	display: none;
 }
-
+.bottom__navbar {
+	display: none;
+}
 .search__bar .search__bar__backdrop {
 	top: 3rem;
+}
+@media (max-width: 648px) {
+	/* .App {
+		padding: 0;
+	} */
+	.search__bar .search__input {
+		width: 100%;
+		max-width: 150px;
+	}
+	/* mobile navbar */
+	.navbar {
+		display: none;
+	}
+	.menu li {
+		list-style: none;
+	}
+	.bottom__navbar,
+	.mobile__menu {
+		display: flex;
+	}
+	.logo {
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
+		cursor: pointer;
+	}
+	.m__menu {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 50px;
+		background-color: black;
+		color: white;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 100;
+		padding: 1rem;
+	}
+	/* .mobile__menu {
+		padding: 1rem;
+	} */
+	.menu {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+	.menu__link {
+		display: flex;
+		width: 100%;
+		padding: 1rem 0;
+		text-decoration: none;
+		color: black;
+		align-items: center;
+	}
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import "./style.css";
 import { Route, Routes, useNavigate } from "react-router";
@@ -28,17 +28,23 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { API_URL } from "./utils/API_URL";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PageNotFound } from "./Components/PageNotFound";
 import { SpecificPost } from "./features/Post/SpecificPost";
+import { Navbar } from "./Components/Navbar";
+import NotificationMobile from "./features/Notification/NotificationMobile";
+import Bookmarks from "./features/Bookmark/Bookmark";
+import { getBookmarks } from "./features/Bookmark/BookmarkSlice";
 const App = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth.login);
 	const [socket, setSocket] = useState(null);
-
+	const [home, setHome] = useState(false);
+	const [account, setAccount] = useState(false);
 	useEffect(() => {
 		setSocket(io(`${API_URL}`));
 	}, []);
@@ -51,6 +57,7 @@ const App = () => {
 		if (token) {
 			dispatch(LoadPosts({ userId }));
 			dispatch(LoadUsers());
+			dispatch(getBookmarks({ userId }));
 		}
 	}, [token, dispatch, userId]);
 
@@ -72,8 +79,7 @@ const App = () => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	const [home, setHome] = useState(false);
-	const [account, setAccount] = useState(false);
+
 	return (
 		<div className="App">
 			<div className="navbar">
@@ -135,6 +141,20 @@ const App = () => {
 							</NavLink>
 						</div>
 					)}
+					{token && (
+						<div className="icon">
+							<NavLink
+								to={`/bookmarks`}
+								style={{ color: "white" }}
+								// onClick={() => {
+								// 	setHome(false);
+								// 	setAccount(true);
+								// }}
+							>
+								<BookmarkIcon />
+							</NavLink>
+						</div>
+					)}
 					{!token && (
 						<div className="icon">
 							<NavLink to="/" style={{ color: "white" }}>
@@ -160,7 +180,77 @@ const App = () => {
 					)}
 				</div>
 			</div>
-
+			<div className="mobile__menu">
+				<div className="m__menu">
+					<div className="icon">
+						<NavLink
+							to={token ? "/home" : "/"}
+							style={{ color: "white", textDecoration: "none" }}
+						>
+							Ligma Social
+						</NavLink>
+					</div>
+					{token && (
+						<div>
+							<SearchBar />
+						</div>
+					)}
+					<div>
+						<ul className="menu">
+							{!token && (
+								<li>
+									<NavLink
+										style={({ isActive }) => {
+											return { color: isActive ? "#e74c3c" : "white" };
+										}}
+										className="menu__link"
+										to="/"
+									>
+										<AccountCircleIcon />
+										<span style={{ fontSize: "1.2rem", paddingLeft: "0.5rem" }}>
+											Login
+										</span>
+									</NavLink>
+								</li>
+							)}
+							{!token && (
+								<li>
+									<NavLink
+										style={({ isActive }) => {
+											return { color: isActive ? "#e74c3c" : "white" };
+										}}
+										className="menu__link"
+										to="/signup"
+									>
+										<AccountCircleIcon />
+										<span style={{ fontSize: "1.2rem", paddingLeft: "0.5rem" }}>
+											Sign Up
+										</span>
+									</NavLink>
+								</li>
+							)}
+							<li>
+								{token && (
+									<NavLink
+										className="menu__link"
+										style={({ isActive }) => {
+											return { color: isActive ? "#e74c3c" : "white" };
+										}}
+										to="/"
+										onClick={logoutHandler}
+									>
+										<LogoutIcon />
+										<span style={{ paddingLeft: "0.5rem" }}>Logout</span>
+									</NavLink>
+								)}
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div className="bottom__navbar">
+					<Navbar />
+				</div>
+			</div>
 			<Notification
 				socket={socket}
 				open={open}
@@ -202,6 +292,11 @@ const App = () => {
 						</PrivateRoute>
 					}
 				/>
+				<Route
+					path="/notifications"
+					element={<NotificationMobile socket={socket} />}
+				/>
+				<Route path="/bookmarks" element={<Bookmarks />} />
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 

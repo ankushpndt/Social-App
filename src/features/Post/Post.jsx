@@ -10,11 +10,13 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CommentIcon from "@mui/icons-material/Comment";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink } from "react-router-dom";
 import { unfollowUser } from "../User/userSlice";
-
+import { addBookmark, deleteBookmark } from "../Bookmark/BookmarkSlice";
 export const Post = ({ postItem, socket }) => {
 	const dispatch = useDispatch();
 	const [show, setShow] = useState(false);
@@ -22,6 +24,8 @@ export const Post = ({ postItem, socket }) => {
 	const [commentData, setCommentData] = useState([]);
 	const users = useSelector((state) => state.user.users.user);
 	const auth = useSelector((state) => state.auth.login);
+	const bookmark = useSelector((state) => state.bookmark.bookmarks);
+	const checkInBookmark = bookmark.find((item) => item.postId === postItem._id);
 
 	const { userId, token } = auth;
 
@@ -100,11 +104,6 @@ export const Post = ({ postItem, socket }) => {
 											following: postItem?.userId,
 										})
 									);
-									socket?.emit("sendClearNotification", {
-										senderId: userId,
-										receiverId: postItem?.userId,
-										type: "FOLLOW",
-									});
 								}}
 							>
 								Following
@@ -134,6 +133,34 @@ export const Post = ({ postItem, socket }) => {
 								Follow
 							</Button>
 						)} */}
+						{
+							<div className="bookmark__btn">
+								<button
+									style={{
+										background: "transparent",
+										border: "none",
+										cursor: "pointer",
+									}}
+								>
+									{Boolean(checkInBookmark) ? (
+										<BookmarkIcon
+											onClick={() =>
+												checkInBookmark?.postId === postItem?._id &&
+												dispatch(
+													deleteBookmark({ bookmarkId: checkInBookmark?._id })
+												)
+											}
+										/>
+									) : (
+										<BookmarkBorderOutlinedIcon
+											onClick={() =>
+												dispatch(addBookmark({ userId, postId: postItem?._id }))
+											}
+										/>
+									)}
+								</button>
+							</div>
+						}
 						{postItem?.userId === auth?.userId && (
 							<div className="delete__btn">
 								<button

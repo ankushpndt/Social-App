@@ -1,0 +1,21 @@
+.bottom__navbar__container {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	background-color: black;
+	padding: 0.5rem 1rem;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: 1;
+}
+.bottom__navbar__route {
+	text-decoration: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 0.2rem;
+}
