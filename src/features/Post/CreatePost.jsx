@@ -52,7 +52,11 @@ export const CreatePost = () => {
 							<NavLink
 								key={uuidv4()}
 								to={`/account/${auth?.userId}`}
-								style={{ textDecoration: "none", color: "black" }}
+								style={{
+									textDecoration: "none",
+									color: "black",
+									height: "50px",
+								}}
 							>
 								{" "}
 								<div className="user__details">
