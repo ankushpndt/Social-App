@@ -71,7 +71,11 @@ export const Post = ({ postItem, socket }) => {
 							user?._id === postItem?.userId && (
 								<div className="user__details" key={uuidv4()}>
 									<NavLink
-										to={`/user/${postItem?.userId}`}
+										to={
+											postItem?.userId === auth?.userId
+												? `/account/${auth?.userId}`
+												: `/user/${postItem?.userId}`
+										}
 										style={{
 											textDecoration: "none",
 											color: "black",

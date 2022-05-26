@@ -116,6 +116,7 @@ export const PostSlice = createSlice({
 	},
 	reducers: {
 		startLoadingPosts: (state) => {
+			state.posts = [];
 			state.status = "loading";
 		},
 	},

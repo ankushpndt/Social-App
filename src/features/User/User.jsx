@@ -7,24 +7,27 @@ import { Button } from "@mui/material";
 import "./User.css";
 import { followUser, LoadUsers, unfollowUser } from "../User/userSlice";
 import { Loader } from "../../Components/Loader";
-// import { userPosts } from "../Post/userPostSlice";
-import LockIcon from "@mui/icons-material/Lock";
+import { LoadPosts } from "../Post/postSlice";
 export const User = ({ socket }) => {
 	const { userId } = useParams();
 	const user = useSelector((state) => state?.user?.users?.user);
 	const CurrentUser = user?.find((user) => user?._id === userId);
 	const auth = useSelector((state) => state?.auth?.login);
-	const loader = useSelector((state) => state.usersPost.loader);
+	const loader = useSelector((state) => state.post.loader);
 	// const userPost = useSelector((state) => state.usersPost.userPost);
 	const postData = useSelector((state) => state.post.posts);
+
 	const { token } = auth;
 	const dispatch = useDispatch();
 	const findCurrentUser = user?.find((user) => user?._id === auth?.userId);
-	const followedUsers = postData?.filter((item) => item.userId === userId);
+
+	const followedUsers = postData?.filter((post) => post.userId === userId);
+
 	useEffect(() => {
+		dispatch(LoadPosts({ userId }));
 		dispatch(LoadUsers());
-		// dispatch(userPosts({ userId }));
 	}, [dispatch, userId]);
+
 	return (
 		<>
 			{!loader ? (
@@ -92,7 +95,7 @@ export const User = ({ socket }) => {
 							<Button
 								id="btn__contained"
 								variant="contained"
-								style={{ padding: "0.1rem 0.5rem" }}
+								style={{ padding: " 0.2rem 0.5rem" }}
 								onClick={() => {
 									dispatch(
 										unfollowUser({
@@ -137,7 +140,7 @@ export const User = ({ socket }) => {
 							</Button>
 						</NavLink>
 					</div>
-					{findCurrentUser?.following.includes(userId) ? (
+					{!findCurrentUser?.following.includes(userId) && (
 						<div className="user__account">
 							<h4 style={{ padding: "1rem 0" }}>{CurrentUser?.name}'s Posts</h4>
 							{followedUsers.length > 0 ? (
@@ -153,16 +156,6 @@ export const User = ({ socket }) => {
 							) : (
 								<div>{CurrentUser?.name} hasn't posted anything yet.</div>
 							)}
-						</div>
-					) : (
-						<div className="private__account">
-							<p>
-								<LockIcon sx={{ width: "3rem", height: "3rem" }} />
-							</p>
-							<p>This account is private.</p>
-							<small style={{ color: "gray" }}>
-								Follow this account to see their posts.
-							</small>
 						</div>
 					)}
 				</div>
