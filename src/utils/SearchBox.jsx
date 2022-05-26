@@ -1,7 +1,5 @@
-// import Spinner from '../Spinner/Spinner';
 import { useSelector } from "react-redux";
 import { SearchBoxResult } from "./SearchBoxResult";
-
 import "./SearchBox.css";
 
 export const SearchBox = ({ setToggleDropbox, searchTerm }) => {
@@ -11,6 +9,7 @@ export const SearchBox = ({ setToggleDropbox, searchTerm }) => {
 	const searchedUsers = users.filter((user) =>
 		user.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
+
 	return (
 		<div className="search__box">
 			{searchTerm?.length !== 0 && (
@@ -24,6 +23,7 @@ export const SearchBox = ({ setToggleDropbox, searchTerm }) => {
 					))}
 				</div>
 			)}
+
 			{searchTerm?.length === 0 && (
 				<>
 					<h4 className="search__box__heading">Search</h4>

@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CommentIcon from "@mui/icons-material/Comment";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { toast } from "react-toastify";
@@ -228,7 +229,7 @@ export const Post = ({ postItem, socket }) => {
 											: 0}{" "}
 									</span>
 
-									<ThumbUpAltIcon />
+									{findUser ? <ThumbUpAltIcon /> : <ThumbUpOutlinedIcon />}
 								</div>
 							</Button>{" "}
 							<Button

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-
 import { useSelector } from "react-redux";
 
 export const SearchBoxResult = ({ user, setToggleDropbox }) => {
 	const auth = useSelector((state) => state.auth.login);
+
 	return (
 		<Link
 			to={

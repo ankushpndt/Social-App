@@ -2,11 +2,12 @@ import { useSelector } from "react-redux";
 import { Post } from "../Post/Post";
 import { v4 } from "uuid";
 import "./Bookmark.css";
+
 const BookmarkCard = ({ bookmark }) => {
-	const postData = useSelector((state) => state.post.posts);
-	const getPostFromBookmark = postData?.filter(
-		(item) => item._id === bookmark?.postId
-	);
+	const everyPosts = useSelector((state) => state.post.allPosts);
+	const getPostFromBookmark = everyPosts?.filter((item) => {
+		return item._id === bookmark?.postId;
+	});
 
 	return (
 		<div className="bookmarks">

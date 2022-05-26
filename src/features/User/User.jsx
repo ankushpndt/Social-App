@@ -139,24 +139,22 @@ export const User = ({ socket }) => {
 							</Button>
 						</NavLink>
 					</div>
-					{!findCurrentUser?.following.includes(userId) && (
-						<div className="user__account">
-							<h4 style={{ padding: "1rem 0" }}>{CurrentUser?.name}'s Posts</h4>
-							{followedUsers.length > 0 ? (
-								<>
-									{followedUsers.map((post, i) => {
-										return (
-											<div key={i}>
-												<Post postItem={post} />
-											</div>
-										);
-									})}
-								</>
-							) : (
-								<div>{CurrentUser?.name} hasn't posted anything yet.</div>
-							)}
-						</div>
-					)}
+					<div className="user__account">
+						<h4 style={{ padding: "1rem 0" }}>{CurrentUser?.name}'s Posts</h4>
+						{followedUsers.length > 0 ? (
+							<>
+								{followedUsers.map((post, i) => {
+									return (
+										<div key={i}>
+											<Post postItem={post} />
+										</div>
+									);
+								})}
+							</>
+						) : (
+							<div>{CurrentUser?.name} hasn't posted anything yet.</div>
+						)}
+					</div>
 				</div>
 			) : (
 				<Loader />

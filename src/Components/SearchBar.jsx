@@ -2,9 +2,11 @@ import { useState } from "react";
 import "../App.css";
 import { SearchBox } from "../utils/SearchBox";
 import { Backdrop } from "../utils/Backdrop";
+import useDebounce from "../CustomHooks/useDebounce";
 export const SearchBar = () => {
 	const [toggleDropbox, setToggleDropbox] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
+	const debouncedSearchTerm = useDebounce(searchTerm, 1000);
 
 	return (
 		<div>
@@ -19,15 +21,17 @@ export const SearchBar = () => {
 				<input
 					type="search"
 					value={searchTerm}
-					onFocus={() => setToggleDropbox(true)}
-					onChange={(e) => setSearchTerm(e.target.value)}
+					onChange={(e) => {
+						setSearchTerm(e.target.value);
+						setToggleDropbox(true);
+					}}
 					className="search__input"
 					placeholder="Search"
 				/>
 				{toggleDropbox && (
 					<SearchBox
 						setToggleDropbox={setToggleDropbox}
-						searchTerm={searchTerm}
+						searchTerm={debouncedSearchTerm}
 					/>
 				)}
 			</div>

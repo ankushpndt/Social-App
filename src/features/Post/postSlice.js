@@ -16,21 +16,18 @@ export const LoadPosts = createAsyncThunk(
 		}
 	}
 );
-// export const userPosts = createAsyncThunk(
-// 	"post/userPosts",
-// 	async ({ userId }) => {
-// 		try {
-// 			const response = await axios.get(`${API_URL}/post/${userId}`);
-// 			return response.data.userPosts;
-// 		} catch (err) {
-// 			toast.dark(err?.response?.data?.message, {
-// 				position: "bottom-center",
-// 				autoClose: 3000,
-// 				hideProgressBar: true,
-// 			});
-// 		}
-// 	}
-// );
+export const allPosts = createAsyncThunk("post/allPosts", async () => {
+	try {
+		const response = await axios.get(`${API_URL}/post/all`);
+		return response.data.allPosts;
+	} catch (err) {
+		toast.dark(err?.response?.data?.message, {
+			position: "bottom-center",
+			autoClose: 3000,
+			hideProgressBar: true,
+		});
+	}
+});
 export const PostBtn = createAsyncThunk(
 	"posts/PostBtn",
 	async ({ postData, imgUrl, userId, setStatus }) => {
@@ -109,7 +106,7 @@ export const RemoveComment = createAsyncThunk(
 export const PostSlice = createSlice({
 	name: "Post",
 	initialState: {
-		userPost: [],
+		allPosts: [],
 		posts: [],
 		loader: false,
 		status: "",
@@ -121,19 +118,19 @@ export const PostSlice = createSlice({
 		},
 	},
 	extraReducers: {
-		// [userPosts.pending]: (state) => {
-		// 	state.status = "pending";
-		// 	state.loader = true;
-		// },
-		// [userPosts.fulfilled]: (state, action) => {
-		// 	state.userPost = action.payload;
-		// 	state.status = "fulfilled";
-		// 	state.loader = false;
-		// },
-		// [userPosts.rejected]: (state) => {
-		// 	state.status = "rejected";
-		// 	state.loader = false;
-		// },
+		[allPosts.pending]: (state) => {
+			state.status = "pending";
+			state.loader = true;
+		},
+		[allPosts.fulfilled]: (state, action) => {
+			state.allPosts = action.payload;
+			state.status = "fulfilled";
+			state.loader = false;
+		},
+		[allPosts.rejected]: (state) => {
+			state.status = "rejected";
+			state.loader = false;
+		},
 		[LoadPosts.pending]: (state) => {
 			state.status = "pending";
 			state.loader = true;

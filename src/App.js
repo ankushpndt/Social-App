@@ -8,7 +8,7 @@ import { User } from "./features/User/User";
 import { EditProfile } from "./features/User/EditProfile";
 import { Followers } from "./features/User/Followers";
 import { Following } from "./features/User/Following";
-import { LoadPosts } from "./features/Post/postSlice";
+import { allPosts, LoadPosts } from "./features/Post/postSlice";
 import { LoadUsers } from "./features/User/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Login } from "./features/Auth/Login";
@@ -60,7 +60,7 @@ const App = () => {
 			dispatch(LoadPosts({ userId }));
 			dispatch(LoadUsers());
 			dispatch(getBookmarks({ userId }));
-
+			dispatch(allPosts());
 			setHome(true);
 		}
 	}, [token, dispatch, userId]);
