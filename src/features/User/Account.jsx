@@ -18,7 +18,7 @@ export const Account = () => {
 	return (
 		<>
 			{!loader ? (
-				<div style={{ margin: "1rem" }}>
+				<div style={{ padding: "1rem 1rem 4rem 1rem" }}>
 					<div className="user__container">
 						<img
 							src={CurrentUser?.image}

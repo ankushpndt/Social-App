@@ -1,6 +1,6 @@
 import "./Post.css";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostBtn } from "./postSlice";
 import axios from "axios";
@@ -10,6 +10,7 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink } from "react-router-dom";
+import { LoadUsers } from "../User/userSlice";
 export const CreatePost = () => {
 	const [postData, setpostData] = useState("");
 	const [status, setStatus] = useState(false);
@@ -42,7 +43,9 @@ export const CreatePost = () => {
 			toast.dark(error?.response?.data?.message);
 		}
 	};
-
+	useEffect(() => {
+		dispatch(LoadUsers());
+	}, [dispatch]);
 	return (
 		<div className="create__post">
 			<div className="create__post__user__profile">
@@ -56,6 +59,7 @@ export const CreatePost = () => {
 									textDecoration: "none",
 									color: "black",
 									height: "50px",
+									marginTop: "0.6rem",
 								}}
 							>
 								{" "}
@@ -67,7 +71,6 @@ export const CreatePost = () => {
 										height="30px"
 										style={{ borderRadius: "80%" }}
 									/>
-									<p style={{ margin: "1rem" }}>{user.name}</p>
 								</div>
 							</NavLink>
 						)
@@ -107,7 +110,13 @@ export const CreatePost = () => {
 			)}
 			<div className="create__post__btn">
 				<label htmlFor="upload__btn">
-					<input type="file" id="upload__btn" hidden onChange={uploadImage} />
+					<input
+						type="file"
+						id="upload__btn"
+						hidden
+						onChange={uploadImage}
+						accept="image/*"
+					/>
 					<IconButton
 						color="primary"
 						aria-label="upload picture"

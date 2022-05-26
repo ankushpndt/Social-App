@@ -61,6 +61,21 @@ export const EditProfile = () => {
 				) : (
 					<Loader />
 				)}
+				<TextField
+					id="standard__basic"
+					label="Name"
+					type="text"
+					onChange={(e) => setName(e.target.value)}
+					value={username}
+					required
+				/>
+				<TextField
+					id="standard__basic"
+					label="Bio"
+					type="text"
+					onChange={(e) => setBio(e.target.value)}
+					value={bio}
+				/>
 				<div className="upload">
 					<label htmlFor="upload__btn">
 						<span
@@ -86,6 +101,7 @@ export const EditProfile = () => {
 							hidden
 							onChange={uploadImage}
 							name="Upload"
+							accept="image/*"
 						/>
 					</label>
 					<Button
@@ -97,21 +113,6 @@ export const EditProfile = () => {
 						Save
 					</Button>
 				</div>
-				<TextField
-					id="standard__basic"
-					label="Name"
-					type="text"
-					onChange={(e) => setName(e.target.value)}
-					value={username}
-					required
-				/>
-				<TextField
-					id="standard__basic"
-					label="Bio"
-					type="text"
-					onChange={(e) => setBio(e.target.value)}
-					value={bio}
-				/>
 			</div>
 		</div>
 	);

@@ -14,7 +14,6 @@ export const User = ({ socket }) => {
 	const CurrentUser = user?.find((user) => user?._id === userId);
 	const auth = useSelector((state) => state?.auth?.login);
 	const loader = useSelector((state) => state.post.loader);
-	// const userPost = useSelector((state) => state.usersPost.userPost);
 	const postData = useSelector((state) => state.post.posts);
 
 	const { token } = auth;
@@ -31,7 +30,7 @@ export const User = ({ socket }) => {
 	return (
 		<>
 			{!loader ? (
-				<div style={{ margin: "1rem" }}>
+				<div style={{ padding: "1rem 1rem 2rem 1rem" }}>
 					<div className="user__container">
 						<img
 							src={CurrentUser?.image}
