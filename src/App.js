@@ -95,7 +95,7 @@ const App = () => {
 						Ligma Social
 					</NavLink>
 				</div>
-				<SearchBar />
+				{token && <SearchBar />}
 				<div className="icons">
 					{token && (
 						<div
