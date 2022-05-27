@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { CreatePost } from "../Post/CreatePost";
-import { followUser, LoadUsers } from "../User/userSlice";
+import { followUser } from "../User/userSlice";
 import { Button } from "@mui/material";
 import "../Post/Post.css";
 import { Loader } from "../../Components/Loader";
@@ -26,8 +26,8 @@ export const Home = ({ socket }) => {
 
 	useEffect(() => {
 		dispatch(LoadPosts({ userId }));
-		dispatch(LoadUsers());
-	}, [dispatch, userId]);
+	}, [dispatch, userId, currentUserFollowing?.length]);
+
 	return (
 		<div className="home__container">
 			{!loader ? (

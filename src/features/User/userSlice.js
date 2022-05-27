@@ -45,6 +45,7 @@ export const followUser = createAsyncThunk(
 					headers: { "auth-token": token },
 				}
 			);
+
 			return response.data;
 		} catch (error) {
 			toast.error(error?.response?.data?.message);

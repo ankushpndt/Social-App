@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { NavLink } from "react-router-dom";
 import { unfollowUser } from "../User/userSlice";
 import { addBookmark, deleteBookmark } from "../Bookmark/BookmarkSlice";
+
 export const Post = ({ postItem, socket }) => {
 	const dispatch = useDispatch();
 	const [show, setShow] = useState(false);
