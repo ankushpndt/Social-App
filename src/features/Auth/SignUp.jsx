@@ -5,6 +5,10 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { validateForm } from "../../Components/ValidateForm";
 import { TextField } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import "../../style.css";
 import { Loader } from "../../Components/Loader";
 export const SignUp = () => {
@@ -16,6 +20,7 @@ export const SignUp = () => {
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const [showPass, setShowPass] = useState(false);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		if (token) {
@@ -67,14 +72,30 @@ export const SignUp = () => {
 					/>
 					<br />
 					<TextField
-						type="password"
+						id="standard__basic"
 						label="Password"
+						type={showPass ? "text" : "password"}
 						name="password"
 						helperText="Enter your password here"
 						onChange={(e) => setPassword(e.target.value)}
 						required
 						value={password}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={() => setShowPass(!showPass)}
+										onMouseDown={(e) => e.preventDefault()}
+										edge="end"
+									>
+										{showPass ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
 					/>
+
 					<br />
 					<div className="name__error">
 						{errorMessage !== "" && errorMessage}

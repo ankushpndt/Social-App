@@ -7,11 +7,16 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { TextField } from "@mui/material";
 import { validateForm } from "../../Components/ValidateForm";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import "../../style.css";
 import { Loader } from "../../Components/Loader";
 export const Login = () => {
 	const auth = useSelector((state) => state.auth.login);
 	const loader = useSelector((state) => state.auth.loader);
+	const [showPass, setShowPass] = useState(false);
 	const { token } = auth;
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -65,12 +70,26 @@ export const Login = () => {
 					<TextField
 						id="standard__basic"
 						label="Password"
-						type="password"
+						type={showPass ? "text" : "password"}
 						name="password"
 						helperText="Enter your password here"
 						onChange={(e) => setPassword(e.target.value)}
 						required
 						value={password}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={() => setShowPass(!showPass)}
+										onMouseDown={(e) => e.preventDefault()}
+										edge="end"
+									>
+										{showPass ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
 					/>
 
 					<div className="name__error">
